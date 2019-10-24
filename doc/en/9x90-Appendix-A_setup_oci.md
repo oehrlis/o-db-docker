@@ -628,3 +628,6 @@ ps -ef|grep curl|wc -l
 
 
 ### Create Custom Image
+
+http://www.nazmulhuda.info/download-from-the-otn-using-wget
+https://blog.pythian.com/how-to-download-oracle-software-using-wget-or-curl/

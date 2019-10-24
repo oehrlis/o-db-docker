@@ -24,6 +24,9 @@
 **/*.gz
 **/*.netrc
 
+# ignore key files
+**/id_rsa_*
+
 # MacOS fork files
 **/*.DS_Store
 

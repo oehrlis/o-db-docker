@@ -1,0 +1,471 @@
+%%
+% Copyright (c) 2017 - 2019, Pascal Wagler;
+% Copyright (c) 2014 - 2019, John MacFarlane
+%
+% All rights reserved.
+%
+% Redistribution and use in source and binary forms, with or without
+% modification, are permitted provided that the following conditions
+% are met:
+%
+% - Redistributions of source code must retain the above copyright
+% notice, this list of conditions and the following disclaimer.
+%
+% - Redistributions in binary form must reproduce the above copyright
+% notice, this list of conditions and the following disclaimer in the
+% documentation and/or other materials provided with the distribution.
+%
+% - Neither the name of John MacFarlane nor the names of other
+% contributors may be used to endorse or promote products derived
+% from this software without specific prior written permission.
+%
+% THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+% "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+% LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+% FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+% COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+% INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+% BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+% LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+% CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+% LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+% ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+% POSSIBILITY OF SUCH DAMAGE.
+%%
+
+%%
+% This is the Eisvogel pandoc LaTeX template.
+%
+% For usage information and examples visit the official GitHub page:
+% https://github.com/Wandmalfarbe/pandoc-latex-template
+%%
+
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*,table}{xcolor}
+%
+\documentclass[
+  a4paper,
+,tablecaptionabove
+]{scrartcl}
+  \usepackage{lmodern}
+  \usepackage{setspace}
+  \setstretch{1.2}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+\defaultfontfeatures{Scale=MatchLowercase}
+\defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+  \setmainfont[]{Nunito Sans SemiBold}
+  \setmonofont[]{Courier New}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+  \usepackage{xcolor}
+  \definecolor{default-linkcolor}{HTML}{A50000}
+  \definecolor{default-filecolor}{HTML}{A50000}
+  \definecolor{default-citecolor}{HTML}{4077C0}
+  \definecolor{default-urlcolor}{HTML}{4077C0}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+      pdftitle={O-DB-Docker},
+        pdfauthor={Stefan Oehrli},
+              hidelinks,
+    breaklinks=true,
+  pdfcreator={LaTeX via pandoc with the Eisvogel template}}
+  \urlstyle{same} % disable monospaced font for URLs
+      \usepackage[margin=2.5cm,includehead=true,includefoot=true,centering,top=20mm,bottom=20mm]{geometry}
+    \usepackage[export]{adjustbox}
+  \usepackage{graphicx}
+  \usepackage{listings}
+  \newcommand{\passthrough}[1]{#1}
+  \lstset{defaultdialect=[5.3]Lua}
+  \lstset{defaultdialect=[x86masm]Assembler}
+      % add backlinks to footnote references, cf. https://tex.stackexchange.com/questions/302266/make-footnote-clickable-both-ways
+  \usepackage{footnotebackref}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+  \setcounter{secnumdepth}{3}
+
+% Make use of float-package and set default placement for figures to H.
+% The option H means 'PUT IT HERE' (as  opposed to the standard h option which means 'You may put it here if you like').
+\usepackage{float}
+\floatplacement{figure}{H}
+
+  \input{./doc/templates/trivadis1.tex}
+
+  \title{O-DB-Docker}
+\usepackage{etoolbox}
+\makeatletter
+\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+  \apptocmd{\@title}{\par {\large #1 \par}}{}{}
+}
+\makeatother
+  \subtitle{Lab and Exercise guide ganz anders}
+  \author{Stefan Oehrli}
+\date{2019 October 07}
+
+
+
+%%
+%% added
+%%
+
+%
+% language specification
+%
+% If no language is specified, use English as the default main document language.
+%
+
+  \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+    \usepackage[shorthands=off,main=english]{babel}
+      \else
+            % load polyglossia as late as possible as it *could* call bidi if RTL lang (e.g. Hebrew or Arabic)
+    \usepackage{polyglossia}
+    \setmainlanguage[]{english}
+      \fi
+
+
+%
+% for the background color of the title page
+%
+  \usepackage{pagecolor}
+  \usepackage{afterpage}
+    
+%
+% break urls
+% 
+\PassOptionsToPackage{hyphens}{url}
+
+%
+% When using babel or polyglossia with biblatex, loading csquotes is recommended 
+% to ensure that quoted texts are typeset according to the rules of your main language.
+%
+\usepackage{csquotes}
+
+%
+% captions
+%
+\definecolor{caption-color}{HTML}{777777}
+\usepackage[font={stretch=1.2}, textfont={color=caption-color}, position=top, skip=4mm, labelfont=bf, singlelinecheck=false, justification=raggedright]{caption}
+\setcapindent{0em}
+
+%
+% blockquote
+%
+\definecolor{blockquote-border}{RGB}{221,221,221}
+\definecolor{blockquote-text}{RGB}{119,119,119}
+\usepackage{mdframed}
+\newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
+\renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
+\item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
+
+%
+% Source Sans Pro as the de­fault font fam­ily
+% Source Code Pro for monospace text
+%
+% 'default' option sets the default 
+% font family to Source Sans Pro, not \sfdefault.
+%
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+    \usepackage[default]{sourcesanspro}
+  \usepackage{sourcecodepro}
+  \else % if not pdftex
+    \fi
+
+%
+% heading color
+%
+\definecolor{heading-color}{RGB}{40,40,40}
+  \addtokomafont{section}{\color{heading-color}}
+% When using the classes report, scrreprt, book, 
+% scrbook or memoir, uncomment the following line.
+%\addtokomafont{chapter}{\color{heading-color}}
+
+%
+% variables for title and author
+%
+  \usepackage{titling}
+  \title{O-DB-Docker}
+  \author{Stefan Oehrli}
+
+%
+% tables
+%
+
+%
+% remove paragraph indention
+%
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+%
+%
+% Listings
+%
+%
+
+
+%
+% general listing colors
+%
+\definecolor{listing-background}{HTML}{F7F7F7}
+\definecolor{listing-rule}{HTML}{B3B2B3}
+\definecolor{listing-numbers}{HTML}{B3B2B3}
+\definecolor{listing-text-color}{HTML}{000000}
+\definecolor{listing-keyword}{HTML}{435489}
+\definecolor{listing-keyword-2}{HTML}{1284CA} % additional keywords
+\definecolor{listing-keyword-3}{HTML}{9137CB} % additional keywords
+\definecolor{listing-identifier}{HTML}{435489}
+\definecolor{listing-string}{HTML}{00999A}
+\definecolor{listing-comment}{HTML}{8E8E8E}
+
+  \lstdefinestyle{eisvogel_listing_style}{
+    language         = java,
+          xleftmargin      = 0.6em,
+      framexleftmargin = 0.4em,
+        backgroundcolor  = \color{listing-background},
+    basicstyle       = \color{listing-text-color}\linespread{1.0}\small\ttfamily{},
+    breaklines       = true,
+    frame            = single,
+    framesep         = 0.19em,
+    rulecolor        = \color{listing-rule},
+    frameround       = ffff,
+    tabsize          = 4,
+    numberstyle      = \color{listing-numbers},
+    aboveskip        = 1.0em,
+    belowskip        = 0.1em,
+    abovecaptionskip = 0em,
+    belowcaptionskip = 1.0em,
+    keywordstyle     = {\color{listing-keyword}\bfseries},
+    keywordstyle     = {[2]\color{listing-keyword-2}\bfseries},
+    keywordstyle     = {[3]\color{listing-keyword-3}\bfseries\itshape},
+    sensitive        = true,
+    identifierstyle  = \color{listing-identifier},
+    commentstyle     = \color{listing-comment},
+    stringstyle      = \color{listing-string},
+    showstringspaces = false,
+    escapeinside     = {/*@}{@*/}, % Allow LaTeX inside these special comments
+    literate         =
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {à}{{\`a}}1 {è}{{\'e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+    {À}{{\`A}}1 {È}{{\'E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+    {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+    {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+    {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+    {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+    {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+    {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+    {€}{{\EUR}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+    {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1
+    {…}{{\ldots}}1 {≥}{{>=}}1 {≤}{{<=}}1 {„}{{\glqq}}1 {“}{{\grqq}}1
+    {”}{{''}}1
+  }
+  \lstset{style=eisvogel_listing_style}
+
+  %
+% Java (Java SE 12, 2019-06-22)
+%
+\lstdefinelanguage{Java}{
+  morekeywords={
+    % normal keywords (without data types)
+    abstract,assert,break,case,catch,class,continue,default,
+    do,else,enum,exports,extends,final,finally,for,if,implements,
+    import,instanceof,interface,module,native,new,package,private,
+    protected,public,requires,return,static,strictfp,super,switch,
+    synchronized,this,throw,throws,transient,try,volatile,while,
+    % var is an identifier
+    var
+  },
+  morekeywords={[2] % data types
+    % primitive data types
+    boolean,byte,char,double,float,int,long,short,
+    % String
+    String,
+    % primitive wrapper types
+    Boolean,Byte,Character,Double,Float,Integer,Long,Short
+    % number types
+    Number,AtomicInteger,AtomicLong,BigDecimal,BigInteger,DoubleAccumulator,DoubleAdder,LongAccumulator,LongAdder,Short,
+    % other
+    Object,Void,void
+  },
+  morekeywords={[3] % literals
+    % reserved words for literal values
+    null,true,false,
+  },
+  sensitive,
+  morecomment  = [l]//,
+  morecomment  = [s]{/*}{*/},
+  morecomment  = [s]{/**}{*/},
+  morestring   = [b]",
+  morestring   = [b]',
+}
+
+  \lstdefinelanguage{XML}{
+    morestring      = [b]",
+    moredelim       = [s][\bfseries\color{listing-keyword}]{<}{\ },
+    moredelim       = [s][\bfseries\color{listing-keyword}]{</}{>},
+    moredelim       = [l][\bfseries\color{listing-keyword}]{/>},
+    moredelim       = [l][\bfseries\color{listing-keyword}]{>},
+    morecomment     = [s]{<?}{?>},
+    morecomment     = [s]{<!--}{-->},
+    commentstyle    = \color{listing-comment},
+    stringstyle     = \color{listing-string},
+    identifierstyle = \color{listing-identifier}
+  }
+
+%
+% header and footer
+%
+  \usepackage{fancyhdr}
+\fancypagestyle{eisvogel-header-footer}{
+  \fancyhead{}
+  \fancyfoot{}
+  \newcommand*{\TVDLogo}{\includegraphics[width=0.2\textwidth]{doc/images/TVDLogo2019.eps}}
+  \lhead[ \TVDLogo ]{}
+  \chead[]{}
+  \rhead[]{ \TVDLogo }
+  \lfoot[\thepage\ / \pageref*{LastPage}]{O-DB-Docker}
+  \cfoot[]{}
+  \rfoot[O-DB-Docker]{\thepage\ / \pageref*{LastPage}}
+  \renewcommand{\headrulewidth}{0.4pt}
+  \renewcommand{\footrulewidth}{0.4pt}
+  }
+\pagestyle{eisvogel-header-footer}
+
+%%
+%% end added
+%%
+
+\begin{document}
+
+%%
+%% begin titlepage
+%%
+  \begin{titlepage}
+    \newgeometry{left=6cm}
+    \newcommand{\colorRule}[3][black]{\textcolor[HTML]{#1}{\rule{#2}{#3}}}
+  \begin{flushleft}
+    \noindent
+    \\[-1em]
+    \color[HTML]{5F5F5F}
+    \makebox[0pt][l]{\colorRule[435488]{1.3\textwidth}{0pt}}
+    \par
+    \noindent
+
+    {
+  \setstretch{1.4}
+  \vfill
+  \noindent {\huge \textbf{\textsf{O-DB-Docker}}}
+    \vskip 1em
+  {\Large \textsf{Lab and Exercise guide ganz anders}}
+    \vskip 2em
+  \noindent {\Large \textsf{Stefan Oehrli}}
+  \vfill
+}
+
+\noindent
+\includegraphics[width=100pt, left]{doc/images/TVDLogo2019.eps}
+
+\textsf{2019 October 07}
+\end{flushleft}
+\end{titlepage}
+  \restoregeometry
+
+%%
+%% end titlepage
+%%
+
+    
+
+      \renewcommand*\contentsname{Table of Contents}
+        {
+            \setcounter{tocdepth}{3}
+      \tableofcontents
+              \newpage
+          }
+  \hypertarget{uxfcbung-1-viels-geht-auch-so}{%
+\section{Übung 1: viels geht auch
+so}\label{uxfcbung-1-viels-geht-auch-so}}
+
+Some content
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  more or less
+\item
+  not a bullet list
+\end{enumerate}
+
+Other text
+
+\begin{lstlisting}[language=bash]
+export DB="dddfsdfds"
+\end{lstlisting}
+
+Some notes mit und ohne
+
+\begin{itemize}
+\tightlist
+\item
+  geht das hier auch?
+\item
+  wenn ja ist das supper
+\end{itemize}
+
+\hypertarget{uxfcbung-2-viels-geht-auch-so}{%
+\section{Übung 2: viels geht auch
+so}\label{uxfcbung-2-viels-geht-auch-so}}
+
+Some content
+
+\begin{itemize}
+\tightlist
+\item
+  more or less
+\item
+  not a bullet list
+\end{itemize}
+
+Some notes
+
+\hypertarget{uxfcbung-2-viels-geht-auch-so-1}{%
+\section{Übung 2: viels geht auch
+so}\label{uxfcbung-2-viels-geht-auch-so-1}}
+
+Some content
+
+\hypertarget{my-other-section}{%
+\subsection{My other section}\label{my-other-section}}
+
+some infor as well
+
+Some notes
+
+\end{document}

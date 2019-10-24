@@ -1,0 +1,52 @@
+# ---------------------------------------------------------------------------
+# Trivadis AG, Infrastructure Managed Services
+# Saegereistrasse 29, 8152 Glattbrugg, Switzerland
+# ---------------------------------------------------------------------------
+# Name.......: vagrant.yml
+# Author.....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+# Editor.....: Stefan Oehrli
+# Date.......: 2019.05.09
+# Revision...:  
+# Purpose....: YAML file to configure the vagrant files for trivadislabs.com
+# Notes......: 
+# Reference..: https://github.com/rgl/windows-domain-controller-vagrant
+# License....: Licensed under the Universal Permissive License v 1.0 as 
+#              shown at http://oss.oracle.com/licenses/upl.
+# ---------------------------------------------------------------------------
+# oracle_sid_cdb    = Container DB to be created
+# ORACLE_HOME_NAME  = Name of the oracle home directory
+# SETUP_DB          = oradba_init setup script used to install the binaries
+# DB_PATCH_PKG:     = Oracle RU patch file to be installed. If not specified it takes the patch defined in the SETUP_DB script.
+# DB_OJVM_PKG       = Oracle OJVM RU patch file to be installed. If not specified it takes the patch defined in the SETUP_DB script.
+
+# - Common Config -----------------------------------------------------------
+# Configuration valid for all VM's
+common:
+  default_password: LAB01schulung
+  domain_name: trivadislabs.com
+  #domain_name: postgasse.org
+  gateway: 10.0.0.1
+  dns: 10.0.0.4
+  public_dns1: 8.8.8.8
+  public_dns2: 4.4.4.4
+# - EOF Common Config --------------------------------------------------------
+# - 19c DB Config -------------------------------------------------------------
+# Configuration valid for Oracle 19c database server
+ol7docker:
+  box: ol7-latest
+  box_url: https://yum.oracle.com/boxes/oraclelinux/latest/ol7-latest.box
+  vm_name: ol7docker
+  mem_size: 4096
+  cpus: 2
+  public_ip: 10.0.0.19
+  ssh_port: 19022
+  tns_port: 19521
+  console_port: 19500
+  oracle_sid_cdb: TDB190C
+  oracle_sid_sdb: TDB190S
+  ORACLE_HOME_NAME: 19.0.0.0
+  SETUP_DB: 10_setup_db_19.4.sh
+  DB_PATCH_PKG: ''
+  DB_OJVM_PKG: ''
+# - EOF 19c DB Config ---------------------------------------------------------
+# --- EOF -------------------------------------------------------------------

@@ -560,6 +560,64 @@ git clone https://github.com/oehrlis/docker.git docker
 git clone https://github.com/oehrlis/o-db-docker.git o-db-docker
 git clone https://github.com/oracle/docker-images.git docker-images
 
+
+Generate download url file from the `*.download` files which are part of the [oradba/docker](https://github.com/oehrlis/docker) repository.
+
+- change to the oci working directory and remove the old download url files.
+
+```bash
+cd $cdl/o-db-docker/lab/oci
+
+rm download*.url
+```
+
+- build a new download url file
+
+```bash
+find $cdl/docker -name *.download \
+-exec grep -i "Direct Download" {} \;| \
+sed "s/# Direct Download   : //" |\
+grep -iv '^#'|grep -iv 'n/a'|sort -u>> download.url
+```
+
+- Separate OTN from MOS downloads
+
+```bash
+grep -i "download.oracle.com" download.url >download_otn.url
+grep -iv "download.oracle.com" download.url >download_mos.url
+```
+
+Start to download the patch from MOS using `curl`.
+
+- Temporary create a `.netrc` file with MOS credentials. Replace *MOS_USER* and *MOS_PASSWORD* with corresponding values.
+
+```bash
+cd $cdl/o-db-docker/lab/oci
+echo 'machine login.oracle.com login MOS_USER password MOS_PASSWORD' >.netrc
+```
+
+- Download the files from MOS using `download_mos.url`.
+
+```bash
+cd $cdl/o-db-docker/lab/oci
+sw="/u00/app/oracle/software"
+for url in $(cat download_mos.url); do
+  file=$(echo $url| cut -d= -f3)
+  log=$(basename $file .zip).log
+  echo "Initiate download job for file : $file"
+  nohup curl --netrc-file .netrc --cookie-jar cookie-jar.txt \
+    --location-trusted "${url}" -o ${sw}/${file} > ${sw}/$log 2>&1 &
+done
+```
+
+- Wait until all curl background jobs are done:
+
+```bash
+ps -ef|grep curl
+ps -ef|grep curl|wc -l
+```
+
+
 ## Configure Environment
 
 * Disk partition

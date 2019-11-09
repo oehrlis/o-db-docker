@@ -29,7 +29,7 @@
 
 # - Environment Variables ---------------------------------------------------
 # define default values 
-export VAGRANT_CONF="/vagrant_common/config/vagrant.yml" # Vagrant config YAML file
+export VAGRANT_CONF="/vagrant/config/vagrant.yml" # Vagrant config YAML file
 export ORACLE_ROOT=${ORACLE_ROOT:-"/u00"}   # root folder for ORACLE_BASE and binaries
 export ORACLE_DATA=${ORACLE_DATA:-"/u01"}   # Oracle data folder eg volume for docker
 export ORACLE_ARCH=${ORACLE_ARCH:-"/u02"}   # Oracle arch folder eg volume for docker
@@ -40,8 +40,6 @@ export PORT_CONSOLE=${PORT_CONSOLE:-5500}
 export ORADBA_TEMPLATE_PREFIX=${ORADBA_TEMPLATE_PREFIX:-"custom_"}
 
 # vagrant default folders
-export VAGRANT_COMMON_BIN="/vagrant_common/scripts"
-export VAGRANT_COMMON_ETC="/vagrant_common/config"
 export VAGRANT_BIN="/vagrant/scripts"
 export VAGRANT_ETC="/vagrant/config"
 

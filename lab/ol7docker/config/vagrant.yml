@@ -42,11 +42,5 @@ ol7docker:
   ssh_port: 19022
   tns_port: 19521
   console_port: 19500
-  oracle_sid_cdb: TDB190C
-  oracle_sid_sdb: TDB190S
-  ORACLE_HOME_NAME: 19.0.0.0
-  SETUP_DB: 10_setup_db_19.4.sh
-  DB_PATCH_PKG: ''
-  DB_OJVM_PKG: ''
 # - EOF 19c DB Config ---------------------------------------------------------
 # --- EOF -------------------------------------------------------------------

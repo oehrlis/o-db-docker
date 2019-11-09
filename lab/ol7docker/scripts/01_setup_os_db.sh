@@ -23,12 +23,13 @@
 
 # - Environment Variables ---------------------------------------------------
 # source values from vagrant YAML file
-. /vagrant_common/scripts/00_init_environment.sh
+. /vagrant/scripts/00_init_environment.sh
 export DEFAULT_DOMAIN=${domain_name:-"trivadislabs.com"}
 export IP=${public_ip:-"127.0.0.1"}
 # define variables for OS setup
 SETUP_INIT="00_setup_oradba_init.sh"
 SETUP_OS="01_setup_os_db.sh"
+SETUP_DOCKER="01_setup_os_docker.sh"
 # - EOF Environment Variables -----------------------------------------------
 
 # - Main --------------------------------------------------------------------
@@ -54,6 +55,10 @@ cd /tmp
 echo "--- Setup OS ----------------------------------------------------------"
 # Setup OS
 ${ORADBA_BIN}/${SETUP_OS}
+
+echo "--- Setup DOCKER ----------------------------------------------------------"
+# Setup OS
+${ORADBA_BIN}/${SETUP_DOCKER}
 
 echo "--- Configure OS ------------------------------------------------------"
 # add Oracle to vagrant group to allow sudo

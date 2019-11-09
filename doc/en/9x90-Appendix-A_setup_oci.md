@@ -629,5 +629,65 @@ ps -ef|grep curl|wc -l
 
 ### Create Custom Image
 
+
+Stop the compute instance
+
+- define my variables
+
+```bash
+export HOST_NAME="ol7docker00"
+export COMPARTMENT_NAME="O-DB-DOCKER"
+```
+
+- Get the compartment id as variable *COMPARTMENT_OCID*.
+
+```bash
+COMPARTMENT_OCID=$(oci iam compartment list \
+--compartment-id-in-subtree true --all \
+--raw-output --query "data [?name == '${COMPARTMENT_NAME}'].id|[0]")
+```
+
+- get the compute instance ID as variable *INSTANCE_OCID*.
+
+```bash
+INSTANCE_OCID=$(oci compute instance list \
+--compartment-id $COMPARTMENT_OCID  \
+--lifecycle-state 'RUNNING' \
+--raw-output --query "data [?contains(\"display-name\",'${HOST_NAME}')].id|[0]")
+```
+
+- stopping compute instance
+
+```bash
+oci compute instance action \
+--action SOFTSTOP \
+--instance-id ${INSTANCE_OCID}
+```
+
+- check if stoppend
+
+
+```bash
+oci compute instance list --compartment-id $COMPARTMENT_OCID \
+--output table \
+--query "data [?contains(\"display-name\",'${HOST_NAME}')].{\"display-name\":\"display-name\",\"lifecycle-state\":\"lifecycle-state\"}"
+```
+
+
+yum install htop
+Loaded plugins: langpacks, ulninfo
+ol7_UEKR5                                                                                                                                | 2.8 kB  00:00:00     
+ol7_addons                                                                                                                               
+
+
+Create a custom image
+
+```bash
+oci compute image create \
+--compartment-id $COMPARTMENT_OCID \
+--display-name "${COMPARTMENT_NAME}_master" \
+--instance-id ${INSTANCE_OCID}
+```
+
 http://www.nazmulhuda.info/download-from-the-otn-using-wget
 https://blog.pythian.com/how-to-download-oracle-software-using-wget-or-curl/

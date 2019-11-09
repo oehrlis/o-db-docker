@@ -35,4 +35,9 @@
 /.pydevproject
 /.project
 **/*.code-workspace
+# Eclipse, vagrant and VSC stuff
+/.pydevproject
+/.project
+/.vscode
+/.vagrant
 # - EOF -----------------------------------------------------------------

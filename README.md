@@ -45,3 +45,11 @@ pandoc \
 --template trivadis --listings --pdf-engine=xelatex \
 -o doc/O-DB-DOCKER_Requirements.pdf doc/en/0x05-lab_requirements.md
 ```
+
+Create PDF
+
+```bash
+pandoc --template trivadis --listings --pdf-engine=xelatex \
+--metadata-file=doc/metadata.yml \
+-o doc/O-DB-DOCKER_Workshop.pdf doc/en/0x??-* lab/ex??/1x??en-* doc/en/9x??-*
+```

@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 6: Oracle Docker Image
 
 ### Exercise Goals
 

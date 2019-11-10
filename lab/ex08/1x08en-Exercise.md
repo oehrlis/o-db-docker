@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 8: Simple DB Docker Container
 
 ### Exercise Goals
 

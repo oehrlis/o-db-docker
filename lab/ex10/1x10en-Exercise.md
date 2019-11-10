@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 10: Oracle Unified Audit Setup and Test
 
 ### Exercise Goals
 

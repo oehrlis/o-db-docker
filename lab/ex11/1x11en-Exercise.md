@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 11: Oracle RU with datapatch
 
 ### Exercise Goals
 

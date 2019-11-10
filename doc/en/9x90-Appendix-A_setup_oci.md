@@ -1,4 +1,4 @@
-# Appendix A: Setup OCI Environment
+# Appendix A Setup OCI Environment
 
 ## Requirements and Preparations
 

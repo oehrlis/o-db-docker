@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 14: Oracle RAC with Docker
 
 ### Exercise Goals
 
@@ -18,10 +18,7 @@ Simple exercise to get to know the environment.
 
 Additional task and further considerations:
 
-- Individual preparations of the environment
-- Add SSH key exchange
-- create aliases for folder and commands.
-- start a own folder where you can add you notes
+- Individual preparations like SSH key exchange, create aliases etc.
 
 **Prerequisites:**  For this exercise, the following requirements must be met:
 

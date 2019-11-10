@@ -1,4 +1,4 @@
-## Solution 1: Get known the Environment
+## Solution 12: Oracle Enterprise User Security
 
 The following steps are performed in this exercise:
 

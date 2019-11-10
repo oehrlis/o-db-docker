@@ -1,4 +1,4 @@
-## Solution 1: Simple docker image to get warm
+## Solution 1: Get known the Environment
 
 The following steps are performed in this exercise:
 

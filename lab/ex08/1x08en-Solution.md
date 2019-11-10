@@ -1,4 +1,4 @@
-## Solution 1: Get known the Environment
+## Solution 8: Simple DB Docker Container
 
 The following steps are performed in this exercise:
 

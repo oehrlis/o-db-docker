@@ -1,4 +1,4 @@
-## Solution 1: Get known the Environment
+## Solution 11: Oracle RU with datapatch
 
 The following steps are performed in this exercise:
 

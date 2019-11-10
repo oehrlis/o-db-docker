@@ -1,11 +1,10 @@
-## Exercise 1: Simple docker image to get warm
+## Exercise 1: Get known the Environment
 
 ### Exercise Goals
 
-Create a simple Docker image to get warm.
+Simple exercise to get to know the environment.
 
-- Everybody can successfully build a docker image.
-- Everybody can successfully run a docker container.
+- Everybody can access his/her compute instance.
 
 ### Tasks
 
@@ -19,7 +18,10 @@ Create a simple Docker image to get warm.
 
 Additional task and further considerations:
 
-- Individual preparations like SSH key exchange, create aliases etc.
+- Individual preparations of the environment
+- Add SSH key exchange
+- create aliases for folder and commands.
+- start a own folder where you can add you notes
 
 **Prerequisites:**  For this exercise, the following requirements must be met:
 

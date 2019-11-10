@@ -1,4 +1,4 @@
-## Solution 1: Get known the Environment
+## Solution 7: OraDBA Docker Image
 
 The following steps are performed in this exercise:
 

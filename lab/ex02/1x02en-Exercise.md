@@ -1,10 +1,11 @@
-## Exercise 1: Get known the Environment
+## Exercise 2: Simple docker image to get warm
 
 ### Exercise Goals
 
-Simple exercise to get to know the environment.
+Create a simple Docker image to get warm.
 
-- Everybody can access his/her compute instance.
+- Everybody can successfully build a docker image.
+- Everybody can successfully run a docker container.
 
 ### Tasks
 

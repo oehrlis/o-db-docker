@@ -1,23 +1,3 @@
----
-title: "O-DB-DOCKER - Anforderungen Workshop Umgebung"
-author: [Stefan Oehrli]
-date: "2019 Oktober 16"
-tvddocversion: 1.0
-papersize: a4 
-listings-disable-line-numbers: true
-titlepage: false
-toc: false
-numbersections: false
-mainfont: Nunito Sans SemiBold
-monofont: Courier New
-logo: doc/images/TVDLogo2019.eps
-lang: de-CH
-colorlinks: true
-geometry:
-- top=15mm
-- bottom=15mm
----
-
 # Anforderungen Workshop Umgebung
 
 Im Rahmen des Workshop ***O-DB-DOCKER*** *Oracle-Datenbanken in Docker-Container* besteht die Gelegenheit verschiedene Themen am praktischen Beispiel zu vertiefen. Dazu wird jedem Teilnehmer eine Compute Node in der Oracle Cloud für die Zeitdauer des DOAG Schulungstages zur Verfügunggestellt. Alternativ können die Teilnehmer die Übungen zudem in einer eigenen lokalen VM oder Docker Umgebung ausführen. Die Teilnehmer können frei wählen, welche Umgebung sie für den Workshop nutzen möchten. Allerdings ist das Einrichten der lokalen VM bzw. der lokalen Docker-Umgebung nicht Teil des Workshops selbst. Die folgende Zusammenstellung gibt eine kurze Übersicht der verschiedenen Anforderungen an die drei Workshop Umgebungen.

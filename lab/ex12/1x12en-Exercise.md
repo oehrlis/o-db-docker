@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 12: Oracle Enterprise User Security
 
 ### Exercise Goals
 

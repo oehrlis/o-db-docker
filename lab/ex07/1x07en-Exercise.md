@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 7: OraDBA Docker Image
 
 ### Exercise Goals
 

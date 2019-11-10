@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 5: Simples DB Docker Image
 
 ### Exercise Goals
 

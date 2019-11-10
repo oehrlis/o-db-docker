@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 13: Oracle PDB
 
 ### Exercise Goals
 

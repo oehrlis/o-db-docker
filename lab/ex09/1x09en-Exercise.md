@@ -1,4 +1,4 @@
-## Exercise 1: Get known the Environment
+## Exercise 9: Accessing database Docker container
 
 ### Exercise Goals
 

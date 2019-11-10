@@ -1,28 +1,29 @@
-## Übung 02: Titel der Übung
+## Exercise 3: Docker Image Size
 
-### Übungsziel
+### Exercise Goals
 
-Etwas lernen...
+Simple exercise to get to know the environment.
 
-### Aufgabe
+- Everybody can access his/her compute instance.
 
-* Erstellen HTTP Servers für das Software Repository basierend auf dem Images `busybox`.
-* Erstellen einer `docker-compose` Datei für das automatische starten des HTTP Servers.
-* Einbinden der Software via Volume.
-* Sicherstellen des Zugriffs auf das HTTP Server. 
+### Tasks
 
-Zusatzaufgabe und weitere Überlegungen:
-
-* Wieso wird gerade `busybox` als basis für diesen HTTP Server verwendet?
-* Welche weiteren Basis-Images lassen sich ebenfalls verwenden?
-* Wozu dient diese Software Repository?
-* Was für Alternative zum Download der Software beim Build der Docker Images gibt es?
+- Login to your individual OCI compute instance eg. *ol7dockerXX*.
+- Switch to user *oracle*.
+- Check what Docker images are available.
+- Check directories for workshop and software.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
 
-**Vorsausetzungen:**  Für diese Übung müssen die folgenden Anforderungen erfüllt sein:
+Additional task and further considerations:
 
-* Sicherstellen des Zugriffs auf die Docker Übungs- und Entwicklungsumgebung
+- Individual preparations like SSH key exchange, create aliases etc.
+
+**Prerequisites:**  For this exercise, the following requirements must be met:
+
+- You have been assigned a compute instance.
+- You do have access to the public IP address or hostname.
+- SSH Client like putty, terminal, MochaXterm is available.
 
 </div>

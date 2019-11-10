@@ -1,0 +1,19 @@
+---
+title: "O-DB-DOCKER - Requirements Workshop Environment"
+author: [Stefan Oehrli]
+date: "2019 October 16"
+tvddocversion: 1.0
+papersize: a4 
+listings-disable-line-numbers: true
+titlepage: false
+toc: false
+numbersections: false
+mainfont: Nunito Sans SemiBold
+monofont: Courier New
+logo: doc/images/TVDLogo2019.eps
+lang: en-US
+colorlinks: true
+geometry:
+- top=15mm
+- bottom=15mm
+---

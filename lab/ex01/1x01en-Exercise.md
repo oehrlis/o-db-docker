@@ -16,17 +16,4 @@ Simple exercise to get to know the environment.
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
 
-Additional task and further considerations:
-
-- Individual preparations of the environment
-- Add SSH key exchange
-- create aliases for folder and commands.
-- start a own folder where you can add you notes
-
-**Prerequisites:**  For this exercise, the following requirements must be met:
-
-- You have been assigned a compute instance.
-- You do have access to the public IP address or hostname.
-- SSH Client like putty, terminal, MochaXterm is available.
-
 </div>

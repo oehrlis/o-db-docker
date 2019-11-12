@@ -1,4 +1,4 @@
-## Solution 10: Oracle Unified Audit Setup and Test
+## Solution 10: Oracle Unified Audit Setup
 
 The following steps are performed in this exercise:
 

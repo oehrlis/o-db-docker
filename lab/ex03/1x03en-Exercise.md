@@ -2,28 +2,22 @@
 
 ### Exercise Goals
 
-Simple exercise to get to know the environment.
+Identify the reason for different image size for the same Image.
 
-- Everybody can access his/her compute instance.
+- Everybody know why its image gets large.
 
 ### Tasks
 
-- Login to your individual OCI compute instance eg. *ol7dockerXX*.
-- Switch to user *oracle*.
-- Check what Docker images are available.
-- Check directories for workshop and software.
+Build Oracle Instant Client Docker images with different Dockerfiles.
+
+- Dockerfile with several `RUN` commands.
+- Dockerfile with a combined `RUN` command.
+- Using a bultistage build.
+- Verify if Docker expertimental is enabled 
+- Build an image using squash
+- Analyse the different imags using `docker history`
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
-
-Additional task and further considerations:
-
-- Individual preparations like SSH key exchange, create aliases etc.
-
-**Prerequisites:**  For this exercise, the following requirements must be met:
-
-- You have been assigned a compute instance.
-- You do have access to the public IP address or hostname.
-- SSH Client like putty, terminal, MochaXterm is available.
 
 </div>

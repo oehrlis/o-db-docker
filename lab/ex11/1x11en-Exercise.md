@@ -2,28 +2,20 @@
 
 ### Exercise Goals
 
-Simple exercise to get to know the environment.
-
-- Everybody can access his/her compute instance.
+See how to install a Oracle RU in a dockerized database.
 
 ### Tasks
 
-- Login to your individual OCI compute instance eg. *ol7dockerXX*.
-- Switch to user *oracle*.
-- Check what Docker images are available.
-- Check directories for workshop and software.
+- Review scripts defined in setup / startup folder.
+- Create a container based on 19.3.0.0
+- Stop and remove the container.
+- Update the `docker-compose.yml` file to match the new Docker image.
+- Create a container based on 19.5.0.0.
+- Review the database configuration and patch status.
+- Optional: switch back to old Docker image.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
 
-Additional task and further considerations:
-
-- Individual preparations like SSH key exchange, create aliases etc.
-
-**Prerequisites:**  For this exercise, the following requirements must be met:
-
-- You have been assigned a compute instance.
-- You do have access to the public IP address or hostname.
-- SSH Client like putty, terminal, MochaXterm is available.
 
 </div>

@@ -2,17 +2,15 @@
 
 ### Exercise Goals
 
-Simple exercise to get to know the environment.
-
-- Everybody can access his/her compute instance.
+Be able to use a local software repository during build.
 
 ### Tasks
 
+- Create docker-compose file for the local software repository
+- Start the container using `docker-compose`
+- Use the local software repository in a Docker build.
+
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
-
-**Vorsausetzungen:**  Für diese Übung müssen die folgenden Anforderungen erfüllt sein:
-
-* Sicherstellen des Zugriffs auf die Docker Übungs- und Entwicklungsumgebung
 
 </div>

@@ -1,4 +1,4 @@
-## Solution 9: Accessing database container
+## Solution 15: Container Monitoring
 
 The following steps are performed in this exercise:
 

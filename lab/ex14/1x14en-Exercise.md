@@ -2,28 +2,19 @@
 
 ### Exercise Goals
 
-Simple exercise to get to know the environment.
-
-- Everybody can access his/her compute instance.
+Setup a simple RAC based test environment on Docker
 
 ### Tasks
 
-- Login to your individual OCI compute instance eg. *ol7dockerXX*.
-- Switch to user *oracle*.
-- Check what Docker images are available.
-- Check directories for workshop and software.
+- Create the Docker network.
+- Create a RAC storage server Docker container.
+- Create a NFS volume
+- Creating the Docker GI and RAC Container
+- Assign networks to RAC containers
+- Adding a RAC Node using a Docker container
+- Connecting to RAC Database
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
-
-Additional task and further considerations:
-
-- Individual preparations like SSH key exchange, create aliases etc.
-
-**Prerequisites:**  For this exercise, the following requirements must be met:
-
-- You have been assigned a compute instance.
-- You do have access to the public IP address or hostname.
-- SSH Client like putty, terminal, MochaXterm is available.
 
 </div>

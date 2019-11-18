@@ -153,11 +153,9 @@ yum install git -y
 
 ```bash
 export ORACLE_BASE=${ORACLE_BASE:-/u00/app/oracle}
-su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oehrlis/o-db-docker.git o-db-docker"
-su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oehrlis/docker.git docker"
-su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oracle/docker-images.git docker-images"
-su -l oracle -c "echo \"alias gito='cd $cdl/o-db-docker;git pull; cd -'\" >>${ORACLE_BASE}/local/oudbase/etc/oudenv_custom.conf"
-su -l oracle -c "echo \"alias gitd='cd $cdl/docker;git pull; cd -'\" >>${ORACLE_BASE}/local/oudbase/etc/oudenv_custom.conf"
+su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oehrlis/o-db-docker.git"
+su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oehrlis/docker.git"
+su -l oracle -c "cd ${ORACLE_BASE}/local;git clone https://github.com/oracle/docker-images.git"
 ```
 
 - Pull a couple of docker base images.

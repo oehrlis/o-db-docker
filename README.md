@@ -1,6 +1,22 @@
 # Introduction 
 
+Build Docs
 
+Create PDF
+
+```bash
+pandoc --template trivadis --listings --pdf-engine=xelatex \
+--metadata-file=doc/metadata.yml -o doc/O-DB-DOCKER_Workshop.pdf \
+doc/en/0x??-*.md lab/ex??/1x??en-*.md doc/en/9x??-*.md
+```
+
+Create PPTX
+
+```
+pandoc --reference-doc doc/templates/trivadis.pptx --listings \
+--metadata-file=doc/metadata.yml -o doc/O-DB-DOCKER_Workshop_Exercise.pptx \
+lab/ex??/1x??en-E*.md
+```
 
 
 Create PDF
@@ -21,6 +37,11 @@ docker run --rm -v "$PWD":/workdir:z trivadis/pandoc \
 -o doc/Administrationshandbuch_OUD.docx doc/0x*.md
 ```
 
+```bash
+pandoc --reference-doc=doc/templates/trivadis.pptx --listings \
+--metadata-file=doc/metadata.yml \
+-o doc/O-DB-DOCKER_Workshop_Exercise.pptx examples/en/1x??-*.md
+```
 
 Create md
 

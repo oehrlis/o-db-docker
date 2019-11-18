@@ -7,20 +7,21 @@ The exercises are grouped in individual directories and can generally be perform
 | ID | Topic                               | Description                                                        | Duration |
 |----|-------------------------------------|--------------------------------------------------------------------|----------|
 | 01 | Get known the Environment           | Log in and get to know the workshop environment.                   | 10       |
-| 02 | Simple docker image to get warm     | Build simple Docker images.                                        | 10       |
+| 02 | Simple docker image                 | Build simple Docker images.                                        | 10       |
 | 03 | Docker Image Size                   | Build different version of an Oracle Instant Client Docker images. | 15       |
 | 04 | Local Software Repository           | Setup a local Software Repository                                  | 15       |
 | 05 | Simples DB Docker Image             | Build simple DB images. Identify challenges.                       | 20       |
 | 06 | Oracle Docker Image                 | Build a Docker DB images using the Oracle build scripts.           | 20       |
 | 07 | OraDBA Docker Image                 | Build a Docker DB images using the OraDBA build scripts.           | 20       |
 | 08 | Simple DB Docker Container          | Run a simple DB container.                                         | 30       |
-| 09 | Accessing database Docker container | Access and work with the DB container.                             | 10       |
-| 10 | Oracle Unified Audit Setup and Test | Setup a DB Container with Unified Audit and do some tests.         | 15       |
+| 09 | Accessing database container        | Access and work with the DB container.                             | 10       |
+| 10 | Oracle Unified Audit Setup          | Setup a DB Container with Unified Audit and do some tests.         | 15       |
 | 11 | Oracle RU with datapatch            | Patch a Docker DB Container using datapatch.                       | 30       |
 | 12 | Oracle Enterprise User Security     | Setup Oracle Enterprise User Security with OUD.                    | 30       |
 | 13 | Oracle PDB                          | Plugin an Oracle PDB.                                              | 20       |
 | 14 | Oracle RAC with Docker              | Setup and Build a RAC Docker environment.                          | 30       |
-| 15 | Additional Exercises                | Ideas for additional exercises.                                    | n/a      |
+| 15 | Container Monitoring                | Setup and Configure container monitoring.                          | 30       |
+| 16 | Additional Exercises                | Ideas for additional exercises.                                    | n/a      |
 
 ## Access Workshop Hosts
 

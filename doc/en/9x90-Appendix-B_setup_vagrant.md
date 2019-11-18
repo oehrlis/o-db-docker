@@ -39,6 +39,13 @@ git clone https://github.com/oehrlis/o-db-docker.git o-db-docker
 cd o-db-docker/lab/ol7docker
 ```
 
+* Install Vagrant Plugin's.
+
+```bash
+vagrant plugin install vagrant-reload
+vagrant plugin install vagrant-vbguest
+```
+
 * Setup virtualbox using vagrant
 
 ```bash

@@ -25,6 +25,7 @@ services:
     restart: unless-stopped
     network_mode: bridge
     volumes:
+      #- db-tcpu01:/u01
       - ${DOCKER_VOLUME_BASE}/patch/tcpu01:/u01
       - ./config:/u01/config
     ports:
@@ -33,6 +34,22 @@ services:
       INSTANCE_INIT: /u01/config
       ORACLE_SID: TCPU01
 
+  tcpu02:
+    image: ${DOCKER_USER}/${DOCKER_REPO}:19.4.0.0
+    container_name: tcpu02
+    hostname: tcpu02
+    restart: unless-stopped
+    network_mode: bridge
+    volumes:
+      - db-tcpu02:/u01
+      - ./config:/u01/config
+    ports:
+      - 1521
+    environment:
+      INSTANCE_INIT: /u01/config
+      ORACLE_SID: TCPU02
+
 volumes:
-  db-tcpu01:  
+  db-tcpu01: 
+  db-tcpu02: 
 # - EOF -----------------------------------------------------------------

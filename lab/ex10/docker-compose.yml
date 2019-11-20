@@ -67,7 +67,7 @@ services:
       ORACLE_SID: TUA190
 
 volumes:
+  db-tua190:
   # db-tua122:
   # db-tua180:
-  db-tua190:  
 # - EOF -----------------------------------------------------------------

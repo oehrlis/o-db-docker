@@ -32,4 +32,7 @@ services:
     environment:
       INSTANCE_INIT: /u01/config
       ORACLE_SID: TCPU01
+
+volumes:
+  db-tcpu01:  
 # - EOF -----------------------------------------------------------------

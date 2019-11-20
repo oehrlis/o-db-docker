@@ -48,8 +48,10 @@ services:
     environment:
       INSTANCE_INIT: /u01/config
       ORACLE_SID: TCPU02
+      CUSTOM_RSP: /u01/config/etc
+      ORADBA_DBC_FILE: dbca19.0.0_custom.dbc.tmpl
+      ORADBA_RSP_FILE: dbca19.0.0_custom.rsp.tmpl
 
 volumes:
-  db-tcpu01: 
   db-tcpu02: 
 # - EOF -----------------------------------------------------------------

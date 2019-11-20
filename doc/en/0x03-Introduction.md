@@ -33,7 +33,7 @@ The Compute Node in the Oracle Cloud will be specially prepared for this worksho
 
 The following figure gives an overview of the OCI compute instance and access via SSH. Detailed installation and configuration guide can be found in [Appendix A](#appendix-a-setup-oci-environment).
 
-!["OCI Architecture"](doc/images/OCI-Environment.png)
+!["OCI Architecture"](../images/OCI-Environment.png)
 *Figure. 1: OCI Compute Instance Architecture*
 
 Access to the compute nodes is exclusively via SSH and Private Keys. Workshop participants must ensure that they meet the following requirements:

@@ -1,0 +1,51 @@
+oci bv volume create --compartment-id ocid1.compartment.oc1..aaaaaaaayv5new54j45jvrfmppkxomwjnrxgebf4r7x73gj4vemclrmcz7bq --availability-domain EUZg:EU-FRANKFURT-1-AD-1 \
+            --display-name "o-db-docker_bv00_ol7docker98" -source-volume-id ocid1.vcn.oc1.eu-frankfurt-1.aaaaaaaaq2f2n6wq5wvvnfd55kpj7dfnzqlsuacyb4lhjjiswbhdizb3kt5a
+
+
+oci bv volume create --availability-domain EUZg:EU-FRANKFURT-1-AD-1 \
+--compartment-id ocid1.compartment.oc1..aaaaaaaayv5new54j45jvrfmppkxomwjnrxgebf4r7x73gj4vemclrmcz7bq \
+--display-name "o-db-docker_bv00_ol7docker98" --source-volume-id ocid1.volume.oc1.eu-frankfurt-1.abtheljsuvpzkoce23vqvatjwlszlahrwgfkjopdhcejxqr6krvq6kplbq5a
+
+
+oci compute volume-attachment list --compartment-id ocid1.compartment.oc1..aaaaaaaayv5new54j45jvrfmppkxomwjnrxgebf4r7x73gj4vemclrmcz7bq \
+--instance-id ocid1.instance.oc1.eu-frankfurt-1.antheljssijhdmqcl57pvi5rdmug73b3mtx3byluixjd3ozczxcmm62cqiga \
+--raw-output --query "data [].\"volume-id\"|[0]"
+
+
+            2019-11-14_21:44:11  DEBUG: vcn ocid  for O-DB-DOCKER
+2019-11-14_21:44:11  INFO : get subnet ocid for compartment
+2019-11-14_21:44:13  DEBUG: subnet ocid ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaanjgspqhysrbhges5pbno3jscqt73pwazvxvfcmri6qukaq2czwfa for O-DB-DOCKER
+2019-11-14_21:44:13  INFO : get availability domain ocid for compartment
+2019-11-14_21:44:15  DEBUG: av domain ocid EUZg:EU-FRANKFURT-1-AD-1 for O-DB-DOCKER
+2019-11-14_21:44:15  INFO : get image ocid for O-DB-DOCKER_master_v00
+2019-11-14_21:44:16  DEBUG: image ocid ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaanjgspqhysrbhges5pbno3jscqt73pwazvxvfcmri6qukaq2czwfa for O-DB-DOCKER
+2019-11-14_21:44:16  INFO : get volume ocid for O-DB-DOCKER_master_v00
+2019-11-14_21:44:18  DEBUG: image ocid ocid1.subnet.oc1.eu-frankfurt-1.aaaaaaaanjgspqhysrbhges5pbno3jscqt73pwazvxvfcmri6qukaq2czwfa for O-DB-DOCKER
+
+
+
+
+soe@gaia:~/Development/o-db-docker/bin/ [ic12201] oci compute volume-attachment list --compartment-id ocid1.compartment.oc1..aaaaaaaayv5new54j45jvrfmppkxomwjnrxgebf4r7x73gj4vemclrmcz7bq --instance-id ocid1.instance.oc1.eu-frankfurt-1.antheljssijhdmqczeojgiqouxfuxp3bqric3w4yfx54nxqmx46debcpusdq
+{
+  "data": [
+    {
+      "attachment-type": "iscsi",
+      "availability-domain": "EUZg:EU-FRANKFURT-1-AD-1",
+      "chap-secret": null,
+      "chap-username": null,
+      "compartment-id": "ocid1.compartment.oc1..aaaaaaaayv5new54j45jvrfmppkxomwjnrxgebf4r7x73gj4vemclrmcz7bq",
+      "device": "/dev/oracleoci/oraclevdb",
+      "display-name": "volumeattachment20191114213853",
+      "id": "ocid1.volumeattachment.oc1.eu-frankfurt-1.antheljssijhdmqcct66vqp6hqx4tuucfzkjab23xctnvjkkgytazpz45oqa",
+      "instance-id": "ocid1.instance.oc1.eu-frankfurt-1.antheljssijhdmqczeojgiqouxfuxp3bqric3w4yfx54nxqmx46debcpusdq",
+      "ipv4": "169.254.2.2",
+      "iqn": "iqn.2015-12.com.oracleiaas:ae6e6c91-ecc7-48b5-96c5-933edfaa09bb",
+      "is-pv-encryption-in-transit-enabled": false,
+      "is-read-only": false,
+      "lifecycle-state": "ATTACHED",
+      "port": 3260,
+      "time-created": "2019-11-14T21:38:53.401000+00:00",
+      "volume-id": "ocid1.volume.oc1.eu-frankfurt-1.abtheljsi4xg7jnsncvk5p3m4nwhphwkzmtw4gz7x4qgqzzsgarzghhha5wa"
+    }
+  ]
+}

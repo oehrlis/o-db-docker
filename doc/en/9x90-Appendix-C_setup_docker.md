@@ -12,5 +12,5 @@ The following prerequisites must be fulfilled:
 
 To be documented. Will be updated in an upcoming release.
 
-!["Local Docker Workshop Architecture"](doc/images/Docker-Environment.png)
+!["Local Docker Workshop Architecture"](../images/Docker-Environment.png)
 *Figure. 3: Local Docker Workshop Architecture*

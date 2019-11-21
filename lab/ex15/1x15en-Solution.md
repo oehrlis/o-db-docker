@@ -15,10 +15,23 @@ The following steps are performed in this exercise:
 
 ### Docker HEALTHCHECK
 
+During the `docker build` a HEALTHCHECK script has been specified. This script is execute on a regular basis. The result is visible vi `docker ps`
+
+```bash
+docker ps
+```
+
+Alternatively it is also possible to see the resource used by the container
+
+```bash
+docker stats eusoud
+```
 
 ### Prometheus
 
+Prometheus will not be set up as part of the DOAG Training Day. See [getting started](https://prometheus.io/docs/prometheus/latest/getting_started/)
 
 ### Grafana
 
+Grafana will not be set up as part of the DOAG Training Day. See [getting started](https://grafana.com/docs/guides/getting_started/)
 </div>

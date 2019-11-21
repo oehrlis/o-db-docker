@@ -19,6 +19,10 @@ The following steps are performed in this exercise:
 
 ### Detailed Solution
 
+Setup Oracle RAC on docker is well documented in the Oracle Git repository [oracle/docker-images](https://github.com/oracle/docker-images) respectively in [README.md](https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/README.md).
 
+-[OracleConnectionManager/README.md]([OracleConnectionManager/README.md](https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleConnectionManager/README.md)) 
+-[OracleRACStorageServer/README.md]([OracleConnectionManager/README.md](https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleRACStorageServer/README.md)) 
+-[OracleRealApplicationClusters/README.md]([OracleConnectionManager/README.md](https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleRealApplicationClusters/README.md)) 
 
 </div>

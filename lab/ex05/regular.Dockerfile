@@ -62,4 +62,14 @@ RUN     if [ ! -s "${DOWNLOAD}/${ORA_DB_PKG}" ]; then \
         unzip -q -o ${DOWNLOAD}/${ORA_DB_PKG} -d ${ORACLE_HOME} && \
         ${ORACLE_HOME}/runInstaller -silent -force -waitforcompletion -responsefile ${DOWNLOAD}/db_install.rsp && \
         rm -rf ${DOWNLOAD}
+
+# change to user root
+USER root
+
+# run the root script
+RUN /opt/oracle/oraInventory/orainstRoot.sh && \
+    /opt/oracle/product/19c/dbhome_1/root.sh
+
+# change to user Oracle
+USER oracle
 # --- EOF --------------------------------------------------------------

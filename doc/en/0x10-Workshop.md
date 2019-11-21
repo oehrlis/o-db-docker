@@ -18,9 +18,9 @@ The exercises are grouped in individual directories and can generally be perform
 | 10 | Oracle Unified Audit Setup          | Setup a DB Container with Unified Audit and do some tests.         | 15       |
 | 11 | Oracle RU with datapatch            | Patch a Docker DB Container using datapatch.                       | 30       |
 | 12 | Oracle Enterprise User Security     | Setup Oracle Enterprise User Security with OUD.                    | 30       |
-| 13 | Oracle PDB                          | Plugin an Oracle PDB.                                              | 20       |
-| 14 | Oracle RAC with Docker              | Setup and Build a RAC Docker environment.                          | 30       |
-| 15 | Container Monitoring                | Setup and Configure container monitoring.                          | 30       |
+| 13 | Oracle PDB                          | Plugin an Oracle PDB.                                              | 30       |
+| 14 | Oracle RAC with Docker              | Setup and Build a RAC Docker environment.                          | 45       |
+| 15 | Container Monitoring                | Setup and Configure container monitoring.                          | 45       |
 | 16 | Additional Exercises                | Ideas for additional exercises.                                    | n/a      |
 
 ## Access Workshop Hosts

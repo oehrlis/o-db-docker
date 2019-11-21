@@ -10,7 +10,7 @@ Be able to access and use the Docker database container
 - Access Docker container via SQLPlus / SQL Developer
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
-<div class="notes">
+<div class="no notes">
 
 
 </div>

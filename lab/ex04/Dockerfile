@@ -2,11 +2,11 @@
 # Trivadis AG, Infrastructure Managed Services
 # Saegereistrasse 29, 8152 Glattbrugg, Switzerland
 # ----------------------------------------------------------------------
-# Name.......: ic19.Dockerfile
+# Name.......: Dockerfile
 # Author.....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
 # Date.......: 2019.11.20
-# Purpose....: Simple Dockerfile
-# Notes......: Using one RUN command
+# Purpose....: Simple Dockerfile to install Java and show OraREPO
+# Notes......: --
 # License....: Licensed under the Universal Permissive License v 1.0 as
 #              shown at http://oss.oracle.com/licenses/upl.
 # ----------------------------------------------------------------------

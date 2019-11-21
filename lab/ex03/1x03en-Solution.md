@@ -1,5 +1,7 @@
 ## Solution 3: Docker Image Size
 
+The following steps are performed in this exercise:
+
 - Dockerfile with several `RUN` commands.
 - Dockerfile with a combined `RUN` command.
 - Using a build stage build.

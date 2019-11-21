@@ -78,7 +78,7 @@ docker build --add-host=orarepo:${orarepo_ip} -t oracle/java:local .
 Lets compare the Docker images using `docker images`.
 
 ```bash
-docker image
+docker images
 ```
 
 And check what's in the images

@@ -22,7 +22,7 @@ LABEL maintainer="stefan.oehrli@trivadis.com"
 # Arguments for Oracle Installation
 ARG   DOAG_USER
 
-DOAG_USER=${DOAG_USER:-"Docker Experte"}
+ENV DOAG_USER=${DOAG_USER:-"Docker Experte"}
 
 # COPY base database software if part of the build context
 COPY  beispiel.txt "/beispiel.txt"

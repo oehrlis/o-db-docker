@@ -64,7 +64,7 @@ docker exec <container name> ./setPassword.sh <your password>
 This container will be build based on an [oehrlis/docker](https://github.com/oehrlis/docker). See the [README.md](https://github.com/oehrlis/docker/blob/master/OracleDatabase/19.0.0.0/README.md) for more run options.
 
 ```bash
-docker volume create vol_doag194
+docker volume create ex08_db_doag194
 ```
 
 Create the Docker container for 19.4.0.0. We just use a default values and do not configure additional stuff like PDB, custom template etc.

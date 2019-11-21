@@ -2,14 +2,17 @@
 
 The following steps are performed in this exercise:
 
-- login via SSH client as user *opc* to the individual OCI compute instance eg. *ol7dockerXX*. 
-- Switch to user *oracle*
-- Run *docker images* to see which images are available
-- Check the different directories.
+- Review the `docker-compose.yml`
+- Start the container using `docker-compose`
+- Test Oracle Names Resolution within the database container.
+- Test EUS Login within the database container.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
-
 <div class="notes">
+</div>
+
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 
 ### Detailed Solution
 

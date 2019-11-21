@@ -15,8 +15,11 @@ The following steps are performed in this exercise:
 - Optional: Do the same test with the other service e.g. *tcpu01* or *tcpu02*.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+</div>
 
-<div class="nonotes">
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 
 ### Background Information
 

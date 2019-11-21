@@ -2,35 +2,23 @@
 
 The following steps are performed in this exercise:
 
-- login via SSH client as user *opc* to the individual OCI compute instance eg. *ol7dockerXX*. 
-- Switch to user *oracle*
-- Run *docker images* to see which images are available
-- Check the different directories.
+- configure and review HEALTHCHECK
+- Setup and configure Prometheus
+- Setup and configure Grafana.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
-
 <div class="notes">
+</div>
 
-### Detailed Solution
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 
-The following steps have been performed on the *ol7docker00* host. If necessary, adjust the commands, filenames or the host name according to your environment.
-
-- Start a Putty session from command line.
-
-```bash
-putty -ssh opc@ol7docker00.trivadislabs.com -i keys/id_rsa_ol7docker00.ppk
-```
-
-- Alternatively start a SSH session from command line
-
-```bash
-ssh opc@ol7docker00.trivadislabs.com -i id_rsa_ol7docker00
-```
+### Docker HEALTHCHECK
 
 
-- Switch to user *oracle*
-- Run *docker images* to see which images are available
-- Check the different directories.
+### Prometheus
 
+
+### Grafana
 
 </div>

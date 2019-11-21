@@ -10,8 +10,11 @@ The following steps are performed in this exercise:
 - Optional: Reconfigure Unified Audit Policies.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+</div>
 
-<div class="nonotes">
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 
 ### Background Information
 

@@ -13,5 +13,8 @@ Plugin an existing PDB into a new container.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
+</div>
 
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 </div>

@@ -13,6 +13,10 @@ Use the startup / setup script folder to customize the database Docker container
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">
+</div>
+
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 
 ### Additions to the Solution
 

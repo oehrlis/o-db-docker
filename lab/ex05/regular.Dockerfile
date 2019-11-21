@@ -60,8 +60,7 @@ RUN     if [ ! -s "${DOWNLOAD}/${ORA_DB_PKG}" ]; then \
         fi && \
         mkdir -p ${ORACLE_BASE} ${ORACLE_HOME} && \
         unzip -q -o ${DOWNLOAD}/${ORA_DB_PKG} -d ${ORACLE_HOME} && \
-        ${ORACLE_HOME}/runInstaller -silent -force -waitforcompletion -responsefile ${DOWNLOAD}/db_install.rsp && \
-        rm -rf ${DOWNLOAD}
+        ${ORACLE_HOME}/runInstaller -silent -force -waitforcompletion -responsefile ${DOWNLOAD}/db_install.rsp
 
 # change to user root
 USER root

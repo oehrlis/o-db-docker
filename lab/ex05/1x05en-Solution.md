@@ -54,7 +54,7 @@ docker build --add-host=orarepo:${orarepo_ip} -f rpm.Dockerfile -t oracle/databa
 Create a hard link for the java package (you can also copy the file)
 
 ```bash
-ln /u00/app/oracle/software/oracle-database-ee-19c-1.0-1.x86_64.rpm .
+ln /u00/app/oracle/software/LINUX.X64_193000_db_home.zip .
 ```
 
 Build the Docker images using the local software package.

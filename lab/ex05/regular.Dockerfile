@@ -41,10 +41,15 @@ COPY    db_install.rsp "${DOWNLOAD}/"
 
 # Install a few base tools, ora preinstall and do a clean up
 RUN     yum install -y zip unzip gzip tar which make passwd \
-            oracle-database-preinstall-19c \
+            oracle-database-preinstall-19c \ 
             elfutils-libelf-devel && \
         yum clean all && \
-        rm -rf /var/cache/yum
+        rm -rf /var/cache/yum && \
+        mkdir /u00 && \
+        chown oracle:oinstall /u00
+
+# change to user Oracle
+USER oracle
 
 # check if oracle database package is copied if not download it from orarepo
 RUN     if [ ! -s "${DOWNLOAD}/${ORA_DB_PKG}" ]; then \

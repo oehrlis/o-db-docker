@@ -61,7 +61,7 @@ docker build --add-host=orarepo:${orarepo_ip} -t oracle/java:orarepo .
 
 ### Build a Image using local Software
 
-Create a hardlink for the java package (you can also copy the file)
+Create a hard link for the java package (you can also copy the file)
 
 ```bash
 ln /u00/app/oracle/software/p29657335_170231_Linux-x86-64.zip .
@@ -70,7 +70,7 @@ ln /u00/app/oracle/software/p29657335_170231_Linux-x86-64.zip .
 Build a Docker images using the local software package.
 
 ```bash
-docker build --add-host=orarepo:${orarepo_ip} -t oracle/java:local .
+docker build -t oracle/java:local .
 ```
 
 ### Compare the Docker Images

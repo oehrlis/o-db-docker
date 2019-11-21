@@ -31,7 +31,7 @@ bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scrip
 oci setup config
 ```
 
-### Create a Compartment
+## Create a Compartment
 
 Create a compartment for *O-DB-DOCKER* withing the compartment *Compartment_trivadislabs*.
 
@@ -299,8 +299,11 @@ oci dns record domain delete \
 
 ## Setup OS
 
-### Disk Partition
+This section is not released for production use. Use this just as reference. **Do not run the commands 1:1 on your environment**.
 
+### Configure the Disk and Volume
+
+- Partition disk using `sfdisk`.
 
 ```bash
 sfdisk /dev/sdb <<EOF
@@ -309,6 +312,7 @@ sfdisk /dev/sdb <<EOF
 EOF
 ```
 
+- List block devices.
 
 ```bash
 [root@ol7docker00 ~]# lsblk
@@ -388,7 +392,7 @@ Partition 1 does not start on physical sector boundary.
   VG UUID               qDKwXo-M8ad-L0eL-SLld-Mbd9-v83g-bOA6e3
 ```
 
-- Create a locial volumes
+- Create a logical volume.
 
 ```bash
 [root@ol7docker00 ~]$ lvcreate -n vol_u00 -L 100G vgora
@@ -432,7 +436,7 @@ Partition 1 does not start on physical sector boundary.
   Block device           252:1
 ```
 
-Create the filesystem on the new volumes
+- Create the filesystem on the new volume.
 
 ```bash
 [root@ol7docker00 ~]# mkfs.ext4 /dev/vgora/vol_u00
@@ -482,7 +486,7 @@ Creating journal (32768 blocks): done
 Writing superblocks and filesystem accounting information: done  
 ```
 
-- get the block device information
+- Get the block device information.
 
 ```bash
 [root@ol7docker00 ~]# blkid /dev/vgora/vol_u00 /dev/vgora/vol_u01
@@ -490,13 +494,13 @@ Writing superblocks and filesystem accounting information: done
 /dev/vgora/vol_u01: UUID="2c74d466-221e-49d0-a644-8e1e299cabf4" TYPE="ext4" 
 ```
 
-- create mount points
+- Create mount points
 
 ```bash
 mkdir -p /u00 /u01
 ```
 
-- update fstab and mount the filesystems
+- update `fstab` and mount the filesystem.
 
 ```bash
 echo "$(blkid /dev/vgora/vol_u00|cut -d' ' -f2|tr -d '"')   /u00    ext4   defaults,noatime,_netdev     0   0" >>/etc/fstab
@@ -508,7 +512,7 @@ mount /u01
 
 ### Setup ORAbase_init Scripts
 
-Download the oradba_init script
+Define the variable to download the **oradba_init** scripts.
 
 ```bash
 DOWNLOAD="/tmp/download"
@@ -516,50 +520,87 @@ SETUP_INIT="00_setup_oradba_init.sh"
 GITHUB_URL="https://github.com/oehrlis/oradba_init/raw/master/bin"
 ```
 
+Download the **oradba_init** script
+
 ```bash
 mkdir -p ${DOWNLOAD}
 curl -Lsf ${GITHUB_URL}/${SETUP_INIT} -o ${DOWNLOAD}/${SETUP_INIT}
 ```
+
+Setup the OraDBA init environment.
 
 ```bash
 chmod 755 ${DOWNLOAD}/${SETUP_INIT}
 ${DOWNLOAD}/${SETUP_INIT}
 ```
 
+Setup the OUDBase environment
 
-
+```bash
 sudo -u oracle /opt/oradba/bin/20_setup_oudbase.sh
 
 echo "oud_eng:1389:1636:4444:8989:OUD:Y" >>${ETC_BASE}/oudtab
-oracle@ol7docker00:~/ [oud_eng] . oudenv.sh
+. oudenv.sh
 
 sed -i 's|\. ${OUD_BASE}/bin/oudenv.sh|\. ${OUD_BASE}/bin/oudenv.sh SILENT|' $HOME/.bash_profile
+```
 
-mkdir -p /u00/app/oracle/software
+### Update User / Group information
 
+Configure the opc user
+
+```bash
 sudo usermod -a -G oinstall opc
-# chmod 775 /u00/app/
-[root@ol7docker00 u00]# chmod 775 /u00/app/oracle/
-[root@ol7docker00 u00]# chmod 775 /u00/app/oracle/software/
+```
+
+Adjust a few directory settings:
+
+```bash
+chmod 775 /u00/app/
+chmod 775 /u00/app/oracle/
+chmod 775 /u00/app/oracle/software/
+```
+
 ### Setup OS Oracle DB
 
+Setup the OS using the **oradba_init** script.
+
+```bash
 nohup /opt/oradba/bin/01_setup_os_db.sh > /tmp/01_setup_os_db.sh 2>&1 &
+```
+
+Install Docker
+
+```bash
 nohup /opt/oradba/bin/01_setup_os_docker.sh > /tmp/01_setup_os_docker.log 2>&1 &
+```
+
+Install git
+
+```
 yum install git
+```
+
+Configure docker volumen on `sdb1`.
+
+```bash
 systemctl stop docker
 rm -rf /var/lib/docker
 docker-storage-config -s btrfs -d /dev/sdb1
 systemctl start docker
 systemctl enable docker
+```
 
+Clone the git repositories.
 
-
-
-
+```bash
+cd /u00/app/oracle/local
 git clone https://github.com/oehrlis/docker.git docker
 git clone https://github.com/oehrlis/o-db-docker.git o-db-docker
 git clone https://github.com/oracle/docker-images.git docker-images
+```
 
+### Build Software Depot
 
 Generate download url file from the `*.download` files which are part of the [oradba/docker](https://github.com/oehrlis/docker) repository.
 
@@ -617,18 +658,17 @@ ps -ef|grep curl
 ps -ef|grep curl|wc -l
 ```
 
+### Other Task to Configure Environment
 
-## Configure Environment
+Tasks to configure the environment:
 
-* Disk partition
-* Docker Volume
-* Docker images
-* Git stuff
-* Download Oracle Binaries
+- Disk partition
+- Docker Volume
+- Docker images
+- Clone the Git repositories
+- Download Oracle Binaries
 
-
-### Create Custom Image
-
+## Create Custom Image
 
 Stop the compute instance
 
@@ -666,21 +706,13 @@ oci compute instance action \
 
 - check if stoppend
 
-
 ```bash
 oci compute instance list --compartment-id $COMPARTMENT_OCID \
 --output table \
 --query "data [?contains(\"display-name\",'${HOST_NAME}')].{\"display-name\":\"display-name\",\"lifecycle-state\":\"lifecycle-state\"}"
 ```
 
-
-yum install htop
-Loaded plugins: langpacks, ulninfo
-ol7_UEKR5                                                                                                                                | 2.8 kB  00:00:00     
-ol7_addons                                                                                                                               
-
-
-Create a custom image
+- Create a custom image
 
 ```bash
 oci compute image create \
@@ -689,5 +721,4 @@ oci compute image create \
 --instance-id ${INSTANCE_OCID}
 ```
 
-http://www.nazmulhuda.info/download-from-the-otn-using-wget
-https://blog.pythian.com/how-to-download-oracle-software-using-wget-or-curl/
+**Disclaimer**: This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the *O-DB-DOCKER* workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk.

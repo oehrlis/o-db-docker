@@ -27,10 +27,31 @@ putty -ssh opc@ol7docker00.trivadislabs.com -i keys/id_rsa_ol7docker00.ppk
 ssh opc@ol7docker00.trivadislabs.com -i id_rsa_ol7docker00
 ```
 
-
 - Switch to user *oracle*
-- Run *docker images* to see which images are available
-- Check the different directories.
 
+```bash
+sudo su - oracle
+```
+
+- Run *docker images* to see which images are available
+
+```bash
+docker images
+```
+
+- Run *docker volumes* to see which volumes are available
+
+```bash
+docker volumes ls
+```
+
+- Check the different directories and aliases.
+
+```bash
+cd /u01/volumes
+cdl
+ex01
+o-db-docker
+```
 
 </div>

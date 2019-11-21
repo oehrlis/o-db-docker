@@ -18,6 +18,9 @@ Build Oracle Instant Client Docker images with different Dockerfiles.
 - Analyse the different images using `docker history`
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
-<div class="no notes">
+<div class="notes">
+</div>
 
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
 </div>

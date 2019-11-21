@@ -25,6 +25,7 @@ ARG ORAREPO=orarepo
 # Software stage area, repository, binary packages and patchs
 ENV DOWNLOAD="/tmp/download" \
     SOFTWARE_REPO="http://$ORAREPO" \
+    ORACLE_DOCKER_INSTALL=true \
     ORA_DB_PKG="oracle-database-ee-19c-1.0-1.x86_64.rpm"
 
 # COPY base database software if part of the build context either oracle-database-ee-19c-1.0-1.x86_64.rpm 

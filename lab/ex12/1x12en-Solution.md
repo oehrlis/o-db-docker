@@ -16,17 +16,48 @@ The following steps are performed in this exercise:
 
 ### Background Information
 
-This example shows how to install an Oracle release update (RU) on an Oracle database in a Docker Container. The persistent data (e.g. data files, config files etc.) is stored on an external volume. This allows to stop /remove the container and create a new one based on a Docker image with additional RU's, patch etc. The startup script `00_run_datapatch.sh` will run Oracle *datapatch* to apply / rollback the patch in the database. Some prerequisites and basic principles:
+This example shows how to configure an Oracle Database with Enterprise User Security and Oracle Unified directory. The persistent data (e.g. data files, config files etc.) is stored on an external volume. The start scripts are configured in the way, that the database does register itself in OUD and then configure EUS. Some prerequisites and basic principles:
 
-- `00_run_datapatch.sh` does check if you database has java installed. If so, it will restart the database in upgrade mode to run *datapatch*.
-- If database is a container database the PDB's will be open to run datapatch.
-- This use case does only run within an Oracle major release eg. 19.x.0.0 or 18.x.0.0 but not as an method to upgrade from 18c to 19c.
-- It is relevant it you have a basic container with an RU or any kind of one-off patch.
+- To automate the setup the two container do share a common configuration directory `./oud`. This allows to share information like the *eusadmin* password and the trusted *certificate*.
+- The compose file does also include a service for OUDSM.
+- The setup of Oracle Unified Directory includes a sample set of directory users.
+- The database does setup an HR schema suitable for the sample schema.
 
-The following figure illustrates the patch process of an Oracle database container.
+The following figure illustrates the an Oracle Database and Oracle Unified Directory container with Enterprise User Security (EUS).
 
-![Patch Database Container](../../doc/images/patch_database.png)
+![Oracle EUS with OUD standalone in Docker](../../doc/images/eus_docker.png)
 
+Oracle Unified Directory does use the following scripts to setup the OUD with EUS:
+
+- `00_init_environment` File for setting the instance-specific environment. The setup scripts are based on the OUD Base environment. 
+- `01_create_eus_instance.sh` Script to create the OUD instance with EUS context using oud-setup.
+- `02_config_basedn.sh` Wrapper script to configure base DN and add ou's for users and groups.
+- `02_config_basedn.ldif` LDIF file loaded by wrapper script `02_config_basedn.sh`. 
+- `03_config_eus_realm.sh` Wrapper script to configure EUS realm to the OUD instance.
+- `03_config_eus_realm.ldif]` LDIF file loaded by wrapper script `03_config_eus_realm.sh`.
+- `04_config_oud.sh` Wrapper script to configure the OUD instance.
+- `04_config_oud.conf` dsconfig batch file loaded by wrapper script `04_config_oud.sh`.
+- `05_update_directory_manager.sh` Adjust cn=Directory Manager to use new password storage scheme
+- `06_create_root_users.sh` Wrapper script to create additional root user.
+- `06_create_root_users.conf` dsconfig batch file loaded by wrapper script `06_create_root_users.sh`.
+- `06_create_root_users.ldif` LDIF file loaded by wrapper script `06_create_root_users.sh`.
+- `07_create_eusadmin_users.sh` Script to create EUS Context Admin according to MOS Note 1996363.1.
+- `08_create_demo_users.sh` Wrapper script to create a couple of users and groups.
+- `08_create_demo_users.ldif` LDIF file loaded by wrapper script `08_create_demo_users.sh`.
+- `09_migrate_keystore.sh` Script to migrate the java keystore to PKCS12.
+- `10_export_trustcert_keystore.sh` Script to export the java keystore to PKCS12.
+- `11_create_eus_ou_tree.conf` dsconfig batch file loaded by wrapper script `11_create_eus_ou_tree.sh`.
+- `11_create_eus_ou_tree.ldif` LDIF file loaded by wrapper script `03_config_eus_realm.sh`.
+- `11_create_eus_ou_tree.sh` Script to create additional root user.
+
+The Database does run the fallowing scripts during initial setup:
+
+- `01_create_scott.sql` Wrapper script for ``utlsampl.sql`` to create the SCOTT schema.
+- `02_create_tvd_hr.sql` Script to create the TVD_HR schema. TVD_HR schema corresponds to Oracle's standard HR schema. The data has been adjusted so that it matches the example LDAP data of *trivadislabs.com* |
+- `03_eus_registration.sh` Script to register database in OUD instance using `dbca`.
+- `04_eus_config.sql` Script to create the EUS schemas for global shared and private schemas.
+- `05_eus_mapping.sh` Script to create the EUS mapping to different global shared and private schemas as well global roles.
+- `06_keystore_import_trustcert.sh` Script to import the trust certificate into java keystore.
 
 ### Detailed Solution
 

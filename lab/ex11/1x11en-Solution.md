@@ -3,12 +3,16 @@
 The following steps are performed in this exercise:
 
 - Review the configuration in `docker-compose.yml` and the scripts defined in setup / startup folder.
-- Create / start a container based on 19.4.0.0
+- Choose either *tcpu01* or *tcpu02* database service to work with.
+  - *tcpu01* Single tenant database with full option installed eg. JAVA, XDB etc.
+  - *tcpu02* Single tenant database with minimal option installed.
+- Create / start a container based on 19.4.0.0 
 - Stop and remove the container.
 - Update the `docker-compose.yml` file to match the new Docker image.
 - Create a container based on 19.5.0.0.
 - Review the database configuration and patch status.
 - Optional: switch back to old Docker image.
+- Optional: Do the same test with the other service e.g. *tcpu01* or *tcpu02*.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 
@@ -38,13 +42,13 @@ vi docker-compose.yml
 Create a container **tcpu01** using `docker-compose`. This will also create an initial database *TCPU01*.
 
 ```bash
-docker-compose up -d
+docker-compose up -d tcpu01
 ```
 
 Monitor the progress of database creation using `docker-compose`.
 
 ```bash
-docker-compose logs -f
+docker-compose logs -f 
 ```
 
 The database is ready when you see the following message in your docker logs.
@@ -70,7 +74,7 @@ vi docker-compose.yml
 Re-create the container **tcpu01** using `docker-compose`. The database *TCPU01* will be reused. The run script `50_run_database.sh` will make sure, that the scripts in the [startup](config/startup) folder are executed. This includes `00_run_datapatch.sh`.
 
 ```bash
-docker-compose up -d
+docker-compose up -d tcpu01
 ```
 
 Monitor the progress of database startup / datapach using `docker-compose`.

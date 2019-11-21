@@ -43,8 +43,6 @@ services:
     container_name: eusoud
     hostname: eusoud
     restart: unless-stopped
-    depends_on:
-      - eusoud
     volumes:
       - oud-eusoud:/u01
       - ./oud:/u01/config
@@ -64,6 +62,8 @@ services:
     container_name: eusoudsm
     hostname: eusoudsm
     restart: unless-stopped
+    depends_on:
+      - eusoud
     network_mode: bridge
     volumes:
       - oud-eusoudsm:/u01

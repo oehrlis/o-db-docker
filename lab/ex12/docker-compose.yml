@@ -1,0 +1,74 @@
+# -----------------------------------------------------------------------
+# Trivadis AG, Business Development & Support (BDS)
+# Saegereistrasse 29, 8152 Glattbrugg, Switzerland
+# -----------------------------------------------------------------------
+# Name.......: docker-compose.yml
+# Author.....: Stefan Oehrli (oes) stefan.oehrli@trivadis.com
+# Editor.....: Stefan Oehrli
+# Date.......: 2018.12.11
+# Revision...: --
+# Purpose....: Docker compose file to create a 18.4 database and a OUD 
+#              directory server to configure enterprise user security
+# Notes......: --
+# Reference..: https://github.com/oehrlis/oudbase
+# License....: GPL-3.0+
+# -----------------------------------------------------------------------
+# Modified...:
+# see git revision history with git log for more information on changes
+# -----------------------------------------------------------------------
+
+version: '3'
+services:
+# Database service
+  eusdb:
+    image: oracle/database:19.5.0.0
+    container_name: eusdb
+    hostname: eusdb
+    restart: unless-stopped
+    depends_on:
+      - eusoud
+    volumes:
+      - /u01/volumes/eus/db:/u01
+      - ./db:/u01/config
+      - ./oud:/u01/oud
+    ports:
+      - "5521:1521"
+    environment:
+      INSTANCE_INIT: /u01/config
+      ORACLE_SID: TEUS01
+
+# OUD LDAP service
+  eusoud:
+    image: oracle/oud:12.2.1.4.0
+    container_name: eusoud
+    hostname: eusoud
+    restart: unless-stopped
+    volumes:
+      - /u01/volumes/eus/oud:/u01
+      - ./oud:/u01/config
+    ports:
+      - "5389:1389"
+      - "5636:1636"
+      - "5444:4444" 
+    environment:
+      OUD_CUSTOM: 'TRUE'
+      INSTANCE_INIT: /u01/config
+      BASEDN: dc=trivadislabs,dc=com
+      OUD_INSTANCE: oud_eus
+
+# OUDSM service
+  eusoudsm:
+    image: oracle/oudsm:12.2.1.4.0
+    container_name: eusoudsm
+    hostname: eusoudsm
+    restart: unless-stopped
+    network_mode: bridge
+    volumes:
+      - /u01/volumes/eus/oudsm:/u01
+      - ./config:/u01/config
+    ports:
+      - "5001:7001"
+      - "5002:7002"
+    environment:
+      INSTANCE_INIT: /u01/config
+# - EOF -----------------------------------------------------------------

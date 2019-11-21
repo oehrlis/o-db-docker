@@ -12,6 +12,7 @@ Create a simple Docker image to get warm.
 - Create an Dockerfile with a simple *hello world*
 - Build Docker image
 - Run the Docker *hello world* example.
+- Run a few basic docker commands.
 
 <!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
 <div class="notes">

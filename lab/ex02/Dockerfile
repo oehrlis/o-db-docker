@@ -20,7 +20,7 @@ FROM alpine
 LABEL maintainer="stefan.oehrli@trivadis.com"
 
 # Arguments for Oracle Installation
-ARG   DOAG_USER
+ARG DOAG_USER
 
 ENV DOAG_USER=${DOAG_USER:-"Docker Experte"}
 
@@ -28,5 +28,5 @@ ENV DOAG_USER=${DOAG_USER:-"Docker Experte"}
 COPY  beispiel.txt "/beispiel.txt"
 
 # Define sqlplus as default command 
-CMD ["echo -e \"Hallo ${DOAG_USER} anbei Deine Datei \n$(cat beispiel.txt)\""]
+CMD echo -e "Hallo DOAG Training Day 2019. You are an ${DOAG_USER} ..."
 # --- EOF --------------------------------------------------------------

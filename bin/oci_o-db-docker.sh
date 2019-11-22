@@ -374,8 +374,8 @@ if [ ${ACTIVITY} == "CREATE" ]; then
         INST_VOLUME_OCID=$(oci bv volume list --compartment-id $COMPARTMENT_OCID \
             --raw-output --query "data [?contains(\"display-name\",'${instance}_bv00')].id|[0]")
         DoMsg "INFO : ${instance} assign block volume"
-        oci compute volume-attachment attach --instance-id $INSTANCE_OCID \
-            --type iscsi --volume-id $INST_VOLUME_OCID --device "/dev/oracleoci/oraclevdb"
+        # oci compute volume-attachment attach --instance-id $INSTANCE_OCID \
+        #     --type iscsi --volume-id $INST_VOLUME_OCID --device "/dev/oracleoci/oraclevdb"
         DoMsg "INFO : ${instance} dd"
     done
 fi

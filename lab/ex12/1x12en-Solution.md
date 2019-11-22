@@ -59,26 +59,87 @@ The Database does run the fallowing scripts during initial setup:
 - `05_eus_mapping.sh` Script to create the EUS mapping to different global shared and private schemas as well global roles.
 - `06_keystore_import_trustcert.sh` Script to import the trust certificate into java keystore.
 
-### Detailed Solution
+### Use predefined Volumes
 
-The following steps have been performed on the *ol7docker00* host. If necessary, adjust the commands, filenames or the host name according to your environment.
+Since it takes a while to setup the database, we have predefined volumes for OUD, OUDSM and the database.
 
-- Start a Putty session from command line.
-
-```bash
-putty -ssh opc@ol7docker00.trivadislabs.com -i keys/id_rsa_ol7docker00.ppk
-```
-
-- Alternatively start a SSH session from command line
+- Create and start all containers
 
 ```bash
-ssh opc@ol7docker00.trivadislabs.com -i id_rsa_ol7docker00
+docker-compose up -d
 ```
 
+- check the status of the containers
 
-- Switch to user *oracle*
-- Run *docker images* to see which images are available
-- Check the different directories.
+```bash
+docker-compose logs -f
+```
 
+### Re-Create the Containers
 
+To see how the EUS setup does work, it make sense to remove the volumes and create everything from scratch.
+
+- remove the volumes
+
+```bash
+docker volume rm ex12_db-eusdb
+docker volume rm ex12_oud-eusoud
+docker volume rm ex12_oud-eusoudsm
+```
+
+- Create and start all containers. This will take a while until the database is created.
+
+```bash
+docker-compose up -d
+```
+
+- check the status of the containers
+
+```bash
+docker-compose logs -f
+```
+
+### Test EUS
+
+Test the EUS configuration using sqlplus. Alternatively you can also connect SQLDeveloper, etc.
+
+```bash
+sqlplus king/LAB01schulung@localhost:5521/TEUS01
+
+@db/scripts/sousrinf
+```
+
+Check the session context
+
+```sql
+set linesize 160 pagesize 200
+col NAMESPACE for a30
+col ATTRIBUTE for a30
+col VALUE for a50
+SELECT * FROM session_context;
+SELECT * FROM session_roles;
+```
+
+Select *employee* table as user *king*.
+
+```sql
+conn king/LAB01schulung
+SELECT first_name,last_name,email FROM tvd_hr.employees;
+```
+
+Select *employee* table as user *bond*.
+
+```sql
+conn bond/LAB01schulung
+SELECT first_name,last_name,email FROM tvd_hr.employees;
+```
+
+Select *employee* table as user *moneypenny*.
+
+```sql
+conn moneypenny/LAB01schulung
+SELECT first_name,last_name,email FROM tvd_hr.employees;
+```
+
+VPD does limit the access to tvd_hr.employees based on LDAP attributes.
 </div>

@@ -328,18 +328,18 @@ if [ ${ACTIVITY} == "CREATE" ]; then
 
     # check if IMAGE_OCID for compartment is defined.
     if [ -z "${IMAGE_OCID}" ]; then
-        DoMsg "INFO : get image ocid for O-DB-DOCKER_master_v00" 
+        DoMsg "INFO : get image ocid for O-DB-DOCKER_master_v01" 
         IMAGE_OCID=$(oci compute image list --compartment-id $COMPARTMENT_OCID \
-            --display-name "O-DB-DOCKER_master_v00" \
+            --display-name "O-DB-DOCKER_master_v01" \
             --raw-output --query "data [*].id|[0]")
         DoMsg "DEBUG: image ocid ${SUBNET_OCID} for ${COMPARTMENT_NAME}"
     fi
 
     # check if VOLUME_OCID for compartment is defined.
     if [ -z "${VOLUME_OCID}" ]; then
-        DoMsg "INFO : get volume ocid for O-DB-DOCKER_master_v00" 
+        DoMsg "INFO : get volume ocid for O-DB-DOCKER_master_v01" 
         VOLUME_OCID=$(oci bv volume list --compartment-id $COMPARTMENT_OCID \
-            --raw-output --query "data [?contains(\"display-name\",'o-db-docker_bv00_master_v00')].id|[0]")
+            --raw-output --query "data [?contains(\"display-name\",'o-db-docker_bv00_master_v01')].id|[0]")
         DoMsg "DEBUG: image ocid ${SUBNET_OCID} for ${COMPARTMENT_NAME}"
     fi
 

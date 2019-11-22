@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Stefan Oehrli" />
+  <title>O-DB-DOCKER</title>
+  <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style>
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="doc/templates/pandoc.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">O-DB-DOCKER</h1>
+<p class="subtitle">Lab and Exercise Guide</p>
+<p class="author">Stefan Oehrli</p>
+<p class="date">2019 November 21</p>
+</header>
+<nav id="TOC" role="doc-toc">
+
+</nav>
+<h1 id="preface">Preface</h1>
+<h2 id="about-o-db-docker">About O-DB-DOCKER</h2>
+<p>Oracle has long supported the use of Docker to install its products, including the latest versions of the Oracle database.</p>
+<p>In theory, a simple “docker run” instantiates a corresponding container from a docker image. But why isn’t the database container ready in a few seconds?? Where does Oracle Database Image come from and what happens if the container is stopped again? The functional scope as well as the size of the Oracle database container presuppose that one or the other thoughts about the use and operation are made in advance. This includes topics such as data persistence, licensing and other operational aspects.</p>
+<p>With a focus on the current versions of Oracle Database and Oracle Unified Directory the following topics will be discussed:</p>
+<ul>
+<li>Docker overview with focus on images, containers and volumes.</li>
+<li>Structure of Oracle Docker Images</li>
+<li>Operating an Oracle Docker Database Container</li>
+<li>Various use cases for Oracle database docker containers such as Oracle Enterprise, User Security, Test and Engineering databases, Migration and more.</li>
+<li>Other topics such as high availability, backup &amp; recovery and licensing.</li>
+</ul>
+<p>Within the scope of this training, basics and extended know-how in the area of Oracle database and Docker will be elaborated. The theory will be accompanied by demos and practical exercises.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the <em>O-DB-DOCKER</em> workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk.</p>
+<h2 id="document-information">Document information</h2>
+<ul>
+<li><strong>Document:</strong> O-DB-DOCKER Workshop</li>
+<li><strong>Classification:</strong> Restricted / Trivadis customer</li>
+<li><strong>Status:</strong> Published</li>
+<li><strong>Last changes:</strong> 2019.11.21</li>
+<li><strong>Document name:</strong> O-DB-DOCKER_Workshop.pdf</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Lead Authors</th>
+<th>Contributors &amp; Reviewers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Stefan Oehrli</td>
+<td>Martin Berger</td>
+</tr>
+</tbody>
+</table>
+<h2 id="revision-history">Revision History</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Date</th>
+<th>Visa</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.1</td>
+<td>2019.10.12</td>
+<td>soe</td>
+<td>Initial release O-DB-DOCKER workshop</td>
+</tr>
+<tr class="even">
+<td>0.2</td>
+<td>2019.10.17</td>
+<td></td>
+<td>Add Lab requirements</td>
+</tr>
+<tr class="odd">
+<td>0.3 - 0.8</td>
+<td>2019.11.19</td>
+<td></td>
+<td>Add initial version of Lab exercises</td>
+</tr>
+<tr class="even">
+<td>1.0</td>
+<td>2019.11.20</td>
+<td>soe</td>
+<td>First official release of O-DB-DOCKER workshop</td>
+</tr>
+</tbody>
+</table>
+<p>If you have any questions, please do not hesitate to contact us via <a href="stefan.oehrli@trivadis.com">stefan.oehrli@trivadis.com</a>.</p>
+<h1 id="workshop-introduction">Workshop Introduction</h1>
+<h2 id="requirements-workshop-environment">Requirements Workshop Environment</h2>
+<p>During the workshop <strong><em>O-DB-DOCKER</em></strong> <em>Oracle-Databases in Docker-Containers</em> there will be the possibility to explore different topics with practical examples. Each participant will be provided with a compute node in the Oracle Cloud for the duration of the <strong><em>O-DB-DOCKER</em></strong> training. Alternatively, participants can perform the exercises in their own local VM or Docker environment. Participants are free to choose which environment they want to use for the workshop. Although the setup of the local VM respectively local Docker environment is not part of the workshop itself. The following summary gives a short overview of the different requirements for the three workshop environments.</p>
+<p>Detailed information on the workshop environment, documents, instructions etc. are available prior to the training via <a href="https://url.oradba.ch/DOAG2019_O-DB-DOCKER">DOAG2019 O-DB-DOCKER</a>.</p>
+<h2 id="skills-and-knowledge">Skills and Knowledge</h2>
+<p>The different exercises of the workshop allow a step-by-step introduction to the topic <em>Oracle databases in Docker containers</em>. The following knowledge of the participants is recommended:</p>
+<ul>
+<li>Oracle database basics like installation, configuration and basic database administration</li>
+<li>Docker basics (see also <a href="https://docs.docker.com/get-started/">Get Started, Part 1: Orientation and setup</a>)</li>
+<li>Practical experience with shell scripts, SSH and the command line.</li>
+</ul>
+<h2 id="compute-node-in-the-oracle-cloud">Compute Node in the Oracle Cloud</h2>
+<p>The Compute Node in the Oracle Cloud will be specially prepared for this workshop and will be available for practical work for the duration of the training. Each compute node is configured as follows:</p>
+<ul>
+<li><em>Host name:</em> ol7dockerXX.trivadislabs.com (See host overview provided by the teacher.)</li>
+<li><em>Internal IP address:</em> 10.0.0.2</li>
+<li><em>External IP address:</em> See host overview provided by the teacher.</li>
+<li><em>VM shape:</em> VM.Standard2.2
+<ul>
+<li><em>CPU:</em> 2.0 GHz Intel® Xeon® Platinum 8167M (2 Cores)</li>
+<li><em>Memory:</em> 30GB</li>
+<li><em>Disk:</em> ca 256GB</li>
+</ul></li>
+<li><em>Software:</em>
+<ul>
+<li>Oracle Enterprise Linux 7.7</li>
+<li>Docker Engine / Community Edition</li>
+<li>Predefined Docker Images</li>
+<li>Miscellaneous Oracle binaries and Git client</li>
+</ul></li>
+</ul>
+<p>The following figure gives an overview of the OCI compute instance and access via SSH. Detailed installation and configuration guide can be found in <a href="#appendix-a-setup-oci-environment">Appendix A</a>.</p>
+<figure>
+<img src="../images/OCI-Environment.png" alt="" /><figcaption>OCI Compute Instance Architecture</figcaption>
+</figure>
+<p>Access to the compute nodes is exclusively via SSH and Private Keys. Workshop participants must ensure that they meet the following requirements:</p>
+<ul>
+<li><em>SSH client</em> for remote access, e.g. Putty, MobaXterm or similar.</li>
+<li><em>SCP Client</em> to copy files remotely, e.g. WinSCP, Putty or similar.</li>
+<li><em>Text editor</em> for customizing / developing docker files, scripts etc. e.g. MS Visual Studio Code, UltraEdit, Notepad++ or similar</li>
+<li>It must also be ensured that access to a public IP address or host name is possible via an SSH key.</li>
+</ul>
+<p>The following <em>optional</em> points are recommended:</p>
+<ul>
+<li>GitHub account to access and download the source code. Simple download does not require an account.</li>
+</ul>
+<h2 id="local-vagrant-vm">Local Vagrant VM</h2>
+<p>As with compute nodes, all exercises can be performed directly in a Local VM. Appropriate vagrant scripts for building a VM are available in the Git Repository <a href="https://github.com/oehrlis/o-db-docker">oehrlis/o-db-docker</a>. The following requirements must be met in order to set up this VM with Vagrant:</p>
+<ul>
+<li><a href="https://www.virtualbox.org/wiki/Downloads">Virtualbox</a></li>
+<li><a href="https://www.vagrantup.com">Vagrant</a></li>
+<li>Local clone of the Git repository <a href="https://github.com/oehrlis/o-db-docker">oehrlis/o-db-docker</a></li>
+<li>Oracle Binaries for Oracle 19c and current RU.</li>
+<li>Sufficient hard disk space for the VM and the Docker Images approx. 50GB</li>
+<li>If necessary, additional tools to access and work with the VM, e.g. SSH client, text editor, etc.</li>
+</ul>
+<p>Setting up a local VM is not part of the workshop. Participants who wish to work with a VM must configure it in advance. Detailed installation and configuration guide can be found in <a href="#appendix-b-setup-vagrant-environment">Appendix B</a>.</p>
+<h2 id="local-docker-environment">Local Docker Environment</h2>
+<p>As a third option, the exercises can also be performed in a local docker environment. This is especially useful for working on Linux or MacOS notebooks. In order to perform the workshop locally, the following requirements must be met:</p>
+<ul>
+<li>Installing the Docker Community Edition. See also <a href="https://docs.docker.com/install/">About Docker - Community</a></li>
+<li>Local clone of the Git repository <a href="https://github.com/oehrlis/o-db-docker">oehrlis/o-db-docker</a> and <a href="https://github.com/oracle/docker-images">oracle/docker-images)</a></li>
+<li>Oracle Binaries for Oracle 19c and current RU.</li>
+<li>Sufficient hard disk space for the VM and the Docker Images approx. 50GB</li>
+<li>If necessary, additional tools to access and work with the VM, e.g. SSH client, text editor, git client etc.</li>
+</ul>
+<p>Building a local Docker environment is not part of the workshop. Participants who wish to work with a local Docker installation must configure it in advance. detailed installation and configuration guide can be found in <a href="#appendix-c-setup-local-docker-environment">Appendix C</a>.</p>
+<h1 id="workshop-exercises">Workshop Exercises</h1>
+<h2 id="overview-of-exercises">Overview of Exercises</h2>
+<p>The exercises are grouped in individual directories and can generally be performed independently of each other. Each exercise contains at least a short description of the tasks (<code>1x??en-Exercise.md</code>) as well as a solution (<code>1x??en-Solution.md</code>). In addition, scripts, docker files, etc. are part of every exercise. For exercises where software (Oracle Binaries, Patch) or code from other Git repositories is required, we refer to it accordingly.</p>
+<table>
+<colgroup>
+<col style="width: 3%" />
+<col style="width: 31%" />
+<col style="width: 57%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Topic</th>
+<th>Description</th>
+<th>Duration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>01</td>
+<td>Get known the Environment</td>
+<td>Log in and get to know the workshop environment.</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>02</td>
+<td>Simple docker image</td>
+<td>Build simple Docker images.</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>03</td>
+<td>Docker Image Size</td>
+<td>Build different version of an Oracle Instant Client Docker images.</td>
+<td>15</td>
+</tr>
+<tr class="even">
+<td>04</td>
+<td>Local Software Repository</td>
+<td>Setup a local Software Repository</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>05</td>
+<td>Simples DB Docker Image</td>
+<td>Build simple DB images. Identify challenges.</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>06</td>
+<td>Oracle Docker Image</td>
+<td>Build a Docker DB images using the Oracle build scripts.</td>
+<td>20</td>
+</tr>
+<tr class="odd">
+<td>07</td>
+<td>OraDBA Docker Image</td>
+<td>Build a Docker DB images using the OraDBA build scripts.</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>08</td>
+<td>Simple DB Docker Container</td>
+<td>Run a simple DB container.</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>09</td>
+<td>Accessing database container</td>
+<td>Access and work with the DB container.</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>Oracle Unified Audit Setup</td>
+<td>Setup a DB Container with Unified Audit and do some tests.</td>
+<td>15</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Oracle RU with datapatch</td>
+<td>Patch a Docker DB Container using datapatch.</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>Oracle Enterprise User Security</td>
+<td>Setup Oracle Enterprise User Security with OUD.</td>
+<td>30</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>Oracle PDB</td>
+<td>Plugin an Oracle PDB.</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>Oracle RAC with Docker</td>
+<td>Setup and Build a RAC Docker environment.</td>
+<td>45</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>Container Monitoring</td>
+<td>Setup and Configure container monitoring.</td>
+<td>45</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td>Additional Exercises</td>
+<td>Ideas for additional exercises.</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h2 id="access-workshop-hosts">Access Workshop Hosts</h2>
+<p>The workshop hosts are running as a compute instance in the Oracle Cloud. Each system is accessible via public IP address or its hostname. you have to use a SSH client of your choice for access (e.g. Putty, MochaXterm, SSH etc.)</p>
+<ul>
+<li>Start a <em>Putty</em> session from command line. Replace <strong>NN</strong> with the number of you host.</li>
+</ul>
+<pre class="cmd"><code>putty -ssh opc@ol7dockerNN.trivadislabs.com -i keys/id_rsa_ol7dockerNN.ppk</code></pre>
+<ul>
+<li>Start a <em>SSH</em> session from command line</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ssh</span> opc@ol7dockerNN.trivadislabs.com -i keys/id_rsa_ol7dockerNN</span></code></pre></div>
+<p>The instructor supplements the following table with the relevant information for the O-DB-DOCKER course. A compute instance will be assigned to each participant.</p>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Hostname</th>
+<th>IP Address</th>
+<th>User</th>
+<th>Key’s</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>00</td>
+<td>ol7docker00.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker00.pub">public</a>, <a href="keys/id_rsa_ol7docker00">OpenSSH</a>, <a href="keys/id_rsa_ol7docker00.ppk">Putty</a></td>
+<td>Trainer</td>
+</tr>
+<tr class="even">
+<td>01</td>
+<td>ol7docker01.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker01.pub">public</a>, <a href="keys/id_rsa_ol7docker01">OpenSSH</a>, <a href="keys/id_rsa_ol7docker01.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>02</td>
+<td>ol7docker02.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker02.pub">public</a>, <a href="keys/id_rsa_ol7docker02">OpenSSH</a>, <a href="keys/id_rsa_ol7docker02.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>03</td>
+<td>ol7docker03.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker03.pub">public</a>, <a href="keys/id_rsa_ol7docker03">OpenSSH</a>, <a href="keys/id_rsa_ol7docker03.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>04</td>
+<td>ol7docker04.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker04.pub">public</a>, <a href="keys/id_rsa_ol7docker04">OpenSSH</a>, <a href="keys/id_rsa_ol7docker04.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>05</td>
+<td>ol7docker05.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker05.pub">public</a>, <a href="keys/id_rsa_ol7docker05">OpenSSH</a>, <a href="keys/id_rsa_ol7docker05.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>06</td>
+<td>ol7docker06.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker06.pub">public</a>, <a href="keys/id_rsa_ol7docker06">OpenSSH</a>, <a href="keys/id_rsa_ol7docker06.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>07</td>
+<td>ol7docker07.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker07.pub">public</a>, <a href="keys/id_rsa_ol7docker07">OpenSSH</a>, <a href="keys/id_rsa_ol7docker07.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>08</td>
+<td>ol7docker08.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker08.pub">public</a>, <a href="keys/id_rsa_ol7docker08">OpenSSH</a>, <a href="keys/id_rsa_ol7docker08.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>09</td>
+<td>ol7docker09.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker09.pub">public</a>, <a href="keys/id_rsa_ol7docker09">OpenSSH</a>, <a href="keys/id_rsa_ol7docker09.ppk">Putty</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>ol7docker10.trivadislabs.com</td>
+<td>n/a</td>
+<td>opc</td>
+<td><a href="keys/id_rsa_ol7docker10.pub">public</a>, <a href="keys/id_rsa_ol7docker10">OpenSSH</a>, <a href="keys/id_rsa_ol7docker10.ppk">Putty</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="exercise-1-get-known-the-environment">Exercise 1: Get known the Environment</h2>
+<h3 id="exercise-goals">Exercise Goals</h3>
+<p>Simple exercise to get to know the environment.</p>
+<ul>
+<li>Everybody can access his/her compute instance.</li>
+</ul>
+<h3 id="tasks">Tasks</h3>
+<ul>
+<li>Login to your individual OCI compute instance eg. <em>ol7dockerXX</em>.</li>
+<li>Switch to user <em>oracle</em>.</li>
+<li>Check what Docker images are available.</li>
+<li>Check directories for workshop and software.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-1-get-known-the-environment">Solution 1: Get known the Environment</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>login via SSH client as user <em>opc</em> to the individual OCI compute instance eg. <em>ol7dockerXX</em>.</li>
+<li>Switch to user <em>oracle</em></li>
+<li>Run <em>docker images</em> to see which images are available</li>
+<li>Check the different directories.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="detailed-solution">Detailed Solution</h3>
+<p>The following steps have been performed on the <em>ol7docker00</em> host. If necessary, adjust the commands, filenames or the host name according to your environment.</p>
+<ul>
+<li>Start a Putty session from command line.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1"></a><span class="ex">putty</span> -ssh opc@ol7docker00.trivadislabs.com -i keys/id_rsa_ol7docker00.ppk</span></code></pre></div>
+<ul>
+<li>Alternatively start a SSH session from command line</li>
+</ul>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ssh</span> opc@ol7docker00.trivadislabs.com -i id_rsa_ol7docker00</span></code></pre></div>
+<ul>
+<li>Switch to user <em>oracle</em></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">sudo</span> su - oracle</span></code></pre></div>
+<ul>
+<li>Run <em>docker images</em> to see which images are available</li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="ex">docker</span> images</span></code></pre></div>
+<ul>
+<li>Run <em>docker volumes</em> to see which volumes are available</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="ex">docker</span> volumes ls</span></code></pre></div>
+<ul>
+<li>Check the different directories and aliases.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="bu">cd</span> /u01/volumes</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">cdl</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="ex">ex01</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="ex">o-db-docker</span></span></code></pre></div>
+</div>
+<h2 id="exercise-2-simple-docker-image">Exercise 2: Simple docker image</h2>
+<h3 id="exercise-goals-1">Exercise Goals</h3>
+<p>Create a simple Docker image to get warm.</p>
+<ul>
+<li>Everybody can successfully build a docker image.</li>
+<li>Everybody can successfully run a docker container.</li>
+</ul>
+<h3 id="tasks-1">Tasks</h3>
+<ul>
+<li>Create an Dockerfile with a simple <em>hello world</em></li>
+<li>Build Docker image</li>
+<li>Run the Docker <em>hello world</em> example.</li>
+<li>Run a few basic docker commands.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-2-simple-docker-image">Solution 2: Simple docker image</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Create an Dockerfile with a simple <em>hello world</em></li>
+<li>Build Docker image</li>
+<li>Run the Docker <em>hello world</em> example.</li>
+<li>Run a few basic docker commands.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<p>Create / review the <code>Dockerfile</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">vi</span> Dockerfile</span></code></pre></div>
+<p>Build a image <strong>doag</strong> using <code>docker</code>. This way the image will automatially be tagged as <em>doag:latest</em>.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="ex">docker</span> build -t doag .</span></code></pre></div>
+<p>Build a image <strong>doag</strong> using <code>docker</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="ex">docker</span> build -t doag:2019 .</span></code></pre></div>
+<p>Run the docker image as container.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="ex">docker</span> run doag</span></code></pre></div>
+<p>Check the containers using <code>docker ps -a</code>. You will see that the container still exists</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="ex">docker</span> ps -a</span></code></pre></div>
+<p>Remove the container. Copy the container ID from above.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="ex">docker</span> rm <span class="op">&lt;</span>CONTAINER ID<span class="op">&gt;</span></span></code></pre></div>
+<p>Build the Docker image using a build argument.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="ex">docker</span> build -t doag --build-arg DOAG_USER=<span class="st">&quot;Mr. Docker&quot;</span> .</span></code></pre></div>
+<p>Run the docker image as container but use <code>--rm</code> to remove the container when it is stopped.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="ex">docker</span> run --rm doag</span></code></pre></div>
+<p>Run the docker image as container interactive (<code>-i</code>) with a pseudo-TTY (<code>-t</code>) and overwrite the default command with <code>sh</code>. Within the container you can check the environment variables using <code>env</code> and the text file copied to the root folder <code>cat /beispiel.txt</code></p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1"></a><span class="ex">docker</span> run --rm -it doag sh</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">env</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">cat</span> /beispiel.txt</span></code></pre></div>
+<p>Cleanup old <em>doag</em> images either using <code>docker system prune</code>, <code>docker image prune</code> or <code>docker rmi &lt;IMAGE ID&gt;</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1"></a><span class="ex">docker</span> images</span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="ex">docker</span> image prune</span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="ex">docker</span> system prune</span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="ex">docker</span> rmi doag</span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="ex">docker</span> rmi doag:2019</span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="ex">docker</span> images</span></code></pre></div>
+<p>Your dangeling images should be gone as well as the <em>doag</em> image.</p>
+</div>
+<h2 id="exercise-3-docker-image-size">Exercise 3: Docker Image Size</h2>
+<h3 id="exercise-goals-2">Exercise Goals</h3>
+<p>Identify the reason for different image size for the same Image.</p>
+<ul>
+<li>Everybody know why its image gets large.</li>
+</ul>
+<h3 id="tasks-2">Tasks</h3>
+<p>Build Oracle Instant Client Docker images with different Dockerfiles.</p>
+<ul>
+<li>Dockerfile with several <code>RUN</code> commands.</li>
+<li>Dockerfile with a combined <code>RUN</code> command.</li>
+<li>Using a build stage build.</li>
+<li>Verify if Docker <em>expertimental</em> is enabled</li>
+<li>Build an image using squash</li>
+<li>Analyse the different images using <code>docker history</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-3-docker-image-size">Solution 3: Docker Image Size</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Dockerfile with several <code>RUN</code> commands.</li>
+<li>Dockerfile with a combined <code>RUN</code> command.</li>
+<li>Using a build stage build.</li>
+<li>Verify if Docker <em>expertimental</em> is enabled</li>
+<li>Build an image using squash</li>
+<li>Analyse the different images using <code>docker history</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information">Background Information</h3>
+<p>To simplify and speed up the build we do build a Docker image for SQL*Plus using the instant client. The same procedure could also be done for an Oracle binary installation. It just takes a bit longer. The base image is <code>oraclelinux:7-slim</code>. The exercise does use the following <code>Dockerfiles</code>:</p>
+<ul>
+<li><code>ic19_separate.Dockerfile</code> with multiple respectively separate <em>RUN</em> statements.</li>
+<li><code>ic19.Dockerfile</code> with one <em>RUN</em> statement.</li>
+<li><code>ic19_multistage.Dockerfile</code> for multi stage build.</li>
+</ul>
+<h3 id="build-image-with-multiple-run-statements">Build Image with multiple RUN Statements</h3>
+<p>Build the Docker image for Oracle instant client with multiple <em>RUN</em> statements. Since we do not use a default <code>Dockerfile</code> we do have to provide the file name.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1"></a><span class="ex">docker</span> build -t oracle/sqlplus:separate -f ic19_separate.Dockerfile .</span></code></pre></div>
+<h3 id="build-image-with-one-run-statements">Build Image with one RUN Statements</h3>
+<p>Build the Docker image for Oracle instant client with one <em>RUN</em> statements. Since we do not use a default <code>Dockerfile</code> we do have to provide the file name.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1"></a><span class="ex">docker</span> build -t oracle/sqlplus:one -f ic19.Dockerfile .</span></code></pre></div>
+<h3 id="use-experimental-feature-squash">Use Experimental Feature squash</h3>
+<p>First check if experimental feature is enabled.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1"></a><span class="ex">docker</span> info</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="ex">docker</span> version -f <span class="st">&#39;{{.Server.Experimental}}&#39;</span></span></code></pre></div>
+<p>Enable experimental features using <code>daemon.json</code>. Add <code>"experimental": true</code> but don’t forget the comma.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">sudo</span> vi /etc/docker/daemon.json</span></code></pre></div>
+<p>Restart the Docker deamon.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">sudo</span> systemctl stop docker</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">sudo</span> systemctl start docker</span></code></pre></div>
+<p>Check again if experimental is enabled.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1"></a><span class="ex">docker</span> version -f <span class="st">&#39;{{.Server.Experimental}}&#39;</span></span></code></pre></div>
+<p>Build again the Docker image with multiple <em>RUN</em> commands but use <code>--squash</code>.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1"></a><span class="ex">docker</span> build -t oracle/sqlplus:squash --squash -f ic19_separate.Dockerfile .</span></code></pre></div>
+<h3 id="use-multi-stage-build">Use Multi Stage Build</h3>
+<p>Build the Docker image for Oracle instant client with one <em>RUN</em> statements. Since we do not use a default <code>Dockerfile</code> we do have to provide the file name.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1"></a><span class="ex">docker</span> build -t oracle/sqlplus:multistage -f ic19_multistage.Dockerfile .</span></code></pre></div>
+<h3 id="compare-the-different-docker-images">Compare the different Docker images</h3>
+<p>Here we go, let’s compare the different Docker images.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1"></a><span class="ex">docker</span> images</span></code></pre></div>
+<p>With <code>docker history</code> you can see the different layers and there size.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1"></a><span class="ex">docker</span> history oracle/sqlplus:separate</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="ex">docker</span> history oracle/sqlplus:one</span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="ex">docker</span> history oracle/sqlplus:squash</span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="ex">docker</span> history oracle/sqlplus:multistage</span></code></pre></div>
+<p>The squash images is small but does missing all layer information. This does also have impact when a container is started / loaded e.g. existing layers can not be <em>reused</em>.</p>
+</div>
+<h2 id="exercise-4-local-software-repository">Exercise 4: Local Software Repository</h2>
+<h3 id="exercise-goals-3">Exercise Goals</h3>
+<p>Be able to use a local software repository during build.</p>
+<h3 id="tasks-3">Tasks</h3>
+<ul>
+<li>Create docker-compose file for the local software repository</li>
+<li>Start the container using <code>docker-compose</code></li>
+<li>Use the local software repository in a Docker build.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-4-local-software-repository">Solution 4: Local Software Repository</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>login via SSH client as user <em>opc</em> to the individual OCI compute instance eg. <em>ol7dockerXX</em>.</li>
+<li>Switch to user <em>oracle</em></li>
+<li>Run <em>docker images</em> to see which images are available</li>
+<li>Check the different directories.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information-1">Background Information</h3>
+<p>Oracle Software usually can not be downloaded during build without providing some credentials. If the binaries are downloaded using curl or wget the credentials will remain in the docker image. One solution would be to keep the binaries in the docker build context and use squash or multi stage builds. Alternatively it is also possible to use a local web server (docker container) to download the files locally.</p>
+<h3 id="start-orarepo-container">Start ORAREPO Container</h3>
+<p>Start a simple web server to locally share the software during docker build using simple <code>docker</code> command.</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1"></a><span class="ex">docker</span> run -dit \</span>
+<span id="cb29-2"><a href="#cb29-2"></a>  --hostname orarepo \</span>
+<span id="cb29-3"><a href="#cb29-3"></a>  --name orarepo \</span>
+<span id="cb29-4"><a href="#cb29-4"></a>  -p 80:80 \</span>
+<span id="cb29-5"><a href="#cb29-5"></a>  -v /u00/app/oracle/software:/www \</span>
+<span id="cb29-6"><a href="#cb29-6"></a>  busybox httpd -fvvv -h /www</span></code></pre></div>
+<p>Stop and remove the container.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1"></a><span class="ex">docker</span> stop orarepo</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="ex">docker</span> rm orarepo</span></code></pre></div>
+<p>A little more comfortable is the use of <code>docker-compose</code>.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1"></a><span class="ex">docker-compose</span> up -d</span></code></pre></div>
+<p>Get the IP of the web server.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1"></a><span class="va">orarepo_ip=$(</span><span class="ex">docker</span> inspect -f <span class="st">&#39;{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39;</span> orarepo<span class="va">)</span></span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="bu">echo</span> <span class="va">$orarepo_ip</span></span></code></pre></div>
+<h3 id="build-a-image-using-orarepo">Build a Image using ORAREPO</h3>
+<p>Build a Docker images using the orarepo.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -t oracle/java:orarepo .</span></code></pre></div>
+<h3 id="build-a-image-using-local-software">Build a Image using local Software</h3>
+<p>Create a hard link for the java package (you can also copy the file)</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">ln</span> /u00/app/oracle/software/p29657335_170231_Linux-x86-64.zip .</span></code></pre></div>
+<p>Build a Docker images using the local software package.</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1"></a><span class="ex">docker</span> build -t oracle/java:local .</span></code></pre></div>
+<h3 id="compare-the-docker-images">Compare the Docker Images</h3>
+<p>Lets compare the Docker images using <code>docker images</code>.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1"></a><span class="ex">docker</span> images</span></code></pre></div>
+<p>And check what’s in the images</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1"></a><span class="ex">docker</span> history oracle/java:local</span>
+<span id="cb37-2"><a href="#cb37-2"></a><span class="ex">docker</span> history oracle/java:orarepo</span></code></pre></div>
+</div>
+<h2 id="exercise-5-simples-db-docker-image">Exercise 5: Simples DB Docker Image</h2>
+<h3 id="exercise-goals-4">Exercise Goals</h3>
+<ul>
+<li>Create a simple database Docker image</li>
+<li>Identify challenges</li>
+</ul>
+<h3 id="tasks-4">Tasks</h3>
+<ul>
+<li>Customize the Dockerfile for build a simple database image using Oracle RPM package.</li>
+<li>Build the database Docker image. Either by using orarepo or the local software.</li>
+<li>Think about what this image lacks.</li>
+<li>Optional: Create a simple database image using regular Oracle packages.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-5-simples-db-docker-image">Solution 5: Simples DB Docker Image</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Customize the Dockerfile for build a simple database image using Oracle RPM package.</li>
+<li>Build the database Docker image. Either by using orarepo or the local software.</li>
+<li>Think about what this image lacks.</li>
+<li>Optional: Create a simple database image using regular Oracle packages.</li>
+</ul>
+<p>Each build takes about 10-15minutes. It does not make sense to build all of them.</p>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information-2">Background Information</h3>
+<p>In this exercise you can either use the local software from the Docker build context or download the packages during build from the OraREPO. Beside this the build can be done by using the regular Oracle software packages or the new RPM packages.</p>
+<h3 id="build-image-using-local-rpm">Build Image using local RPM</h3>
+<p>Create a hard link for the java package (you can also copy the file)</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">ln</span> /u00/app/oracle/software/oracle-database-ee-19c-1.0-1.x86_64.rpm .</span></code></pre></div>
+<p>Build the Docker images using the local software package.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1"></a><span class="ex">docker</span> build -f rpm.Dockerfile -t oracle/database:19.3_local_rpm .</span></code></pre></div>
+<h3 id="build-image-using-orarepo-rpm">Build Image using OraREPO RPM</h3>
+<p>Get the IP of the web server.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1"></a><span class="va">orarepo_ip=$(</span><span class="ex">docker</span> inspect -f <span class="st">&#39;{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39;</span> orarepo<span class="va">)</span></span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="bu">echo</span> <span class="va">$orarepo_ip</span></span></code></pre></div>
+<p>Build the Docker images using the software package from orarepo.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -f rpm.Dockerfile -t oracle/database:19.3_orarepo_rpm .</span></code></pre></div>
+<h3 id="optional-build-image-using-local-software-package">Optional: Build Image using local Software Package</h3>
+<p>Create a hard link for the java package (you can also copy the file)</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1"></a><span class="fu">ln</span> /u00/app/oracle/software/LINUX.X64_193000_db_home.zip .</span></code></pre></div>
+<p>Build the Docker images using the local software package.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1"></a><span class="ex">docker</span> build -f regular.Dockerfile -t oracle/database:19.3_local_reg .</span></code></pre></div>
+<h3 id="optional-build-image-using-orarepo-software-package">Optional: Build Image using OraREPO Software Package</h3>
+<p>Get the IP of the web server.</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1"></a><span class="va">orarepo_ip=$(</span><span class="ex">docker</span> inspect -f <span class="st">&#39;{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39;</span> orarepo<span class="va">)</span></span>
+<span id="cb44-2"><a href="#cb44-2"></a><span class="bu">echo</span> <span class="va">$orarepo_ip</span></span></code></pre></div>
+<p>Build the Docker images using the software package from orarepo.</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -f regular.Dockerfile -t oracle/database:19.3_orarepo_reg .</span></code></pre></div>
+<h3 id="compare-the-docker-images-1">Compare the Docker Images</h3>
+<p>Lets compare the Docker images using <code>docker images</code>.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1"></a><span class="ex">docker</span> images</span></code></pre></div>
+<p>And check what’s in the images</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1"></a><span class="ex">docker</span> history oracle/database:19.3_local_rpm</span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="ex">docker</span> history oracle/database:19.3_orarepo_rpm</span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="ex">docker</span> history oracle/database:19.3_local_reg</span>
+<span id="cb47-4"><a href="#cb47-4"></a><span class="ex">docker</span> history oracle/database:19.3_orarepo_reg</span></code></pre></div>
+<p>What else is missing?</p>
+<ul>
+<li>No Oracle environment variables defined.</li>
+<li>All configuration files are still in the container. e.g. no script to move TNS_ADMIN etc to a volume</li>
+<li>Database would be created within the container. No volume defined.</li>
+<li>Overall size is rather large.</li>
+<li>Database can not be accessed from outside the container since the Oracle ports are not exported.</li>
+<li>No <em>entrypoint</em> nor <em>command</em> defined. There will be no database created / started when the container is created</li>
+<li>When using the Oracle RPM in Docker it is mandatory to set the environment variable <em>ORACLE_DOCKER_INSTALL</em>. Otherwise Oracle will look for sudo.</li>
+<li>What about release updates (RU) patches etc?</li>
+<li>Oracle 18c/19c installation is rather simple, but what about other releases?</li>
+<li>Quite a lot is hardcoded and not easy to maintain.</li>
+<li>And a couple of other stuff…</li>
+</ul>
+</div>
+<h2 id="exercise-6-oracle-docker-image">Exercise 6: Oracle Docker Image</h2>
+<h3 id="exercise-goals-5">Exercise Goals</h3>
+<ul>
+<li>Create database Docker image using the Oracle build scripts.</li>
+</ul>
+<h3 id="tasks-5">Tasks</h3>
+<ul>
+<li>Update local git working copy of <em>oracle/docker-images</em></li>
+<li>Check whether all the prerequisites have been fulfilled.</li>
+<li>Build Docker image using <code>buildDockerImage.sh</code> or manually using <code>docker build</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-6-oracle-docker-image">Solution 6: Oracle Docker Image</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Create database Docker image using the Oracle build scripts.</li>
+<li>Update local git working copy of <em>oracle/docker-images</em></li>
+<li>Check whether all the prerequisites have been fulfilled.</li>
+<li>Build Docker image using <code>buildDockerImage.sh</code> or manually using <code>docker build</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="preparations">Preparations</h3>
+<p>Change to the Oracle Docker image folder <code>/u00/app/oracle/local/docker-images</code> and pull the latest updates.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1"></a><span class="bu">cd</span> /u00/app/oracle/local/docker-images</span>
+<span id="cb48-2"><a href="#cb48-2"></a><span class="fu">git</span> pull</span></code></pre></div>
+<p>Change to the <code>OracleDatabase</code> folder. In this example we do use 19.3.0 but you can take as well an other release.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1"></a><span class="bu">cd</span> OracleDatabase/SingleInstance/dockerfiles/19.3.0</span></code></pre></div>
+<p>Check the Software requirements</p>
+<div class="sourceCode" id="cb50"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1"></a><span class="fu">cat</span> Checksum.ee</span></code></pre></div>
+<p>Create a hard link for the software</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1"></a><span class="fu">ln</span> /u00/app/oracle/software/LINUX.X64_193000_db_home.zip .</span></code></pre></div>
+<p>For more information regarding Oracle Docker images see <a href="https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance">README.md</a> of <em>oracle/docker-images</em>.</p>
+<h3 id="build-the-image-using-builddockerimage.sh">Build the Image using buildDockerImage.sh</h3>
+<p>Oracle does provide a shell wrapper script to build the Oracle Docker images <code>buildDockerImage.sh</code>. The script does have a couple of parameter.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1"></a><span class="ex">buildDockerImage.sh</span> -h</span>
+<span id="cb52-2"><a href="#cb52-2"></a></span>
+<span id="cb52-3"><a href="#cb52-3"></a><span class="ex">Usage</span>: buildDockerImage.sh -v [version] [-e <span class="kw">|</span> <span class="ex">-s</span> <span class="kw">|</span> <span class="ex">-x</span>] [-i] [-o] [Docker build option]</span>
+<span id="cb52-4"><a href="#cb52-4"></a><span class="ex">Builds</span> a Docker Image for Oracle Database.</span>
+<span id="cb52-5"><a href="#cb52-5"></a>  </span>
+<span id="cb52-6"><a href="#cb52-6"></a><span class="ex">Parameters</span>:</span>
+<span id="cb52-7"><a href="#cb52-7"></a>   <span class="ex">-v</span>: version to build</span>
+<span id="cb52-8"><a href="#cb52-8"></a>       <span class="ex">Choose</span> one of: 11.2.0.2  12.1.0.2  12.2.0.1  18.3.0  18.4.0  19.3.0  </span>
+<span id="cb52-9"><a href="#cb52-9"></a>   <span class="ex">-e</span>: creates image based on <span class="st">&#39;Enterprise Edition&#39;</span></span>
+<span id="cb52-10"><a href="#cb52-10"></a>   <span class="ex">-s</span>: creates image based on <span class="st">&#39;Standard Edition 2&#39;</span></span>
+<span id="cb52-11"><a href="#cb52-11"></a>   <span class="ex">-x</span>: creates image based on <span class="st">&#39;Express Edition&#39;</span></span>
+<span id="cb52-12"><a href="#cb52-12"></a>   <span class="ex">-i</span>: ignores the MD5 checksums</span>
+<span id="cb52-13"><a href="#cb52-13"></a>   <span class="ex">-o</span>: passes on Docker build option</span>
+<span id="cb52-14"><a href="#cb52-14"></a></span>
+<span id="cb52-15"><a href="#cb52-15"></a><span class="ex">*</span> select one edition only: -e, -s, or -x</span></code></pre></div>
+<p>Build an Oracle Docker image for Enterprise Edition and 19.3.0</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1"></a><span class="ex">buildDockerImage.sh</span> -v 19.3.0 -e </span></code></pre></div>
+<h3 id="build-the-image-using-docker">Build the Image using Docker</h3>
+<p>Alternatively you can build the Docker images regularly using <code>docker build</code>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1"></a><span class="bu">cd</span> 19.3.0</span>
+<span id="cb54-2"><a href="#cb54-2"></a><span class="bu">time</span> docker build -t oracle/database:19.3.0-ee .</span></code></pre></div>
+</div>
+<h2 id="exercise-7-oradba-docker-image">Exercise 7: OraDBA Docker Image</h2>
+<h3 id="exercise-goals-6">Exercise Goals</h3>
+<ul>
+<li>Create database Docker image using the OraDBA build scripts.</li>
+</ul>
+<h3 id="tasks-6">Tasks</h3>
+<ul>
+<li>Update local git working copy of <em>oehrlis/docker</em></li>
+<li>Review the Dockerfile and define Oracle version to build</li>
+<li>Check whether all the prerequisites have been fulfilled.</li>
+<li>Build Docker image using <code>docker build</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-7-oradba-docker-image">Solution 7: OraDBA Docker Image</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Update local git working copy of <em>oehrlis/docker</em></li>
+<li>Review the Dockerfile and define Oracle version to build</li>
+<li>Check whether all the prerequisites have been fulfilled.</li>
+<li>Build Docker image using <code>docker build</code></li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="preparations-1">Preparations</h3>
+<p>Change to the OraDBA Docker image folder <code>/u00/app/oracle/local/docker</code> and pull the latest updates.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1"></a><span class="bu">cd</span> /u00/app/oracle/local/docker</span>
+<span id="cb55-2"><a href="#cb55-2"></a><span class="fu">git</span> pull</span></code></pre></div>
+<p>Change to the <code>OracleDatabase</code> folder. In this example we do use 19.3.0 but you can take as well an other release.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1"></a><span class="bu">cd</span> OracleDatabase/19.0.0.0</span></code></pre></div>
+<p>Check the Software requirements</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1"></a><span class="bu">cd</span> software</span>
+<span id="cb57-2"><a href="#cb57-2"></a><span class="fu">cat</span> LINUX.X64_193000_db_home.zip.download</span></code></pre></div>
+<p>Create a hard link for the software. This is only required if you want to not use OraREPO.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1"></a><span class="bu">cd</span> software</span>
+<span id="cb58-2"><a href="#cb58-2"></a><span class="fu">ln</span> /u00/app/oracle/software/LINUX.X64_193000_db_home.zip .</span></code></pre></div>
+<p>Optional you can also add the hard links for release updates.</p>
+<p>For more information regarding Oracle Docker images see <a href="https://github.com/oehrlis/docker/tree/master/OracleDatabase/19.0.0.0">README.md</a> of <em>oehrlis/docker</em>.</p>
+<h3 id="build-the-image-using-orarepo">Build the Image using OraREPO</h3>
+<p>Get the IP of the OraREPO web server.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1"></a><span class="va">orarepo_ip=$(</span><span class="ex">docker</span> inspect -f <span class="st">&#39;{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}&#39;</span> orarepo<span class="va">)</span></span>
+<span id="cb59-2"><a href="#cb59-2"></a><span class="bu">echo</span> <span class="va">$orarepo_ip</span></span></code></pre></div>
+<p>Build the Docker image for Oracle 19c (19.3.0)</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -f 19.3.0.0.Dockerfile -t oracle/database:19.3.0.0 .</span></code></pre></div>
+<p>Build the Docker image for Oracle 19c (19.3.0) with RU July 2019</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -f 19.4.0.0.Dockerfile -t oracle/database:19.4.0.0 .</span></code></pre></div>
+<p>Build the Docker image for Oracle 19c (19.3.0) with RU October 2019</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1"></a><span class="ex">docker</span> build --add-host=orarepo:<span class="va">${orarepo_ip}</span> -f 19.5.0.0.Dockerfile -t oracle/database:19.5.0.0 .</span></code></pre></div>
+<h3 id="build-the-image-using-local-software">Build the Image using local Software</h3>
+<p>Create a hard link for the software. This is only required if you want to not use OraREPO.</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb63-1"><a href="#cb63-1"></a><span class="bu">cd</span> software</span>
+<span id="cb63-2"><a href="#cb63-2"></a><span class="fu">ln</span> /u00/app/oracle/software/LINUX.X64_193000_db_home.zip .</span>
+<span id="cb63-3"><a href="#cb63-3"></a><span class="fu">ln</span> /u00/app/oracle/software/basenv-18.11.final.a.zip .</span>
+<span id="cb63-4"><a href="#cb63-4"></a><span class="fu">ln</span> /u00/app/oracle/software/p6880880_190000_Linux-x86-64.zip .</span></code></pre></div>
+<p>Optional you can also add the hard links for release updates.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1"></a><span class="fu">ln</span> /u00/app/oracle/software/p30125133_190000_Linux-x86-64.zip .</span>
+<span id="cb64-2"><a href="#cb64-2"></a><span class="fu">ln</span> /u00/app/oracle/software/p30128191_190000_Linux-x86-64.zip .</span>
+<span id="cb64-3"><a href="#cb64-3"></a><span class="fu">ln</span> /u00/app/oracle/software/p6880880_190000_Linux-x86-64.zip .</span></code></pre></div>
+<p>Build the Docker image for Oracle 19c (19.3.0)</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1"></a><span class="ex">docker</span> build -f 19.3.0.0.Dockerfile -t oracle/database:19.3.0.0 .</span></code></pre></div>
+<p>Build the Docker image for Oracle 19c (19.3.0) with RU October 2019</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1"></a><span class="ex">docker</span> build -f 19.5.0.0.Dockerfile -t oracle/database:19.5.0.0 .</span></code></pre></div>
+</div>
+<h2 id="exercise-8-simple-db-docker-container">Exercise 8: Simple DB Docker Container</h2>
+<h3 id="exercise-goals-7">Exercise Goals</h3>
+<ul>
+<li>Run an Oracle database in a Docker container.</li>
+<li>See the difference between docker <code>docker run</code> and <code>docker-compose</code></li>
+<li>See what happens if you forget to specify a volume.</li>
+</ul>
+<h3 id="tasks-7">Tasks</h3>
+<ul>
+<li>Create a Docker container by using <code>docker run</code> without a volume.</li>
+<li>Create a Docker container by using <code>docker run</code> with a volume.</li>
+<li>Create a Docker container using <code>docker-compose</code> with a predefined volume.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-8-simple-db-docker-container">Solution 8: Simple DB Docker Container</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Create a Docker container by using <code>docker run</code> without a volume.</li>
+<li>Create a Docker container by using <code>docker run</code> with a volume.</li>
+<li>Create a Docker container using <code>docker-compose</code> with a predefined volume.</li>
+</ul>
+<p>Task where a Docker container does create a new database do take a while (15-20min). Due to this it does not make sense to create all tasks.</p>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="database-container-without-a-volume">Database Container without a volume</h3>
+<p>This container will be build based on an <a href="https://github.com/oracle/docker-images">oracle/docker-images</a>. See the <a href="https://github.com/oracle/docker-images/blob/master/OracleDatabase/SingleInstance/README.md">README.md</a> for more run options.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1"></a><span class="ex">docker</span> run --name doag193 \</span>
+<span id="cb67-2"><a href="#cb67-2"></a>-p 1521:1521 -p 5500:5500 \</span>
+<span id="cb67-3"><a href="#cb67-3"></a>-e ORACLE_SID=TDOAG \</span>
+<span id="cb67-4"><a href="#cb67-4"></a>-e ORACLE_PDB=PDB1 \</span>
+<span id="cb67-5"><a href="#cb67-5"></a>oracle/database:19.3.0-ee</span></code></pre></div>
+<p>The problem with this container is, that the DB is now create in the read/write layer of the container. Beside this <code>docker run</code> has been executed without detach. If you cancel the command, the container will be stopped.</p>
+<p>To create a container and run it in deamon mode use the <code>-d</code> option.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb68-1"><a href="#cb68-1"></a><span class="ex">docker</span> run --name doag193 \</span>
+<span id="cb68-2"><a href="#cb68-2"></a>-p 1521:1521 -p 5500:5500 \</span>
+<span id="cb68-3"><a href="#cb68-3"></a>-e ORACLE_SID=TDOAG \</span>
+<span id="cb68-4"><a href="#cb68-4"></a>-e ORACLE_PDB=PDB1 \</span>
+<span id="cb68-5"><a href="#cb68-5"></a>oracle/database:19.3.0-ee</span></code></pre></div>
+<p>Check the logs</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb69-1"><a href="#cb69-1"></a><span class="ex">docker</span> logs -f doag193</span></code></pre></div>
+<p>The database is ready to use when you see the following strings in the log files.</p>
+<pre><code>#########################
+DATABASE IS READY TO USE!
+#########################</code></pre>
+<p>If not specified by <em>ORACLE_PWD</em> the password for SYS, SYSTEM and PDBADMIN will be generated. It can be reset by the following command.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb71-1"><a href="#cb71-1"></a><span class="ex">docker</span> exec <span class="op">&lt;</span>container name<span class="op">&gt;</span> ./setPassword.sh <span class="op">&lt;</span>your password<span class="op">&gt;</span></span></code></pre></div>
+<h3 id="database-container-with-a-volume">Database Container with a volume</h3>
+<p>This container will be build based on an <a href="https://github.com/oehrlis/docker">oehrlis/docker</a>. See the <a href="https://github.com/oehrlis/docker/blob/master/OracleDatabase/19.0.0.0/README.md">README.md</a> for more run options.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb72-1"><a href="#cb72-1"></a><span class="ex">docker</span> volume create ex08_db_doag194</span></code></pre></div>
+<p>Create the Docker container for 19.4.0.0. We just use a default values and do not configure additional stuff like PDB, custom template etc.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb73-1"><a href="#cb73-1"></a><span class="ex">docker</span> run --name doag194 \</span>
+<span id="cb73-2"><a href="#cb73-2"></a>--hostname doag194 -p 2521:1521 \</span>
+<span id="cb73-3"><a href="#cb73-3"></a>-e ORACLE_SID=TDB194S \</span>
+<span id="cb73-4"><a href="#cb73-4"></a>--volume vol_doag194:/u01 \</span>
+<span id="cb73-5"><a href="#cb73-5"></a>--detach \</span>
+<span id="cb73-6"><a href="#cb73-6"></a>oracle/database:19.4.0.0</span></code></pre></div>
+<p>Check the logs</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb74-1"><a href="#cb74-1"></a><span class="ex">docker</span> logs -f doag194</span></code></pre></div>
+<p>The database is ready to use when you see the following strings in the log files.</p>
+<pre><code>---------------------------------------------------------------
+ - DATABASE TDB194S IS READY TO USE!
+---------------------------------------------------------------</code></pre>
+<p>Password for the Oracle users e.g. SYS and SYSTEM is create when not specified via <em>ORACLE_PWD</em>. It is visible in the Docker log as well in the DB admin directory</p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb76-1"><a href="#cb76-1"></a><span class="ex">docker</span> logs doag194<span class="kw">|</span><span class="fu">grep</span> -i password</span>
+<span id="cb76-2"><a href="#cb76-2"></a></span>
+<span id="cb76-3"><a href="#cb76-3"></a>    <span class="ex">Oracle</span> Database Server auto generated password:</span>
+<span id="cb76-4"><a href="#cb76-4"></a>    <span class="ex">----</span><span class="op">&gt;</span> Password    : U3SQ8XFwIl</span>
+<span id="cb76-5"><a href="#cb76-5"></a><span class="ex">ORACLE</span> PASSWORD FOR SYS, SYSTEM AND PDBADMIN: U3SQ8XFwIl</span></code></pre></div>
+<h3 id="database-container-with-a-bind-mount">Database Container with a bind mount</h3>
+<p>This container will be build based on an <a href="https://github.com/oehrlis/docker">oehrlis/docker</a>. See the <a href="https://github.com/oehrlis/docker/blob/master/OracleDatabase/19.0.0.0/README.md">README.md</a> for more run options.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb77-1"><a href="#cb77-1"></a><span class="fu">mkdir</span> /u01/volumes/doag195</span></code></pre></div>
+<p>Create the Docker container for 19.5.0.0. We just use a default values and do not configure additional stuff like PDB, custom template etc.</p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb78-1"><a href="#cb78-1"></a><span class="ex">docker</span> run --name doag195 \</span>
+<span id="cb78-2"><a href="#cb78-2"></a>--hostname doag195 -p 3521:1521 \</span>
+<span id="cb78-3"><a href="#cb78-3"></a>-e ORACLE_SID=TDB195S \</span>
+<span id="cb78-4"><a href="#cb78-4"></a>--volume /u01/volumes/doag195:/u01 \</span>
+<span id="cb78-5"><a href="#cb78-5"></a>--detach \</span>
+<span id="cb78-6"><a href="#cb78-6"></a>oracle/database:19.5.0.0</span></code></pre></div>
+<p>Check the logs</p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb79-1"><a href="#cb79-1"></a><span class="ex">docker</span> logs -f doag195</span></code></pre></div>
+<p>The database is ready to use when you see the following strings in the log files.</p>
+<pre><code>---------------------------------------------------------------
+ - DATABASE TDB195S IS READY TO USE!
+---------------------------------------------------------------</code></pre>
+<p>Password for the Oracle users e.g. SYS and SYSTEM is create when not specified via <em>ORACLE_PWD</em>. It is visible in the Docker log as well in the DB admin directory</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb81-1"><a href="#cb81-1"></a><span class="ex">docker</span> logs doag195<span class="kw">|</span><span class="fu">grep</span> -i password</span>
+<span id="cb81-2"><a href="#cb81-2"></a></span>
+<span id="cb81-3"><a href="#cb81-3"></a>    <span class="ex">Oracle</span> Database Server auto generated password:</span>
+<span id="cb81-4"><a href="#cb81-4"></a>    <span class="ex">----</span><span class="op">&gt;</span> Password    : U3SQ8XFwIl</span>
+<span id="cb81-5"><a href="#cb81-5"></a><span class="ex">ORACLE</span> PASSWORD FOR SYS, SYSTEM AND PDBADMIN: U3SQ8XFwIl</span></code></pre></div>
+<h3 id="database-container-with-predefined-volume">Database Container with predefined volume</h3>
+<p>This container will be build based on an <a href="https://github.com/oehrlis/docker">oehrlis/docker</a>. See the <a href="https://github.com/oehrlis/docker/blob/master/OracleDatabase/19.0.0.0/README.md">README.md</a> for more run options.</p>
+<p>Create the Docker container for 19.4.0.0. The <code>docker-compose.yml</code> file does include the parameters to configure a CONTAINER DB as well other stuff.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb82-1"><a href="#cb82-1"></a><span class="ex">docker-compose</span> up -d</span></code></pre></div>
+<p>Check the logs</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb83-1"><a href="#cb83-1"></a><span class="ex">docker-compose</span> logs -f </span></code></pre></div>
+<p>The database is ready to use when you see the following strings in the log files.</p>
+<pre><code>---------------------------------------------------------------
+ - DATABASE TDB190C IS READY TO USE!
+---------------------------------------------------------------</code></pre>
+<p>Password for the Oracle users e.g. SYS and SYSTEM is create when not specified via <em>ORACLE_PWD</em>. It is visible in the Docker log as well in the DB admin directory</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb85-1"><a href="#cb85-1"></a><span class="ex">docker</span> logs tdb190c<span class="kw">|</span><span class="fu">grep</span> -i password</span></code></pre></div>
+</div>
+<h2 id="exercise-9-accessing-database-container">Exercise 9: Accessing database container</h2>
+<h3 id="exercise-goals-8">Exercise Goals</h3>
+<p>Be able to access and use the Docker database container</p>
+<h3 id="tasks-8">Tasks</h3>
+<ul>
+<li>Access Docker container via shell</li>
+<li>Access Docker container via SQLPlus / SQL Developer</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-9-accessing-database-container">Solution 9: Accessing database container</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Access Docker container via shell</li>
+<li>Access Docker container via SQLPlus / SQL Developer</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="detailed-solution-1">Detailed Solution</h3>
+<p>Access the container via Shell (user oracle is default)</p>
+<div class="sourceCode" id="cb86"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb86-1"><a href="#cb86-1"></a><span class="ex">docker</span> exec -it -u oracle tdb190c bash --login</span></code></pre></div>
+<p>Sometimes there could be issues with the terminal columns</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb87-1"><a href="#cb87-1"></a><span class="ex">docker</span> exec -e COLUMNS=<span class="st">&quot;</span><span class="kw">`</span><span class="ex">tput</span> cols<span class="kw">`</span><span class="st">&quot;</span> -e LINES=<span class="st">&quot;</span><span class="kw">`</span><span class="ex">tput</span> lines<span class="kw">`</span><span class="st">&quot;</span> -it -u oracle tdb190c bash --login</span></code></pre></div>
+<p>You can also access the container as root</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb88-1"><a href="#cb88-1"></a><span class="ex">docker</span> exec -it -u root tdb190c bash --login</span></code></pre></div>
+<p>Or start SQL*Plus instead</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb89-1"><a href="#cb89-1"></a><span class="ex">docker</span> exec -it tdb190c sqlplus <span class="st">&quot;/ as sysdba&quot;</span></span></code></pre></div>
+<p>You can also access the container from outside via port forwarding.</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb90-1"><a href="#cb90-1"></a><span class="ex">docker</span> logs tdb190c<span class="kw">|</span><span class="fu">grep</span> -i password</span>
+<span id="cb90-2"><a href="#cb90-2"></a><span class="ex">sqlplus</span> sys/BoWfrrxGO7@localhost:9000/TDB190C</span></code></pre></div>
+<p>You can also access the container from outside via port forwarding.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb91-1"><a href="#cb91-1"></a><span class="ex">docker</span> inspect tdb190c</span>
+<span id="cb91-2"><a href="#cb91-2"></a><span class="ex">sqlplus</span> sys/BoWfrrxGO7@172.17.0.4:1521/TDB190C as sysdba</span></code></pre></div>
+<p>If you prepared port forwarding in ssh you can also access from the local PC.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb92-1"><a href="#cb92-1"></a><span class="fu">ssh</span> -L 9000:127.0.0.1:9000 -i id_rsa_doag2019 opc@ol7docker00.trivadislabs.com</span></code></pre></div>
+<p>Or even a bit more for exercise 12</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb93-1"><a href="#cb93-1"></a><span class="fu">ssh</span> -L 5389:127.0.0.1:5389 \</span>
+<span id="cb93-2"><a href="#cb93-2"></a>    -L 5636:127.0.0.1:5636 \</span>
+<span id="cb93-3"><a href="#cb93-3"></a>    -L 5444:127.0.0.1:5444 \</span>
+<span id="cb93-4"><a href="#cb93-4"></a>    -L 5001:127.0.0.1:5001 \</span>
+<span id="cb93-5"><a href="#cb93-5"></a>    -L 5002:127.0.0.1:5002 \</span>
+<span id="cb93-6"><a href="#cb93-6"></a>    -L 5521:127.0.0.1:5521 \</span>
+<span id="cb93-7"><a href="#cb93-7"></a>    -i id_rsa_doag2019 opc@ol7docker00.trivadislabs.com</span></code></pre></div>
+</div>
+<h2 id="exercise-10-oracle-unified-audit-setup">Exercise 10: Oracle Unified Audit Setup</h2>
+<h3 id="exercise-goals-9">Exercise Goals</h3>
+<p>Use the startup / setup script folder to customize the database Docker container. In this exercise using Oracle Unified Directory as an example.</p>
+<h3 id="tasks-9">Tasks</h3>
+<ul>
+<li>Review the setup scripts</li>
+<li>Refine a <code>docker-compose.yml</code> file</li>
+<li>Create a Docker container using <code>docker-compose</code> and review the database configuration. In particular the Unified Audit configuration.</li>
+<li>Re-create the Docker container using <code>docker-compose</code> to see that Oracle Unified Audit gets linked again</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="additions-to-the-solution">Additions to the Solution</h3>
+<ul>
+<li>The <code>docker-compose</code> file does include the services for Oracle 12.2, 18c and 19c. But the services <strong>tua122</strong> and <strong>tua180</strong> are commented out.</li>
+<li>The database is pre-configured in volume <em>db-tua190</em> if used a different Oracle version the DB may have to be created.</li>
+</ul>
+</div>
+<h2 id="solution-10-oracle-unified-audit-setup">Solution 10: Oracle Unified Audit Setup</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Review the configuration in <code>docker-compose.yml</code> and the scripts defined in setup / startup folder.</li>
+<li>Create / start a container based on 19.4.0.0 with the service <em>tua190</em>.</li>
+<li>Stop and remove the container.</li>
+<li>Re-create a container based on 19.4.0.0 with the service <em>tua190</em>.</li>
+<li>Review the database configuration and Oracle Unified Directory status.</li>
+<li>Optional: Reconfigure Unified Audit Policies.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information-3">Background Information</h3>
+<p>This example shows how to enable Unified Audit an Oracle database in a Docker Container. The persistent data (e.g. data files, config files etc.) is stored on an external volume. The startup script <code>01_check_unified_audit.sh</code> will check if Oracle Unified Audit is enabled if not it will stop the database, relink Oracle and start the database again. Some prerequisites and basic principles:</p>
+<ul>
+<li><code>01_check_unified_audit.sh</code> does check if Oracle Unified Audit is enabled. If not it will stop the database, relink Oracle and start the database again</li>
+<li>Script can be put in the startup as well setup folder.</li>
+<li>Setup folder does provide a couple of additional Scripts</li>
+</ul>
+<table>
+<colgroup>
+<col style="width: 52%" />
+<col style="width: 47%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="01_check_unified_audit.sh">01_check_unified_audit.sh</a></td>
+<td>Script to check and enable unified audit.</td>
+</tr>
+<tr class="even">
+<td><a href="02_create_scott_pdb1.sql">02_create_scott_pdb1.sql</a></td>
+<td>Script to create the SCOTT schema.</td>
+</tr>
+<tr class="odd">
+<td><a href="03_create_tvd_hr_pdb1.sql">03_create_tvd_hr_pdb1.sql</a></td>
+<td>Main script to create the TVD_HR schema in PDB1.</td>
+</tr>
+<tr class="even">
+<td><a href="04_config_audit.sql">04_config_audit.sql</a></td>
+<td>Script to config unified audit.</td>
+</tr>
+<tr class="odd">
+<td><a href="05_clone_pdb1_pdb2.sql">05_clone_pdb1_pdb2.sql</a></td>
+<td>Script to clone PDB1 to PDB2.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="run-the-oracle-database-unified-audit">Run the Oracle Database Unified Audit</h3>
+<p>Update the <code>docker-compose.yml</code> file and set the desired base image. Default is 19.4.0.0.</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb94-1"><a href="#cb94-1"></a><span class="ex">vi</span> docker-compose.yml</span></code></pre></div>
+<p>Create a container <strong>tua190</strong>, <strong>tua180</strong> or <strong>tua122</strong> using <code>docker-compose</code>. This will also create the corresponding database <em>TUA190</em>, <em>TUA180</em> respectively <em>TUA122</em>. It is important to specify the service when calling <code>docker-compose</code> otherwise all three container and databases will be created.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb95-1"><a href="#cb95-1"></a><span class="ex">docker-compose</span> up -d tua190</span></code></pre></div>
+<p>Monitor the progress of database creation using <code>docker-compose</code>.</p>
+<div class="sourceCode" id="cb96"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb96-1"><a href="#cb96-1"></a><span class="ex">docker-compose</span> logs -f</span></code></pre></div>
+<p>The database is ready when you see the following message in your docker logs.</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb97-1"><a href="#cb97-1"></a><span class="ex">---------------------------------------------------------------</span></span>
+<span id="cb97-2"><a href="#cb97-2"></a> <span class="ex">-</span> DATABASE TUA190 IS READY TO USE!</span>
+<span id="cb97-3"><a href="#cb97-3"></a><span class="ex">---------------------------------------------------------------</span></span></code></pre></div>
+<p>You now can shutdown and destroy the container using <code>docker-compose</code>. Database will remain since it is stored on a voluem / bind-mount folder.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb98-1"><a href="#cb98-1"></a><span class="ex">docker-compose</span> down</span></code></pre></div>
+<p>Re-create the container <strong>tua190</strong> using <code>docker-compose</code>. The database <em>TUA190</em> will be reused. The run script <code>50_run_database.sh</code> will make sure make sure, that the scripts in the <a href="config/startup">startup</a> folder are executed. This includes <code>01_check_unified_audit.sh</code>.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb99-1"><a href="#cb99-1"></a><span class="ex">docker-compose</span> up -d tua190</span></code></pre></div>
+<p>Monitor the progress of database startup / datapach using <code>docker-compose</code>.</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb100-1"><a href="#cb100-1"></a><span class="ex">docker-compose</span> logs -f</span></code></pre></div>
+<p>Connect to the database via Shell or SQLPlus and check your Oracle Audit Configuration.</p>
+<h3 id="customization">Customization</h3>
+<p>By default the volume will be created in the directory specified by the environment variable <em>DOCKER_VOLUME_BASE</em>. If the environment variable is not specified, it will use the default value from <code>*.env</code> which is the current path. Beside the usual changes e.g. container name, hostname, ports etc. you can configure how the DB itself will be created by specify several configuration parameter.</p>
+<ul>
+<li><strong>ORACLE_SID</strong> Default Oracle SID. Usually it will default to the variable which has been specified during build. A custom SID can / should be specified. Default is either <em>TUA190</em>, <em>TUA180</em> or <em>TUA122</em>.</li>
+<li><strong>ORACLE_PDB</strong> Default PDB name, if <em>CONTAINER</em> is set to <code>TRUE</code> (default <code>PDB1</code>)</li>
+<li><strong>CONTAINER</strong> Flag to create a container or single tenant database. Default set to <code>FALSE</code>.</li>
+<li><strong>ORACLE_PWD</strong> Custom admin password for common admin user like SYS and SYSTEM. If not specified a random password will be generated.</li>
+<li><strong>INSTANCE_INIT</strong> Folder for customize setup and startup. The database create script will look for a folder <code>setup</code> during initial setup or <code>startup</code> during each container startup. All bash <code>.sh</code> scripts as well sql <code>.sql</code> script will be executed. Make sure to add a sequence to keep the order of the scripts. In this use case we will set the <em>INSTANCE_INIT</em> to <code>/u01/config</code> which is mapped to the local <a href="config">config</a> folder. <code>/u01/config</code><br />
+</li>
+<li><strong>ORADBA_TEMPLATE_PREFIX</strong> Prefix to use a custom dbca template or the general purpose default template. By default this variable is not set. In this case dbca will use the general purpose template with the starter database. If set to <code>custom_</code> dbca will use a custom template to create a fresh database. This will take longer since the database will be create from scratch.</li>
+</ul>
+</div>
+<h2 id="exercise-11-oracle-ru-with-datapatch">Exercise 11: Oracle RU with datapatch</h2>
+<h3 id="exercise-goals-10">Exercise Goals</h3>
+<p>See how to install a Oracle RU in a dockerized database.</p>
+<h3 id="tasks-10">Tasks</h3>
+<ul>
+<li>Review scripts defined in setup / startup folder.</li>
+<li>Create a container based on 19.4.0.0 (Volume / database is pre-configured)</li>
+<li>Stop and remove the container.</li>
+<li>Update the <code>docker-compose.yml</code> file to match the new Docker image.</li>
+<li>Create a container based on 19.5.0.0.</li>
+<li>Review the database configuration and patch status.</li>
+<li>Optional: switch back to old Docker image.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-11-oracle-ru-with-datapatch">Solution 11: Oracle RU with datapatch</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Review the configuration in <code>docker-compose.yml</code> and the scripts defined in setup / startup folder.</li>
+<li>Choose either <em>tcpu01</em> or <em>tcpu02</em> database service to work with.
+<ul>
+<li><em>tcpu01</em> Single tenant database with full option installed eg. JAVA, XDB etc.</li>
+<li><em>tcpu02</em> Single tenant database with minimal option installed.</li>
+</ul></li>
+<li>Create / start a container based on 19.4.0.0</li>
+<li>Stop and remove the container.</li>
+<li>Update the <code>docker-compose.yml</code> file to match the new Docker image.</li>
+<li>Create a container based on 19.5.0.0.</li>
+<li>Review the database configuration and patch status.</li>
+<li>Optional: switch back to old Docker image.</li>
+<li>Optional: Do the same test with the other service e.g. <em>tcpu01</em> or <em>tcpu02</em>.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information-4">Background Information</h3>
+<p>This example shows how to install an Oracle release update (RU) on an Oracle database in a Docker Container. The persistent data (e.g. data files, config files etc.) is stored on an external volume. This allows to stop /remove the container and create a new one based on a Docker image with additional RU’s, patch etc. The startup script <code>00_run_datapatch.sh</code> will run Oracle <em>datapatch</em> to apply / rollback the patch in the database. Some prerequisites and basic principles:</p>
+<ul>
+<li><code>00_run_datapatch.sh</code> does check if you database has java installed. If so, it will restart the database in upgrade mode to run <em>datapatch</em>.</li>
+<li>If database is a container database the PDB’s will be open to run datapatch.</li>
+<li>This use case does only run within an Oracle major release eg. 19.x.0.0 or 18.x.0.0 but not as an method to upgrade from 18c to 19c.</li>
+<li>It is relevant it you have a basic container with an RU or any kind of one-off patch.</li>
+</ul>
+<p>The following figure illustrates the patch process of an Oracle database container.</p>
+<figure>
+<img src="../../doc/images/patch_database.png" alt="" /><figcaption>Patch Database Container</figcaption>
+</figure>
+<h3 id="run-the-patch-update">Run the Patch Update</h3>
+<p>Update the <code>docker-compose.yml</code> file and set the desired base image. Default is 19.4.0.0.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb101-1"><a href="#cb101-1"></a><span class="ex">vi</span> docker-compose.yml</span></code></pre></div>
+<p>Create a container <strong>tcpu01</strong> using <code>docker-compose</code>. This will also create an initial database <em>TCPU01</em>.</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb102-1"><a href="#cb102-1"></a><span class="ex">docker-compose</span> up -d tcpu01</span></code></pre></div>
+<p>Monitor the progress of database creation using <code>docker-compose</code>.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb103-1"><a href="#cb103-1"></a><span class="ex">docker-compose</span> logs -f </span></code></pre></div>
+<p>The database is ready when you see the following message in your docker logs.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb104-1"><a href="#cb104-1"></a><span class="ex">---------------------------------------------------------------</span></span>
+<span id="cb104-2"><a href="#cb104-2"></a> <span class="ex">-</span> DATABASE TDB194S IS READY TO USE!</span>
+<span id="cb104-3"><a href="#cb104-3"></a><span class="ex">---------------------------------------------------------------</span></span></code></pre></div>
+<p>You now can shutdown and destroy the container using <code>docker-compose</code>. Database will remain since it is stored on a voluem / bind-mount folder.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb105-1"><a href="#cb105-1"></a><span class="ex">docker-compose</span> down</span></code></pre></div>
+<p>Update the <code>docker-compose.yml</code> file and set the desired base image. e.g 19.5.0.0.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb106-1"><a href="#cb106-1"></a><span class="ex">vi</span> docker-compose.yml</span></code></pre></div>
+<p>Re-create the container <strong>tcpu01</strong> using <code>docker-compose</code>. The database <em>TCPU01</em> will be reused. The run script <code>50_run_database.sh</code> will make sure, that the scripts in the <a href="config/startup">startup</a> folder are executed. This includes <code>00_run_datapatch.sh</code>.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb107-1"><a href="#cb107-1"></a><span class="ex">docker-compose</span> up -d tcpu01</span></code></pre></div>
+<p>Monitor the progress of database startup / datapach using <code>docker-compose</code>.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb108-1"><a href="#cb108-1"></a><span class="ex">docker-compose</span> logs -f</span></code></pre></div>
+<p>You may also run the use case to downgrade / remove an existing RU.</p>
+<h3 id="customization-1">Customization</h3>
+<p>By default the volume will be created in the directory specified by the environment variable <em>DOCKER_VOLUME_BASE</em>. If the environment variable is not specified, it will use the default value from <code>*.env</code> which is the current path. Beside the usual changes e.g. container name, hostname, ports etc. you can configure how the DB itself will be created by specify several configuration parameter.</p>
+<ul>
+<li><strong>ORACLE_SID</strong> Default Oracle SID. Usually it will default to the variable which has been specified during build. A custom SID can / should be specified.</li>
+<li><strong>ORACLE_PDB</strong> Default PDB name, if <em>CONTAINER</em> is set to <code>TRUE</code> (default <code>PDB1</code>)</li>
+<li><strong>CONTAINER</strong> Flag to create a container or single tenant database. Default set to <code>FALSE</code>.</li>
+<li><strong>ORACLE_PWD</strong> Custom admin password for common admin user like SYS and SYSTEM. If not specified a random password will be generated.</li>
+<li><strong>INSTANCE_INIT</strong> Folder for customize setup and startup. The database create script will look for a folder <code>setup</code> during initial setup or <code>startup</code> during each container startup. All bash <code>.sh</code> scripts as well sql <code>.sql</code> script will be executed. Make sure to add a sequence to keep the order of the scripts. In this use case we will set the <em>INSTANCE_INIT</em> to <code>/u01/config</code> which is mapped to the local <a href="config">config</a> folder. <code>/u01/config</code><br />
+</li>
+<li><strong>ORADBA_TEMPLATE_PREFIX</strong> Prefix to use a custom dbca template or the general purpose default template. By default this variable is not set. In this case dbca will use the general purpose template with the starter database. If set to <code>custom_</code> dbca will use a custom template to create a fresh database. This will take longer since the database will be create from scratch.</li>
+</ul>
+</div>
+<h2 id="exercise-12-oracle-enterprise-user-security">Exercise 12: Oracle Enterprise User Security</h2>
+<h3 id="exercise-goals-11">Exercise Goals</h3>
+<ul>
+<li>See how a more complex test environment can be setup using <code>docker-compose</code></li>
+<li>Test Oracle Enterprise User Security.</li>
+</ul>
+<h3 id="tasks-11">Tasks</h3>
+<ul>
+<li>Review the <code>docker-compose.yml</code></li>
+<li>Start the container using <code>docker-compose</code></li>
+<li>Test Oracle Names Resolution within the database container.</li>
+<li>Test EUS Login within the database container.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-12-oracle-enterprise-user-security">Solution 12: Oracle Enterprise User Security</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Review the <code>docker-compose.yml</code></li>
+<li>Start the container using <code>docker-compose</code></li>
+<li>Test Oracle Names Resolution within the database container.</li>
+<li>Test EUS Login within the database container.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="background-information-5">Background Information</h3>
+<p>This example shows how to configure an Oracle Database with Enterprise User Security and Oracle Unified directory. The persistent data (e.g. data files, config files etc.) is stored on an external volume. The start scripts are configured in the way, that the database does register itself in OUD and then configure EUS. Some prerequisites and basic principles:</p>
+<ul>
+<li>To automate the setup the two container do share a common configuration directory <code>./oud</code>. This allows to share information like the <em>eusadmin</em> password and the trusted <em>certificate</em>.</li>
+<li>The compose file does also include a service for OUDSM.</li>
+<li>The setup of Oracle Unified Directory includes a sample set of directory users.</li>
+<li>The database does setup an HR schema suitable for the sample schema.</li>
+</ul>
+<p>The following figure illustrates the an Oracle Database and Oracle Unified Directory container with Enterprise User Security (EUS).</p>
+<figure>
+<img src="../../doc/images/eus_docker.png" alt="" /><figcaption>Oracle EUS with OUD standalone in Docker</figcaption>
+</figure>
+<p>Oracle Unified Directory does use the following scripts to setup the OUD with EUS:</p>
+<ul>
+<li><code>00_init_environment</code> File for setting the instance-specific environment. The setup scripts are based on the OUD Base environment.</li>
+<li><code>01_create_eus_instance.sh</code> Script to create the OUD instance with EUS context using oud-setup.</li>
+<li><code>02_config_basedn.sh</code> Wrapper script to configure base DN and add ou’s for users and groups.</li>
+<li><code>02_config_basedn.ldif</code> LDIF file loaded by wrapper script <code>02_config_basedn.sh</code>.</li>
+<li><code>03_config_eus_realm.sh</code> Wrapper script to configure EUS realm to the OUD instance.</li>
+<li><code>03_config_eus_realm.ldif]</code> LDIF file loaded by wrapper script <code>03_config_eus_realm.sh</code>.</li>
+<li><code>04_config_oud.sh</code> Wrapper script to configure the OUD instance.</li>
+<li><code>04_config_oud.conf</code> dsconfig batch file loaded by wrapper script <code>04_config_oud.sh</code>.</li>
+<li><code>05_update_directory_manager.sh</code> Adjust cn=Directory Manager to use new password storage scheme</li>
+<li><code>06_create_root_users.sh</code> Wrapper script to create additional root user.</li>
+<li><code>06_create_root_users.conf</code> dsconfig batch file loaded by wrapper script <code>06_create_root_users.sh</code>.</li>
+<li><code>06_create_root_users.ldif</code> LDIF file loaded by wrapper script <code>06_create_root_users.sh</code>.</li>
+<li><code>07_create_eusadmin_users.sh</code> Script to create EUS Context Admin according to MOS Note 1996363.1.</li>
+<li><code>08_create_demo_users.sh</code> Wrapper script to create a couple of users and groups.</li>
+<li><code>08_create_demo_users.ldif</code> LDIF file loaded by wrapper script <code>08_create_demo_users.sh</code>.</li>
+<li><code>09_migrate_keystore.sh</code> Script to migrate the java keystore to PKCS12.</li>
+<li><code>10_export_trustcert_keystore.sh</code> Script to export the java keystore to PKCS12.</li>
+<li><code>11_create_eus_ou_tree.conf</code> dsconfig batch file loaded by wrapper script <code>11_create_eus_ou_tree.sh</code>.</li>
+<li><code>11_create_eus_ou_tree.ldif</code> LDIF file loaded by wrapper script <code>03_config_eus_realm.sh</code>.</li>
+<li><code>11_create_eus_ou_tree.sh</code> Script to create additional root user.</li>
+</ul>
+<p>The Database does run the fallowing scripts during initial setup:</p>
+<ul>
+<li><code>01_create_scott.sql</code> Wrapper script for <code>utlsampl.sql</code> to create the SCOTT schema.</li>
+<li><code>02_create_tvd_hr.sql</code> Script to create the TVD_HR schema. TVD_HR schema corresponds to Oracle’s standard HR schema. The data has been adjusted so that it matches the example LDAP data of <em>trivadislabs.com</em> |</li>
+<li><code>03_eus_registration.sh</code> Script to register database in OUD instance using <code>dbca</code>.</li>
+<li><code>04_eus_config.sql</code> Script to create the EUS schemas for global shared and private schemas.</li>
+<li><code>05_eus_mapping.sh</code> Script to create the EUS mapping to different global shared and private schemas as well global roles.</li>
+<li><code>06_keystore_import_trustcert.sh</code> Script to import the trust certificate into java keystore.</li>
+</ul>
+<h3 id="use-predefined-volumes">Use predefined Volumes</h3>
+<p>Since it takes a while to setup the database, we have predefined volumes for OUD, OUDSM and the database.</p>
+<ul>
+<li>Create and start all containers</li>
+</ul>
+<div class="sourceCode" id="cb109"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb109-1"><a href="#cb109-1"></a><span class="ex">docker-compose</span> up -d</span></code></pre></div>
+<ul>
+<li>check the status of the containers</li>
+</ul>
+<div class="sourceCode" id="cb110"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb110-1"><a href="#cb110-1"></a><span class="ex">docker-compose</span> logs -f</span></code></pre></div>
+<h3 id="re-create-the-containers">Re-Create the Containers</h3>
+<p>To see how the EUS setup does work, it make sense to remove the volumes and create everything from scratch.</p>
+<ul>
+<li>remove the volumes</li>
+</ul>
+<div class="sourceCode" id="cb111"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb111-1"><a href="#cb111-1"></a><span class="ex">docker</span> volume rm ex12_db-eusdb</span>
+<span id="cb111-2"><a href="#cb111-2"></a><span class="ex">docker</span> volume rm ex12_oud-eusoud</span>
+<span id="cb111-3"><a href="#cb111-3"></a><span class="ex">docker</span> volume rm ex12_oud-eusoudsm</span></code></pre></div>
+<ul>
+<li>Create and start all containers. This will take a while until the database is created.</li>
+</ul>
+<div class="sourceCode" id="cb112"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb112-1"><a href="#cb112-1"></a><span class="ex">docker-compose</span> up -d</span></code></pre></div>
+<ul>
+<li>check the status of the containers</li>
+</ul>
+<div class="sourceCode" id="cb113"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb113-1"><a href="#cb113-1"></a><span class="ex">docker-compose</span> logs -f</span></code></pre></div>
+<h3 id="test-eus">Test EUS</h3>
+<p>Test the EUS configuration using sqlplus. Alternatively you can also connect SQLDeveloper, etc.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb114-1"><a href="#cb114-1"></a><span class="ex">sqlplus</span> king/LAB01schulung@localhost:5521/TEUS01</span>
+<span id="cb114-2"><a href="#cb114-2"></a></span>
+<span id="cb114-3"><a href="#cb114-3"></a><span class="ex">@db/scripts/sousrinf</span></span></code></pre></div>
+<p>Check the session context</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb115-1"><a href="#cb115-1"></a><span class="kw">set</span> linesize <span class="dv">160</span> pagesize <span class="dv">200</span></span>
+<span id="cb115-2"><a href="#cb115-2"></a>col NAMESPACE <span class="cf">for</span> a30</span>
+<span id="cb115-3"><a href="#cb115-3"></a>col <span class="kw">ATTRIBUTE</span> <span class="cf">for</span> a30</span>
+<span id="cb115-4"><a href="#cb115-4"></a>col <span class="fu">VALUE</span> <span class="cf">for</span> a50</span>
+<span id="cb115-5"><a href="#cb115-5"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> session_context;</span>
+<span id="cb115-6"><a href="#cb115-6"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> session_roles;</span></code></pre></div>
+<p>Select <em>employee</em> table as user <em>king</em>.</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb116-1"><a href="#cb116-1"></a>conn king<span class="op">/</span>LAB01schulung</span>
+<span id="cb116-2"><a href="#cb116-2"></a><span class="kw">SELECT</span> first_name,last_name,email <span class="kw">FROM</span> tvd_hr.employees;</span></code></pre></div>
+<p>Select <em>employee</em> table as user <em>bond</em>.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb117-1"><a href="#cb117-1"></a>conn bond<span class="op">/</span>LAB01schulung</span>
+<span id="cb117-2"><a href="#cb117-2"></a><span class="kw">SELECT</span> first_name,last_name,email <span class="kw">FROM</span> tvd_hr.employees;</span></code></pre></div>
+<p>Select <em>employee</em> table as user <em>moneypenny</em>.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb118-1"><a href="#cb118-1"></a>conn moneypenny<span class="op">/</span>LAB01schulung</span>
+<span id="cb118-2"><a href="#cb118-2"></a><span class="kw">SELECT</span> first_name,last_name,email <span class="kw">FROM</span> tvd_hr.employees;</span></code></pre></div>
+<p>VPD does limit the access to tvd_hr.employees based on LDAP attributes.</p>
+</div>
+<h2 id="exercise-13-oracle-pdb">Exercise 13: Oracle PDB</h2>
+<h3 id="exercise-goals-12">Exercise Goals</h3>
+<p>Plugin an existing PDB into a new container.</p>
+<h3 id="tasks-12">Tasks</h3>
+<ul>
+<li>Create the <code>docker-compose.yml</code> for a Oracle Container Database</li>
+<li>Prepare the scripts to look for the PDB.</li>
+<li>Start the container and plugin the PDB.</li>
+<li>Verify the status of the PDB.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-13-oracle-pdb">Solution 13: Oracle PDB</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Create the <code>docker-compose.yml</code> for a Oracle Container Database</li>
+<li>Prepare the scripts to look for the PDB.</li>
+<li>Start the container and plugin the PDB.</li>
+<li>Verify the status of the PDB.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="detailed-solution-2">Detailed Solution</h3>
+<p>The detailed solution is still pending. You find the fallowing information prepared:</p>
+<ul>
+<li><code>docker-compose.yml</code> file for a container tcdb190 with a CDB TCDB190 based on Oracle 19.5.0.0</li>
+<li>config scripts to setup SCOTT and HR schemas</li>
+<li>Script to clone PDB1 to PDB2</li>
+</ul>
+<p>You can work out the following solutions:</p>
+<ul>
+<li>create the container TCDB190</li>
+<li>create a script to unplugg a PDB</li>
+<li>create a script to plug in a PDB on startup</li>
+</ul>
+</div>
+<h2 id="exercise-14-oracle-rac-with-docker">Exercise 14: Oracle RAC with Docker</h2>
+<h3 id="exercise-goals-13">Exercise Goals</h3>
+<p>Setup a simple RAC based test environment on Docker</p>
+<h3 id="tasks-13">Tasks</h3>
+<ul>
+<li>Create the Docker network.</li>
+<li>Create a RAC storage server Docker container.</li>
+<li>Create a NFS volume</li>
+<li>Creating the Docker GI and RAC Container</li>
+<li>Assign networks to RAC containers</li>
+<li>Adding a RAC Node using a Docker container</li>
+<li>Connecting to RAC Database</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-14-oracle-rac-with-docker">Solution 14: Oracle RAC with Docker</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>Create the Docker network.</li>
+<li>Create a RAC storage server Docker container.</li>
+<li>Create a NFS volume</li>
+<li>Creating the Docker GI and RAC Container</li>
+<li>Assign networks to RAC containers</li>
+<li>Adding a RAC Node using a Docker container</li>
+<li>Connecting to RAC Database</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="detailed-solution-3">Detailed Solution</h3>
+<p>Setup Oracle RAC on docker is well documented in the Oracle Git repository <a href="https://github.com/oracle/docker-images">oracle/docker-images</a> respectively in <a href="https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/README.md">README.md</a>.</p>
+<p>-<a href="%5BOracleConnectionManager/README.md%5D(https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleConnectionManager/README.md)">OracleConnectionManager/README.md</a> -<a href="%5BOracleConnectionManager/README.md%5D(https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleRACStorageServer/README.md)">OracleRACStorageServer/README.md</a> -<a href="%5BOracleConnectionManager/README.md%5D(https://github.com/oracle/docker-images/blob/master/OracleDatabase/RAC/OracleRealApplicationClusters/README.md)">OracleRealApplicationClusters/README.md</a></p>
+</div>
+<h2 id="exercise-15-container-monitoring">Exercise 15: Container Monitoring</h2>
+<h3 id="exercise-goals-14">Exercise Goals</h3>
+<p>Test the different Monitoring solutions for Oracle databases on Docker.</p>
+<h3 id="tasks-14">Tasks</h3>
+<ul>
+<li>configure and review HEALTHCHECK</li>
+<li>Setup and configure Prometheus</li>
+<li>Setup and configure Grafana.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h2 id="solution-15-container-monitoring">Solution 15: Container Monitoring</h2>
+<p>The following steps are performed in this exercise:</p>
+<ul>
+<li>configure and review HEALTHCHECK</li>
+<li>Setup and configure Prometheus</li>
+<li>Setup and configure Grafana.</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+<h3 id="docker-healthcheck">Docker HEALTHCHECK</h3>
+<p>During the <code>docker build</code> a HEALTHCHECK script has been specified. This script is execute on a regular basis. The result is visible vi <code>docker ps</code></p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb119-1"><a href="#cb119-1"></a><span class="ex">docker</span> ps</span></code></pre></div>
+<p>Alternatively it is also possible to see the resource used by the container</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb120-1"><a href="#cb120-1"></a><span class="ex">docker</span> stats eusoud</span></code></pre></div>
+<h3 id="prometheus">Prometheus</h3>
+<p>Prometheus will not be set up as part of the DOAG Training Day. See <a href="https://prometheus.io/docs/prometheus/latest/getting_started/">getting started</a></p>
+<h3 id="grafana">Grafana</h3>
+<p>Grafana will not be set up as part of the DOAG Training Day. See <a href="https://grafana.com/docs/guides/getting_started/">getting started</a></p>
+</div>
+<h2 id="additional-exercises">Additional Exercises</h2>
+<p>A couple of ideas for additional exercises:</p>
+<ul>
+<li>Oracle Data Guard</li>
+<li>Oracle Database Backup and Recovery</li>
+<li>Oracle APEX test DB</li>
+</ul>
+<!-- Stuff between the <div class="notes"> will be rendered as pptx slide notes -->
+<div class="notes">
+
+</div>
+<!-- Stuff between the <div class="no notes"> will not be rendered as pptx slide notes -->
+<div class="no notes">
+
+</div>
+<h1 id="appendix-a-setup-oci-environment">Appendix A Setup OCI Environment</h1>
+<h2 id="requirements-and-preparations">Requirements and Preparations</h2>
+<p>The following appendix contains a step-by-step guide on how to set up the Workshop VM in the Oracle Cloud. The different steps are performed via command line and scripts. Alternatively the OCI configurations can be done via OCI Web Console. For the sake of simplicity, we will limit this guide to the OCI command line utility.</p>
+<p>The following prerequisites must be fulfilled:</p>
+<ul>
+<li>Oracle Cloud Infrastructure subscription and access to the OCI console see <a href="https://docs.cloud.oracle.com/iaas/Content/GSG/Tasks/signingin.htm">Oracle Cloud Infrastructure Documentation</a></li>
+<li>Corresponding subscription level to create different resources in OCI (Cloud Credits, up todate billing, etc.) The <a href="https://www.oracle.com/cloud/free/">Oracle Cloud Free Tier</a> does work for basic configuration. But the free OCI compute does not have enough resources to run Oracle Database Docker containers.</li>
+<li>Appropriate Compartment to create the different OCI resources.</li>
+<li>Local installation of the OCI command line tool see <a href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/cliconcepts.htm">OCI Command Line Interface (CLI)</a></li>
+</ul>
+<p>For the workshop <em>O-DB-DOCKER</em> we use a separate compartment, which is also named <em>O-DB-DOCKER</em>. If you follow this guide, you either have to create a compartment with an identical name or adapt the commands accordingly. The creation of a compartment is not discussed here in detail. The workshop itself is setup in Oracle Cloud region <em>Germany Central (Frankfurt)</em> identified as <em>eu-frankfurt-1</em>.</p>
+<p><strong>Disclaim</strong>: This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the <em>O-DB-DOCKER</em> workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk.</p>
+<h3 id="install-oci-cli">Install OCI CLI</h3>
+<p>The installation of the OCI CLI has to be done according to the <a href="https://docs.cloud.oracle.com/iaas/Content/API/Concepts/cliconcepts.htm">OCI documentation</a>. Under MacOS and Linux this is fairly straightforward.</p>
+<ul>
+<li>Download and install OCI. You will have to specify an installation location, update <em>PATH</em> etc.</li>
+</ul>
+<div class="sourceCode" id="cb121"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb121-1"><a href="#cb121-1"></a><span class="fu">bash</span> -c <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<ul>
+<li>Configure oci using the following command. You will be asked for your tenancy OCID, user OCID as well region and configure a SSH key.</li>
+</ul>
+<div class="sourceCode" id="cb122"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb122-1"><a href="#cb122-1"></a><span class="ex">oci</span> setup config</span></code></pre></div>
+<h2 id="create-a-compartment">Create a Compartment</h2>
+<p>Create a compartment for <em>O-DB-DOCKER</em> withing the compartment <em>Compartment_trivadislabs</em>.</p>
+<ul>
+<li>Get the parent compartment id. For O-DB-DOCKER we search for a parent compartment containing <em>trivadislabs</em>.</li>
+</ul>
+<div class="sourceCode" id="cb123"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb123-1"><a href="#cb123-1"></a><span class="va">PARENT_COMP_ID=$(</span><span class="ex">oci</span> search resource free-text-search \</span>
+<span id="cb123-2"><a href="#cb123-2"></a>--text <span class="st">&quot;trivadislabs&quot;</span> \</span>
+<span id="cb123-3"><a href="#cb123-3"></a>--raw-output \</span>
+<span id="cb123-4"><a href="#cb123-4"></a>--query <span class="st">&quot;data.items[*].identifier|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Create the new compartment for <em>O-DB-DOCKER</em>.</li>
+</ul>
+<div class="sourceCode" id="cb124"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb124-1"><a href="#cb124-1"></a><span class="ex">oci</span> iam compartment create \</span>
+<span id="cb124-2"><a href="#cb124-2"></a>--compartment-id <span class="va">$PARENT_COMP_ID</span> \</span>
+<span id="cb124-3"><a href="#cb124-3"></a>--description <span class="st">&quot;DOAG 2019 Training Day Oracle DB in Docker containers&quot;</span> \</span>
+<span id="cb124-4"><a href="#cb124-4"></a>--name <span class="st">&quot;O-DB-DOCKER&quot;</span></span></code></pre></div>
+<p>Create a Virtual Cloud Network (VCN) within the new compartment <em>O-DB-DOCKER</em>.</p>
+<ul>
+<li>Get the compartment id as variable <em>COMPARTMENT_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb125"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb125-1"><a href="#cb125-1"></a><span class="va">COMPARTMENT_OCID=$(</span><span class="ex">oci</span> iam compartment list \</span>
+<span id="cb125-2"><a href="#cb125-2"></a>--compartment-id-in-subtree true --all \</span>
+<span id="cb125-3"><a href="#cb125-3"></a>--raw-output --query <span class="st">&quot;data [?name == &#39;O-DB-DOCKER&#39;].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>create a VCN <em>vcn-o-db-docker</em></li>
+</ul>
+<div class="sourceCode" id="cb126"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb126-1"><a href="#cb126-1"></a><span class="ex">oci</span> network vcn create \</span>
+<span id="cb126-2"><a href="#cb126-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb126-3"><a href="#cb126-3"></a>--cidr-block <span class="st">&quot;10.0.0.0/16&quot;</span> \</span>
+<span id="cb126-4"><a href="#cb126-4"></a>--display-name <span class="st">&quot;vcn-o-db-docker&quot;</span> \</span>
+<span id="cb126-5"><a href="#cb126-5"></a>--dns-label <span class="st">&quot;vcnodbdocker&quot;</span></span></code></pre></div>
+<h2 id="compute-instance">Compute Instance</h2>
+<p>In the following section we will reference to some names eg. host name, compartment name etc. To simplify the upcoming commands we define a couple of environment variables.</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb127-1"><a href="#cb127-1"></a><span class="bu">export</span> <span class="va">HOST_NAME=</span><span class="st">&quot;ol7docker00&quot;</span></span>
+<span id="cb127-2"><a href="#cb127-2"></a><span class="bu">export</span> <span class="va">COMPARTMENT_NAME=</span><span class="st">&quot;O-DB-DOCKER&quot;</span></span></code></pre></div>
+<h3 id="create-compute-instance">Create Compute Instance</h3>
+<p>To create a compute instance we first have to get a few OCID’s for different components.</p>
+<ul>
+<li>Get the compartment id as variable <em>COMPARTMENT_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb128"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb128-1"><a href="#cb128-1"></a><span class="va">COMPARTMENT_OCID=$(</span><span class="ex">oci</span> iam compartment list \</span>
+<span id="cb128-2"><a href="#cb128-2"></a>--compartment-id-in-subtree true --all \</span>
+<span id="cb128-3"><a href="#cb128-3"></a>--raw-output --query <span class="st">&quot;data [?name == &#39;</span><span class="va">${COMPARTMENT_NAME}</span><span class="st">&#39;].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Get the <em>ocid</em> of the Oracle Linux image as variable <em>IMAGE_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb129"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb129-1"><a href="#cb129-1"></a><span class="va">IMAGE_OCID=$(</span><span class="ex">oci</span> compute image list --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb129-2"><a href="#cb129-2"></a>--operating-system-version <span class="st">&quot;7.7&quot;</span> \</span>
+<span id="cb129-3"><a href="#cb129-3"></a>--operating-system <span class="st">&quot;Oracle Linux&quot;</span> \</span>
+<span id="cb129-4"><a href="#cb129-4"></a>--sort-by TIMECREATED \</span>
+<span id="cb129-5"><a href="#cb129-5"></a>--raw-output --query <span class="st">&quot;data [*].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Get the <em>ocid</em> of the virtual cloud network (VCN) <em>vcn-o-db-docker</em> as variable <em>VCN_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb130"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb130-1"><a href="#cb130-1"></a><span class="va">VCN_OCID=$(</span><span class="ex">oci</span> network vcn list --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb130-2"><a href="#cb130-2"></a>--raw-output \</span>
+<span id="cb130-3"><a href="#cb130-3"></a>--query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;o-db-docker&#39;)].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Get the <em>ocid</em> of the subnet as variable <em>SUBNET_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb131"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb131-1"><a href="#cb131-1"></a><span class="va">SUBNET_OCID=$(</span><span class="ex">oci</span> network subnet list \</span>
+<span id="cb131-2"><a href="#cb131-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb131-3"><a href="#cb131-3"></a>--vcn-id <span class="va">$VCN_OCID</span> \</span>
+<span id="cb131-4"><a href="#cb131-4"></a>--sort-by DISPLAYNAME --raw-output \</span>
+<span id="cb131-5"><a href="#cb131-5"></a>--query <span class="st">&quot;data [*].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Get the <em>availability domain</em> of the subnet as variable <em>AV_DOAMIN</em>.</li>
+</ul>
+<div class="sourceCode" id="cb132"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb132-1"><a href="#cb132-1"></a><span class="va">AV_DOAMIN=$(</span><span class="ex">oci</span> network subnet list \</span>
+<span id="cb132-2"><a href="#cb132-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb132-3"><a href="#cb132-3"></a>--vcn-id <span class="va">$VCN_OCID</span> \</span>
+<span id="cb132-4"><a href="#cb132-4"></a>--sort-by DISPLAYNAME --raw-output \</span>
+<span id="cb132-5"><a href="#cb132-5"></a>--query <span class="st">&quot;data [*].</span><span class="dt">\&quot;</span><span class="st">availability-domain</span><span class="dt">\&quot;</span><span class="st">|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Create a SSH key pair for the compute instance</li>
+</ul>
+<div class="sourceCode" id="cb133"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb133-1"><a href="#cb133-1"></a><span class="bu">cd</span> o-db-docker/lab/oci/</span>
+<span id="cb133-2"><a href="#cb133-2"></a><span class="fu">ssh-keygen</span> -b 4096 -C <span class="st">&quot;DOAG 2019 Training&quot;</span> -f id_rsa_doag2019</span></code></pre></div>
+<p>Finally lets create the OCI compute instance using the following specification:</p>
+<ul>
+<li><p>ol7docker01</p></li>
+<li><p>VM.Standard2.2</p></li>
+<li><p><em>COMPARTMENT_OCID</em></p></li>
+<li><p><em>AV_DOAMIN</em></p></li>
+<li><p><em>IMAGE_OCID</em></p></li>
+<li><p><em>SUBNET_OCID</em></p></li>
+<li><p>SSH public key from file</p></li>
+<li><p>check the variables</p></li>
+</ul>
+<div class="sourceCode" id="cb134"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb134-1"><a href="#cb134-1"></a><span class="bu">echo</span> <span class="st">&quot;COMPARTMENT_OCID  = </span><span class="va">$COMPARTMENT_OCID</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb134-2"><a href="#cb134-2"></a><span class="bu">echo</span> <span class="st">&quot;HOST_NAME         = </span><span class="va">$HOST_NAME</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb134-3"><a href="#cb134-3"></a><span class="bu">echo</span> <span class="st">&quot;AV_DOAMIN         = </span><span class="va">$AV_DOAMIN</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb134-4"><a href="#cb134-4"></a><span class="bu">echo</span> <span class="st">&quot;IMAGE_OCID        = </span><span class="va">$IMAGE_OCID</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb134-5"><a href="#cb134-5"></a><span class="bu">echo</span> <span class="st">&quot;SUBNET_OCID       = </span><span class="va">$SUBNET_OCID</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb134-6"><a href="#cb134-6"></a><span class="bu">echo</span> <span class="st">&quot;SSH Key           = </span><span class="va">$(</span><span class="fu">cat</span> id_rsa_doag2019.pub<span class="va">)</span><span class="st">&quot;</span></span></code></pre></div>
+<ul>
+<li>create the compute instance</li>
+</ul>
+<div class="sourceCode" id="cb135"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb135-1"><a href="#cb135-1"></a><span class="ex">oci</span> compute instance launch --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb135-2"><a href="#cb135-2"></a>--availability-domain <span class="va">$AV_DOAMIN</span> \</span>
+<span id="cb135-3"><a href="#cb135-3"></a>--display-name <span class="va">$HOST_NAME</span> \</span>
+<span id="cb135-4"><a href="#cb135-4"></a>--image-id <span class="va">$IMAGE_OCID</span> \</span>
+<span id="cb135-5"><a href="#cb135-5"></a>--subnet-id <span class="va">$SUBNET_OCID</span> \</span>
+<span id="cb135-6"><a href="#cb135-6"></a>--shape VM.Standard2.2 \</span>
+<span id="cb135-7"><a href="#cb135-7"></a>--assign-public-ip true \</span>
+<span id="cb135-8"><a href="#cb135-8"></a>--metadata <span class="st">&quot;{</span><span class="dt">\&quot;</span><span class="st">ssh_authorized_keys</span><span class="dt">\&quot;</span><span class="st">: </span><span class="dt">\&quot;</span><span class="va">$(</span><span class="fu">cat</span> id_rsa_doag2019.pub<span class="va">)</span><span class="dt">\&quot;</span><span class="st">}&quot;</span></span></code></pre></div>
+<ul>
+<li>check the provisioning status</li>
+</ul>
+<div class="sourceCode" id="cb136"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb136-1"><a href="#cb136-1"></a><span class="ex">oci</span> compute instance list --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb136-2"><a href="#cb136-2"></a>--output table \</span>
+<span id="cb136-3"><a href="#cb136-3"></a>--query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,</span><span class="va">$HOST_NAME</span><span class="st">)].{</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">, id:id,</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">}&quot;</span></span>
+<span id="cb136-4"><a href="#cb136-4"></a></span>
+<span id="cb136-5"><a href="#cb136-5"></a></span>
+<span id="cb136-6"><a href="#cb136-6"></a><span class="ex">oci</span> compute instance list --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb136-7"><a href="#cb136-7"></a>--output table \</span>
+<span id="cb136-8"><a href="#cb136-8"></a>--query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;</span><span class="va">$HOST_NAME</span><span class="st">&#39;)].{</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">}&quot;</span></span>
+<span id="cb136-9"><a href="#cb136-9"></a><span class="ex">+--------------+-----------------+</span></span>
+<span id="cb136-10"><a href="#cb136-10"></a><span class="kw">|</span> <span class="ex">display-name</span> <span class="kw">|</span> <span class="ex">lifecycle-state</span> <span class="kw">|</span></span>
+<span id="cb136-11"><a href="#cb136-11"></a><span class="ex">+--------------+-----------------+</span></span>
+<span id="cb136-12"><a href="#cb136-12"></a><span class="kw">|</span> <span class="ex">ol7docker00</span>  <span class="kw">|</span> <span class="ex">TERMINATED</span>      <span class="kw">|</span></span>
+<span id="cb136-13"><a href="#cb136-13"></a><span class="kw">|</span> <span class="ex">ol7docker00</span>  <span class="kw">|</span> <span class="ex">RUNNING</span>         <span class="kw">|</span></span>
+<span id="cb136-14"><a href="#cb136-14"></a><span class="ex">+--------------+-----------------+</span></span></code></pre></div>
+<ul>
+<li>get the compute instance ID as variable <em>INSTANCE_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb137"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb137-1"><a href="#cb137-1"></a><span class="va">INSTANCE_OCID=$(</span><span class="ex">oci</span> compute instance list \</span>
+<span id="cb137-2"><a href="#cb137-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span>  \</span>
+<span id="cb137-3"><a href="#cb137-3"></a>--lifecycle-state <span class="st">&#39;RUNNING&#39;</span> \</span>
+<span id="cb137-4"><a href="#cb137-4"></a>--raw-output --query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;</span><span class="va">$HOST_NAME</span><span class="st">&#39;)].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<h3 id="create-block-storage">Create Block Storage</h3>
+<p>Create a new block volume to use with the compute instance <em>o-db-docker</em>. We use the variable <em>COMPARTMENT_OCID</em> and <em>AV_DOAMIN</em> from the previous section. First lets check the variables.</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb138-1"><a href="#cb138-1"></a><span class="bu">echo</span> <span class="st">&quot;COMPARTMENT_OCID  = </span><span class="va">$COMPARTMENT_OCID</span><span class="st">&quot;</span> <span class="kw">&amp;&amp;</span> <span class="kw">\</span></span>
+<span id="cb138-2"><a href="#cb138-2"></a><span class="bu">echo</span> <span class="st">&quot;AV_DOAMIN         = </span><span class="va">$AV_DOAMIN</span><span class="st">&quot;</span></span></code></pre></div>
+<p>Create the block volume in the compartment <em>O-DB-DOCKER</em>.</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb139-1"><a href="#cb139-1"></a><span class="ex">oci</span> bv volume create --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb139-2"><a href="#cb139-2"></a>--availability-domain <span class="va">$AV_DOAMIN</span> \</span>
+<span id="cb139-3"><a href="#cb139-3"></a>--display-name <span class="st">&quot;o-db-docker_bv00&quot;</span> \</span>
+<span id="cb139-4"><a href="#cb139-4"></a>--size-in-gbs 512</span></code></pre></div>
+<p>Get the block volume OCID as variable <em>VOLUME_OCID</em>.</p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb140-1"><a href="#cb140-1"></a><span class="va">VOLUME_OCID=$(</span><span class="ex">oci</span> bv volume list \</span>
+<span id="cb140-2"><a href="#cb140-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb140-3"><a href="#cb140-3"></a>--raw-output --query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;o-db-docker_bv00&#39;)].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<p>Assign block volume to compute instance <em>ol7docker00</em>.</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb141-1"><a href="#cb141-1"></a><span class="ex">oci</span> compute volume-attachment attach \</span>
+<span id="cb141-2"><a href="#cb141-2"></a>--instance-id <span class="va">$INSTANCE_OCID</span> \</span>
+<span id="cb141-3"><a href="#cb141-3"></a>--type <span class="st">&quot;iscsi&quot;</span> \</span>
+<span id="cb141-4"><a href="#cb141-4"></a>--volume-id <span class="va">$VOLUME_OCID</span> \</span>
+<span id="cb141-5"><a href="#cb141-5"></a>--device <span class="st">&quot;/dev/oracleoci/oraclevdb&quot;</span></span></code></pre></div>
+<p>Get the volume IP and volume IQN for the iscsiadm utility later on.</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb142-1"><a href="#cb142-1"></a><span class="va">VOLUME_ATTACH_ID=$(</span><span class="ex">oci</span> compute volume-attachment list \</span>
+<span id="cb142-2"><a href="#cb142-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> --raw-output \</span>
+<span id="cb142-3"><a href="#cb142-3"></a>--query <span class="st">&quot;data [?</span><span class="dt">\&quot;</span><span class="st">volume-id</span><span class="dt">\&quot;</span><span class="st"> == &#39;</span><span class="va">$VOLUME_OCID</span><span class="st">&#39;].id|[0]&quot;</span><span class="va">)</span></span>
+<span id="cb142-4"><a href="#cb142-4"></a><span class="va">VOLUME_IP=$(</span><span class="ex">oci</span> compute volume-attachment get \</span>
+<span id="cb142-5"><a href="#cb142-5"></a>--volume-attachment-id <span class="va">$VOLUME_ATTACH_ID</span> \</span>
+<span id="cb142-6"><a href="#cb142-6"></a>--raw-output --query <span class="st">&quot;data.ipv4&quot;</span><span class="va">)</span></span>
+<span id="cb142-7"><a href="#cb142-7"></a><span class="va">VOLUME_IQN=$(</span><span class="ex">oci</span> compute volume-attachment get \</span>
+<span id="cb142-8"><a href="#cb142-8"></a>--volume-attachment-id <span class="va">$VOLUME_ATTACH_ID</span> \</span>
+<span id="cb142-9"><a href="#cb142-9"></a>--raw-output --query <span class="st">&quot;data.iqn&quot;</span><span class="va">)</span></span></code></pre></div>
+<p>Log into the compute instance ol7docker00 and attache the iscsi device</p>
+<div class="sourceCode" id="cb143"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb143-1"><a href="#cb143-1"></a><span class="fu">ssh</span> opc@ol7docker00.trivadislabs.com -C <span class="st">&quot;sudo iscsiadm -m node -o new -T </span><span class="va">$VOLUME_IQN</span><span class="st"> -p </span><span class="va">$VOLUME_IP</span><span class="st">:3260&quot;</span></span>
+<span id="cb143-2"><a href="#cb143-2"></a><span class="fu">ssh</span> opc@ol7docker00.trivadislabs.com -C <span class="st">&quot;sudo iscsiadm -m node -o update -T </span><span class="va">$VOLUME_IQN</span><span class="st"> -n node.startup -v automatic&quot;</span></span>
+<span id="cb143-3"><a href="#cb143-3"></a><span class="fu">ssh</span> opc@ol7docker00.trivadislabs.com -C <span class="st">&quot;sudo iscsiadm -m node -T </span><span class="va">$VOLUME_IQN</span><span class="st"> -p </span><span class="va">$VOLUME_IP</span><span class="st">:3260 -l&quot;</span></span></code></pre></div>
+<h3 id="dns-configuration">DNS Configuration</h3>
+<p>Optionally we add the IP of the compute instance to the DNS Zone <em>trivadislabs.com</em>.</p>
+<ul>
+<li>Get DNS OCID as variable <em>DNS_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb144"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb144-1"><a href="#cb144-1"></a><span class="va">DNS_OCID=$(</span><span class="ex">oci</span> dns record zone get \</span>
+<span id="cb144-2"><a href="#cb144-2"></a>--zone-name-or-id <span class="st">&quot;trivadislabs.com&quot;</span> \</span>
+<span id="cb144-3"><a href="#cb144-3"></a>--query <span class="st">&quot;etag&quot;</span> --raw-output<span class="kw">|</span><span class="fu">sed</span> <span class="st">&#39;s/.*\(ocid.*\)#.*/\1/&#39;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Get IP address of compute instance as variable <em>IP_ADDRESS</em>.</li>
+</ul>
+<div class="sourceCode" id="cb145"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb145-1"><a href="#cb145-1"></a><span class="va">IP_ADDRESS=$(</span><span class="ex">oci</span> compute instance list-vnics \</span>
+<span id="cb145-2"><a href="#cb145-2"></a>--instance-id <span class="va">$INSTANCE_OCID</span> --raw-output \</span>
+<span id="cb145-3"><a href="#cb145-3"></a>--query <span class="st">&quot;data[].</span><span class="dt">\&quot;</span><span class="st">public-ip</span><span class="dt">\&quot;</span><span class="st">|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>Add DNS record u</li>
+</ul>
+<div class="sourceCode" id="cb146"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb146-1"><a href="#cb146-1"></a><span class="ex">oci</span> dns record domain update \</span>
+<span id="cb146-2"><a href="#cb146-2"></a>--domain <span class="st">&quot;</span><span class="va">$HOST_NAME</span><span class="st">.trivadislabs.com&quot;</span> \</span>
+<span id="cb146-3"><a href="#cb146-3"></a>--zone-name-or-id <span class="st">&quot;trivadislabs.com&quot;</span> \</span>
+<span id="cb146-4"><a href="#cb146-4"></a>--force \</span>
+<span id="cb146-5"><a href="#cb146-5"></a>--items <span class="st">&quot;[{</span><span class="dt">\&quot;</span><span class="st">domain</span><span class="dt">\&quot;</span><span class="st">: &#39;</span><span class="va">$HOST_NAME</span><span class="st">.trivadislabs.com&#39;,</span><span class="dt">\&quot;</span><span class="st">isProtected</span><span class="dt">\&quot;</span><span class="st">: true,</span><span class="dt">\&quot;</span><span class="st">rdata</span><span class="dt">\&quot;</span><span class="st">: </span><span class="dt">\&quot;</span><span class="va">$IP_ADDRESS</span><span class="dt">\&quot;</span><span class="st">,</span><span class="dt">\&quot;</span><span class="st">recordHash</span><span class="dt">\&quot;</span><span class="st">: null,</span><span class="dt">\&quot;</span><span class="st">rrsetVersion</span><span class="dt">\&quot;</span><span class="st">: </span><span class="dt">\&quot;</span><span class="st">4</span><span class="dt">\&quot;</span><span class="st">,</span><span class="dt">\&quot;</span><span class="st">rtype</span><span class="dt">\&quot;</span><span class="st">: </span><span class="dt">\&quot;</span><span class="st">A</span><span class="dt">\&quot;</span><span class="st">,</span><span class="dt">\&quot;</span><span class="st">ttl</span><span class="dt">\&quot;</span><span class="st">: 30}]&quot;</span></span></code></pre></div>
+<ul>
+<li>remove DNS record</li>
+</ul>
+<div class="sourceCode" id="cb147"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb147-1"><a href="#cb147-1"></a><span class="ex">oci</span> dns record domain delete \</span>
+<span id="cb147-2"><a href="#cb147-2"></a>--zone-name-or-id <span class="st">&quot;trivadislabs.com&quot;</span> \</span>
+<span id="cb147-3"><a href="#cb147-3"></a>--domain <span class="st">&quot;</span><span class="va">$HOST_NAME</span><span class="st">.trivadislabs.com&quot;</span> --force</span></code></pre></div>
+<h2 id="setup-os">Setup OS</h2>
+<p>This section is not released for production use. Use this just as reference. <strong>Do not run the commands 1:1 on your environment</strong>.</p>
+<h3 id="configure-the-disk-and-volume">Configure the Disk and Volume</h3>
+<ul>
+<li>Partition disk using <code>sfdisk</code>.</li>
+</ul>
+<div class="sourceCode" id="cb148"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb148-1"><a href="#cb148-1"></a><span class="ex">sfdisk</span> /dev/sdb <span class="op">&lt;&lt;EOF</span></span>
+<span id="cb148-2"><a href="#cb148-2"></a>0,25000</span>
+<span id="cb148-3"><a href="#cb148-3"></a>,,8e</span>
+<span id="cb148-4"><a href="#cb148-4"></a><span class="op">EOF</span></span></code></pre></div>
+<ul>
+<li>List block devices.</li>
+</ul>
+<div class="sourceCode" id="cb149"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb149-1"><a href="#cb149-1"></a>[<span class="ex">root@ol7docker00</span> ~]# lsblk</span>
+<span id="cb149-2"><a href="#cb149-2"></a><span class="ex">NAME</span>   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span>
+<span id="cb149-3"><a href="#cb149-3"></a><span class="ex">sdb</span>      8:16   0   512G  0 disk </span>
+<span id="cb149-4"><a href="#cb149-4"></a>├─<span class="ex">sdb2</span>   8:18   0 320.5G  0 part </span>
+<span id="cb149-5"><a href="#cb149-5"></a>└─<span class="ex">sdb1</span>   8:17   0 191.5G  0 part </span>
+<span id="cb149-6"><a href="#cb149-6"></a><span class="ex">sda</span>      8:0    0  46.6G  0 disk </span>
+<span id="cb149-7"><a href="#cb149-7"></a>├─<span class="ex">sda2</span>   8:2    0     8G  0 part [SWAP]</span>
+<span id="cb149-8"><a href="#cb149-8"></a>├─<span class="ex">sda3</span>   8:3    0  38.4G  0 part /</span>
+<span id="cb149-9"><a href="#cb149-9"></a>└─<span class="ex">sda1</span>   8:1    0   200M  0 part /boot/efi</span>
+<span id="cb149-10"><a href="#cb149-10"></a>[<span class="ex">root@ol7docker00</span> ~]# fdisk -l /dev/sdb</span>
+<span id="cb149-11"><a href="#cb149-11"></a></span>
+<span id="cb149-12"><a href="#cb149-12"></a><span class="ex">Disk</span> /dev/sdb: 549.8 GB, 549755813888 bytes, 1073741824 sectors</span>
+<span id="cb149-13"><a href="#cb149-13"></a><span class="ex">Units</span> = sectors of 1 * 512 = 512 bytes</span>
+<span id="cb149-14"><a href="#cb149-14"></a><span class="ex">Sector</span> size (logical/physical)<span class="bu">:</span> 512 bytes / 4096 bytes</span>
+<span id="cb149-15"><a href="#cb149-15"></a><span class="ex">I/O</span> size (minimum/optimal)<span class="bu">:</span> 4096 bytes / 1048576 bytes</span>
+<span id="cb149-16"><a href="#cb149-16"></a><span class="ex">Disk</span> label type: dos</span>
+<span id="cb149-17"><a href="#cb149-17"></a><span class="ex">Disk</span> identifier: 0x00000000</span>
+<span id="cb149-18"><a href="#cb149-18"></a></span>
+<span id="cb149-19"><a href="#cb149-19"></a>   <span class="ex">Device</span> Boot      Start         End      Blocks   Id  System</span>
+<span id="cb149-20"><a href="#cb149-20"></a><span class="ex">/dev/sdb1</span>               1   401624999   200812499+  83  Linux</span>
+<span id="cb149-21"><a href="#cb149-21"></a><span class="ex">Partition</span> 1 does not start on physical sector boundary.</span>
+<span id="cb149-22"><a href="#cb149-22"></a><span class="ex">/dev/sdb2</span>       401625000  1073736404   336055702+  8e  Linux LVM</span></code></pre></div>
+<ul>
+<li>Create a physical volume on <code>/dev/sdb2</code> using <code>pvcreate</code>.</li>
+</ul>
+<div class="sourceCode" id="cb150"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb150-1"><a href="#cb150-1"></a>[<span class="ex">root@ol7docker00</span> ~]$ pvcreate /dev/sdb2</span>
+<span id="cb150-2"><a href="#cb150-2"></a>  <span class="ex">Physical</span> volume <span class="st">&quot;/dev/sdb2&quot;</span> successfully created.</span>
+<span id="cb150-3"><a href="#cb150-3"></a></span>
+<span id="cb150-4"><a href="#cb150-4"></a>[<span class="ex">root@ol7docker00</span> ~]$ pvs</span>
+<span id="cb150-5"><a href="#cb150-5"></a>  <span class="ex">PV</span>         VG Fmt  Attr PSize    PFree   </span>
+<span id="cb150-6"><a href="#cb150-6"></a>  <span class="ex">/dev/sdb2</span>     lvm2 ---  <span class="op">&lt;</span>320.49g <span class="op">&lt;</span>320.49g</span>
+<span id="cb150-7"><a href="#cb150-7"></a></span>
+<span id="cb150-8"><a href="#cb150-8"></a>[<span class="ex">root@ol7docker00</span> ~]$ pvdisplay /dev/sdb2</span>
+<span id="cb150-9"><a href="#cb150-9"></a>  <span class="st">&quot;/dev/sdb2&quot;</span> <span class="ex">is</span> a new physical volume of <span class="st">&quot;&lt;320.49 GiB&quot;</span></span>
+<span id="cb150-10"><a href="#cb150-10"></a>  <span class="ex">---</span> NEW Physical volume ---</span>
+<span id="cb150-11"><a href="#cb150-11"></a>  <span class="ex">PV</span> Name               /dev/sdb2</span>
+<span id="cb150-12"><a href="#cb150-12"></a>  <span class="ex">VG</span> Name               </span>
+<span id="cb150-13"><a href="#cb150-13"></a>  <span class="ex">PV</span> Size               <span class="op">&lt;</span>320.49 GiB</span>
+<span id="cb150-14"><a href="#cb150-14"></a>  <span class="ex">Allocatable</span>           NO</span>
+<span id="cb150-15"><a href="#cb150-15"></a>  <span class="ex">PE</span> Size               0   </span>
+<span id="cb150-16"><a href="#cb150-16"></a>  <span class="ex">Total</span> PE              0</span>
+<span id="cb150-17"><a href="#cb150-17"></a>  <span class="ex">Free</span> PE               0</span>
+<span id="cb150-18"><a href="#cb150-18"></a>  <span class="ex">Allocated</span> PE          0</span>
+<span id="cb150-19"><a href="#cb150-19"></a>  <span class="ex">PV</span> UUID               ONMpyt-j3RW-D4EQ-xpum-l3tR-fL7H-jgAseL</span></code></pre></div>
+<ul>
+<li>Create volume group <em>vgora</em> using <code>vgcreate</code></li>
+</ul>
+<div class="sourceCode" id="cb151"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb151-1"><a href="#cb151-1"></a>[<span class="ex">root@ol7docker00</span> ~]$ vgcreate vgora /dev/sdb2</span>
+<span id="cb151-2"><a href="#cb151-2"></a>  <span class="ex">Volume</span> group <span class="st">&quot;vgora&quot;</span> successfully created</span>
+<span id="cb151-3"><a href="#cb151-3"></a></span>
+<span id="cb151-4"><a href="#cb151-4"></a>[<span class="ex">root@ol7docker00</span> ~]$ vgdisplay vgora</span>
+<span id="cb151-5"><a href="#cb151-5"></a>  <span class="ex">---</span> Volume group ---</span>
+<span id="cb151-6"><a href="#cb151-6"></a>  <span class="ex">VG</span> Name               vgora</span>
+<span id="cb151-7"><a href="#cb151-7"></a>  <span class="ex">System</span> ID             </span>
+<span id="cb151-8"><a href="#cb151-8"></a>  <span class="ex">Format</span>                lvm2</span>
+<span id="cb151-9"><a href="#cb151-9"></a>  <span class="ex">Metadata</span> Areas        1</span>
+<span id="cb151-10"><a href="#cb151-10"></a>  <span class="ex">Metadata</span> Sequence No  1</span>
+<span id="cb151-11"><a href="#cb151-11"></a>  <span class="ex">VG</span> Access             read/write</span>
+<span id="cb151-12"><a href="#cb151-12"></a>  <span class="ex">VG</span> Status             resizable</span>
+<span id="cb151-13"><a href="#cb151-13"></a>  <span class="ex">MAX</span> LV                0</span>
+<span id="cb151-14"><a href="#cb151-14"></a>  <span class="ex">Cur</span> LV                0</span>
+<span id="cb151-15"><a href="#cb151-15"></a>  <span class="ex">Open</span> LV               0</span>
+<span id="cb151-16"><a href="#cb151-16"></a>  <span class="ex">Max</span> PV                0</span>
+<span id="cb151-17"><a href="#cb151-17"></a>  <span class="ex">Cur</span> PV                1</span>
+<span id="cb151-18"><a href="#cb151-18"></a>  <span class="ex">Act</span> PV                1</span>
+<span id="cb151-19"><a href="#cb151-19"></a>  <span class="ex">VG</span> Size               320.48 GiB</span>
+<span id="cb151-20"><a href="#cb151-20"></a>  <span class="ex">PE</span> Size               4.00 MiB</span>
+<span id="cb151-21"><a href="#cb151-21"></a>  <span class="ex">Total</span> PE              82044</span>
+<span id="cb151-22"><a href="#cb151-22"></a>  <span class="ex">Alloc</span> PE / Size       0 / 0   </span>
+<span id="cb151-23"><a href="#cb151-23"></a>  <span class="ex">Free</span>  PE / Size       82044 / 320.48 GiB</span>
+<span id="cb151-24"><a href="#cb151-24"></a>  <span class="ex">VG</span> UUID               qDKwXo-M8ad-L0eL-SLld-Mbd9-v83g-bOA6e3</span></code></pre></div>
+<ul>
+<li>Create a logical volume.</li>
+</ul>
+<div class="sourceCode" id="cb152"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb152-1"><a href="#cb152-1"></a>[<span class="ex">root@ol7docker00</span> ~]$ lvcreate -n vol_u00 -L 100G vgora</span>
+<span id="cb152-2"><a href="#cb152-2"></a>  <span class="ex">Logical</span> volume <span class="st">&quot;vol_u00&quot;</span> created.</span>
+<span id="cb152-3"><a href="#cb152-3"></a>[<span class="ex">root@ol7docker00</span> ~]$ lvcreate -n vol_u01 -L 100G vgora</span>
+<span id="cb152-4"><a href="#cb152-4"></a>  <span class="ex">Logical</span> volume <span class="st">&quot;vol_u01&quot;</span> created.</span>
+<span id="cb152-5"><a href="#cb152-5"></a></span>
+<span id="cb152-6"><a href="#cb152-6"></a>[<span class="ex">root@ol7docker00</span> ~]$ lvdisplay</span>
+<span id="cb152-7"><a href="#cb152-7"></a>  <span class="ex">---</span> Logical volume ---</span>
+<span id="cb152-8"><a href="#cb152-8"></a>  <span class="ex">LV</span> Path                /dev/vgora/vol_u00</span>
+<span id="cb152-9"><a href="#cb152-9"></a>  <span class="ex">LV</span> Name                vol_u00</span>
+<span id="cb152-10"><a href="#cb152-10"></a>  <span class="ex">VG</span> Name                vgora</span>
+<span id="cb152-11"><a href="#cb152-11"></a>  <span class="ex">LV</span> UUID                BJ3T5W-xzgy-jpwr-u1vS-Jl3y-tHKJ-bAnXED</span>
+<span id="cb152-12"><a href="#cb152-12"></a>  <span class="ex">LV</span> Write Access        read/write</span>
+<span id="cb152-13"><a href="#cb152-13"></a>  <span class="ex">LV</span> Creation host, time ol7docker00, 2019-10-23 15:14:52 +0000</span>
+<span id="cb152-14"><a href="#cb152-14"></a>  <span class="ex">LV</span> Status              available</span>
+<span id="cb152-15"><a href="#cb152-15"></a>  <span class="co"># open                 0</span></span>
+<span id="cb152-16"><a href="#cb152-16"></a>  <span class="ex">LV</span> Size                100.00 GiB</span>
+<span id="cb152-17"><a href="#cb152-17"></a>  <span class="ex">Current</span> LE             25600</span>
+<span id="cb152-18"><a href="#cb152-18"></a>  <span class="ex">Segments</span>               1</span>
+<span id="cb152-19"><a href="#cb152-19"></a>  <span class="ex">Allocation</span>             inherit</span>
+<span id="cb152-20"><a href="#cb152-20"></a>  <span class="ex">Read</span> ahead sectors     auto</span>
+<span id="cb152-21"><a href="#cb152-21"></a>  <span class="ex">-</span> currently set to     256</span>
+<span id="cb152-22"><a href="#cb152-22"></a>  <span class="ex">Block</span> device           252:0</span>
+<span id="cb152-23"><a href="#cb152-23"></a>   </span>
+<span id="cb152-24"><a href="#cb152-24"></a>  <span class="ex">---</span> Logical volume ---</span>
+<span id="cb152-25"><a href="#cb152-25"></a>  <span class="ex">LV</span> Path                /dev/vgora/vol_u01</span>
+<span id="cb152-26"><a href="#cb152-26"></a>  <span class="ex">LV</span> Name                vol_u01</span>
+<span id="cb152-27"><a href="#cb152-27"></a>  <span class="ex">VG</span> Name                vgora</span>
+<span id="cb152-28"><a href="#cb152-28"></a>  <span class="ex">LV</span> UUID                c2zepi-PnVA-6Cs1-EQgB-yJmz-Wtm5-Q6eL4b</span>
+<span id="cb152-29"><a href="#cb152-29"></a>  <span class="ex">LV</span> Write Access        read/write</span>
+<span id="cb152-30"><a href="#cb152-30"></a>  <span class="ex">LV</span> Creation host, time ol7docker00, 2019-10-23 15:15:06 +0000</span>
+<span id="cb152-31"><a href="#cb152-31"></a>  <span class="ex">LV</span> Status              available</span>
+<span id="cb152-32"><a href="#cb152-32"></a>  <span class="co"># open                 0</span></span>
+<span id="cb152-33"><a href="#cb152-33"></a>  <span class="ex">LV</span> Size                100.00 GiB</span>
+<span id="cb152-34"><a href="#cb152-34"></a>  <span class="ex">Current</span> LE             25600</span>
+<span id="cb152-35"><a href="#cb152-35"></a>  <span class="ex">Segments</span>               1</span>
+<span id="cb152-36"><a href="#cb152-36"></a>  <span class="ex">Allocation</span>             inherit</span>
+<span id="cb152-37"><a href="#cb152-37"></a>  <span class="ex">Read</span> ahead sectors     auto</span>
+<span id="cb152-38"><a href="#cb152-38"></a>  <span class="ex">-</span> currently set to     256</span>
+<span id="cb152-39"><a href="#cb152-39"></a>  <span class="ex">Block</span> device           252:1</span></code></pre></div>
+<ul>
+<li>Create the filesystem on the new volume.</li>
+</ul>
+<div class="sourceCode" id="cb153"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb153-1"><a href="#cb153-1"></a>[<span class="ex">root@ol7docker00</span> ~]# mkfs.ext4 /dev/vgora/vol_u00</span>
+<span id="cb153-2"><a href="#cb153-2"></a><span class="ex">mke2fs</span> 1.42.9 (28-Dec-2013)</span>
+<span id="cb153-3"><a href="#cb153-3"></a><span class="ex">Filesystem</span> label=</span>
+<span id="cb153-4"><a href="#cb153-4"></a><span class="ex">OS</span> type: Linux</span>
+<span id="cb153-5"><a href="#cb153-5"></a><span class="ex">Block</span> size=4096 (log=2)</span>
+<span id="cb153-6"><a href="#cb153-6"></a><span class="ex">Fragment</span> size=4096 (log=2)</span>
+<span id="cb153-7"><a href="#cb153-7"></a><span class="va">Stride=</span>0 <span class="ex">blocks</span>, Stripe width=256 blocks</span>
+<span id="cb153-8"><a href="#cb153-8"></a><span class="ex">6553600</span> inodes, 26214400 blocks</span>
+<span id="cb153-9"><a href="#cb153-9"></a><span class="ex">1310720</span> blocks (5.00%) <span class="ex">reserved</span> for the super user</span>
+<span id="cb153-10"><a href="#cb153-10"></a><span class="ex">First</span> data block=0</span>
+<span id="cb153-11"><a href="#cb153-11"></a><span class="ex">Maximum</span> filesystem blocks=2174746624</span>
+<span id="cb153-12"><a href="#cb153-12"></a><span class="ex">800</span> block groups</span>
+<span id="cb153-13"><a href="#cb153-13"></a><span class="ex">32768</span> blocks per group, 32768 fragments per group</span>
+<span id="cb153-14"><a href="#cb153-14"></a><span class="ex">8192</span> inodes per group</span>
+<span id="cb153-15"><a href="#cb153-15"></a><span class="ex">Superblock</span> backups stored on blocks: </span>
+<span id="cb153-16"><a href="#cb153-16"></a>    <span class="ex">32768</span>, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, </span>
+<span id="cb153-17"><a href="#cb153-17"></a>    <span class="ex">4096000</span>, 7962624, 11239424, 20480000, 23887872</span>
+<span id="cb153-18"><a href="#cb153-18"></a></span>
+<span id="cb153-19"><a href="#cb153-19"></a><span class="ex">Allocating</span> group tables: done                            </span>
+<span id="cb153-20"><a href="#cb153-20"></a><span class="ex">Writing</span> inode tables: done                            </span>
+<span id="cb153-21"><a href="#cb153-21"></a><span class="ex">Creating</span> journal (32768 blocks)<span class="bu">:</span> done</span>
+<span id="cb153-22"><a href="#cb153-22"></a><span class="ex">Writing</span> superblocks and filesystem accounting information: done   </span>
+<span id="cb153-23"><a href="#cb153-23"></a></span>
+<span id="cb153-24"><a href="#cb153-24"></a>[<span class="ex">root@ol7docker00</span> ~]# mkfs.ext4 /dev/vgora/vol_u01</span>
+<span id="cb153-25"><a href="#cb153-25"></a><span class="ex">mke2fs</span> 1.42.9 (28-Dec-2013)</span>
+<span id="cb153-26"><a href="#cb153-26"></a><span class="ex">Filesystem</span> label=</span>
+<span id="cb153-27"><a href="#cb153-27"></a><span class="ex">OS</span> type: Linux</span>
+<span id="cb153-28"><a href="#cb153-28"></a><span class="ex">Block</span> size=4096 (log=2)</span>
+<span id="cb153-29"><a href="#cb153-29"></a><span class="ex">Fragment</span> size=4096 (log=2)</span>
+<span id="cb153-30"><a href="#cb153-30"></a><span class="va">Stride=</span>0 <span class="ex">blocks</span>, Stripe width=256 blocks</span>
+<span id="cb153-31"><a href="#cb153-31"></a><span class="ex">6553600</span> inodes, 26214400 blocks</span>
+<span id="cb153-32"><a href="#cb153-32"></a><span class="ex">1310720</span> blocks (5.00%) <span class="ex">reserved</span> for the super user</span>
+<span id="cb153-33"><a href="#cb153-33"></a><span class="ex">First</span> data block=0</span>
+<span id="cb153-34"><a href="#cb153-34"></a><span class="ex">Maximum</span> filesystem blocks=2174746624</span>
+<span id="cb153-35"><a href="#cb153-35"></a><span class="ex">800</span> block groups</span>
+<span id="cb153-36"><a href="#cb153-36"></a><span class="ex">32768</span> blocks per group, 32768 fragments per group</span>
+<span id="cb153-37"><a href="#cb153-37"></a><span class="ex">8192</span> inodes per group</span>
+<span id="cb153-38"><a href="#cb153-38"></a><span class="ex">Superblock</span> backups stored on blocks: </span>
+<span id="cb153-39"><a href="#cb153-39"></a>    <span class="ex">32768</span>, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, </span>
+<span id="cb153-40"><a href="#cb153-40"></a>    <span class="ex">4096000</span>, 7962624, 11239424, 20480000, 23887872</span>
+<span id="cb153-41"><a href="#cb153-41"></a></span>
+<span id="cb153-42"><a href="#cb153-42"></a><span class="ex">Allocating</span> group tables: done                            </span>
+<span id="cb153-43"><a href="#cb153-43"></a><span class="ex">Writing</span> inode tables: done                            </span>
+<span id="cb153-44"><a href="#cb153-44"></a><span class="ex">Creating</span> journal (32768 blocks)<span class="bu">:</span> done</span>
+<span id="cb153-45"><a href="#cb153-45"></a><span class="ex">Writing</span> superblocks and filesystem accounting information: done  </span></code></pre></div>
+<ul>
+<li>Get the block device information.</li>
+</ul>
+<div class="sourceCode" id="cb154"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb154-1"><a href="#cb154-1"></a>[<span class="ex">root@ol7docker00</span> ~]# blkid /dev/vgora/vol_u00 /dev/vgora/vol_u01</span>
+<span id="cb154-2"><a href="#cb154-2"></a><span class="ex">/dev/vgora</span>/vol_u00: <span class="va">UUID=</span><span class="st">&quot;2d8a938f-5960-4664-9091-eb9bd6132f91&quot;</span> <span class="va">TYPE=</span><span class="st">&quot;ext4&quot;</span> </span>
+<span id="cb154-3"><a href="#cb154-3"></a><span class="ex">/dev/vgora</span>/vol_u01: <span class="va">UUID=</span><span class="st">&quot;2c74d466-221e-49d0-a644-8e1e299cabf4&quot;</span> <span class="va">TYPE=</span><span class="st">&quot;ext4&quot;</span> </span></code></pre></div>
+<ul>
+<li>Create mount points</li>
+</ul>
+<div class="sourceCode" id="cb155"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb155-1"><a href="#cb155-1"></a><span class="fu">mkdir</span> -p /u00 /u01</span></code></pre></div>
+<ul>
+<li>update <code>fstab</code> and mount the filesystem.</li>
+</ul>
+<div class="sourceCode" id="cb156"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb156-1"><a href="#cb156-1"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">blkid</span> /dev/vgora/vol_u00<span class="kw">|</span><span class="fu">cut</span> -d<span class="st">&#39; &#39;</span> -f2<span class="kw">|</span><span class="fu">tr</span> -d <span class="st">&#39;&quot;&#39;</span><span class="va">)</span><span class="st">   /u00    ext4   defaults,noatime,_netdev     0   0&quot;</span> <span class="op">&gt;&gt;</span>/etc/fstab</span>
+<span id="cb156-2"><a href="#cb156-2"></a><span class="bu">echo</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">blkid</span> /dev/vgora/vol_u01<span class="kw">|</span><span class="fu">cut</span> -d<span class="st">&#39; &#39;</span> -f2<span class="kw">|</span><span class="fu">tr</span> -d <span class="st">&#39;&quot;&#39;</span><span class="va">)</span><span class="st">   /u01    ext4   defaults,noatime,_netdev     0   0&quot;</span> <span class="op">&gt;&gt;</span>/etc/fstab</span>
+<span id="cb156-3"><a href="#cb156-3"></a></span>
+<span id="cb156-4"><a href="#cb156-4"></a><span class="fu">mount</span> /u00</span>
+<span id="cb156-5"><a href="#cb156-5"></a><span class="fu">mount</span> /u01</span></code></pre></div>
+<h3 id="setup-orabase_init-scripts">Setup ORAbase_init Scripts</h3>
+<p>Define the variable to download the <strong>oradba_init</strong> scripts.</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb157-1"><a href="#cb157-1"></a><span class="va">DOWNLOAD=</span><span class="st">&quot;/tmp/download&quot;</span></span>
+<span id="cb157-2"><a href="#cb157-2"></a><span class="va">SETUP_INIT=</span><span class="st">&quot;00_setup_oradba_init.sh&quot;</span></span>
+<span id="cb157-3"><a href="#cb157-3"></a><span class="va">GITHUB_URL=</span><span class="st">&quot;https://github.com/oehrlis/oradba_init/raw/master/bin&quot;</span></span></code></pre></div>
+<p>Download the <strong>oradba_init</strong> script</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb158-1"><a href="#cb158-1"></a><span class="fu">mkdir</span> -p <span class="va">${DOWNLOAD}</span></span>
+<span id="cb158-2"><a href="#cb158-2"></a><span class="ex">curl</span> -Lsf <span class="va">${GITHUB_URL}</span>/<span class="va">${SETUP_INIT}</span> -o <span class="va">${DOWNLOAD}</span>/<span class="va">${SETUP_INIT}</span></span></code></pre></div>
+<p>Setup the OraDBA init environment.</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb159-1"><a href="#cb159-1"></a><span class="fu">chmod</span> 755 <span class="va">${DOWNLOAD}</span>/<span class="va">${SETUP_INIT}</span></span>
+<span id="cb159-2"><a href="#cb159-2"></a><span class="va">${DOWNLOAD}</span><span class="ex">/</span><span class="va">${SETUP_INIT}</span></span></code></pre></div>
+<p>Setup the OUDBase environment</p>
+<div class="sourceCode" id="cb160"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb160-1"><a href="#cb160-1"></a><span class="fu">sudo</span> -u oracle /opt/oradba/bin/20_setup_oudbase.sh</span>
+<span id="cb160-2"><a href="#cb160-2"></a></span>
+<span id="cb160-3"><a href="#cb160-3"></a><span class="bu">echo</span> <span class="st">&quot;oud_eng:1389:1636:4444:8989:OUD:Y&quot;</span> <span class="op">&gt;&gt;</span><span class="va">${ETC_BASE}</span>/oudtab</span>
+<span id="cb160-4"><a href="#cb160-4"></a><span class="bu">.</span> <span class="ex">oudenv.sh</span></span>
+<span id="cb160-5"><a href="#cb160-5"></a></span>
+<span id="cb160-6"><a href="#cb160-6"></a><span class="fu">sed</span> -i <span class="st">&#39;s|\. ${OUD_BASE}/bin/oudenv.sh|\. ${OUD_BASE}/bin/oudenv.sh SILENT|&#39;</span> <span class="va">$HOME</span>/.bash_profile</span></code></pre></div>
+<h3 id="update-user-group-information">Update User / Group information</h3>
+<p>Configure the opc user</p>
+<div class="sourceCode" id="cb161"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb161-1"><a href="#cb161-1"></a><span class="fu">sudo</span> usermod -a -G oinstall opc</span></code></pre></div>
+<p>Adjust a few directory settings:</p>
+<div class="sourceCode" id="cb162"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb162-1"><a href="#cb162-1"></a><span class="fu">chmod</span> 775 /u00/app/</span>
+<span id="cb162-2"><a href="#cb162-2"></a><span class="fu">chmod</span> 775 /u00/app/oracle/</span>
+<span id="cb162-3"><a href="#cb162-3"></a><span class="fu">chmod</span> 775 /u00/app/oracle/software/</span></code></pre></div>
+<h3 id="setup-os-oracle-db">Setup OS Oracle DB</h3>
+<p>Setup the OS using the <strong>oradba_init</strong> script.</p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb163-1"><a href="#cb163-1"></a><span class="fu">nohup</span> /opt/oradba/bin/01_setup_os_db.sh <span class="op">&gt;</span> /tmp/01_setup_os_db.sh <span class="op">2&gt;&amp;1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>Install Docker</p>
+<div class="sourceCode" id="cb164"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb164-1"><a href="#cb164-1"></a><span class="fu">nohup</span> /opt/oradba/bin/01_setup_os_docker.sh <span class="op">&gt;</span> /tmp/01_setup_os_docker.log <span class="op">2&gt;&amp;1</span> <span class="kw">&amp;</span></span></code></pre></div>
+<p>Install git</p>
+<pre><code>yum install git</code></pre>
+<p>Configure docker volumen on <code>sdb1</code>.</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb166-1"><a href="#cb166-1"></a><span class="ex">systemctl</span> stop docker</span>
+<span id="cb166-2"><a href="#cb166-2"></a><span class="fu">rm</span> -rf /var/lib/docker</span>
+<span id="cb166-3"><a href="#cb166-3"></a><span class="ex">docker-storage-config</span> -s btrfs -d /dev/sdb1</span>
+<span id="cb166-4"><a href="#cb166-4"></a><span class="ex">systemctl</span> start docker</span>
+<span id="cb166-5"><a href="#cb166-5"></a><span class="ex">systemctl</span> enable docker</span></code></pre></div>
+<p>Clone the git repositories.</p>
+<div class="sourceCode" id="cb167"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb167-1"><a href="#cb167-1"></a><span class="bu">cd</span> /u00/app/oracle/local</span>
+<span id="cb167-2"><a href="#cb167-2"></a><span class="fu">git</span> clone https://github.com/oehrlis/docker.git docker</span>
+<span id="cb167-3"><a href="#cb167-3"></a><span class="fu">git</span> clone https://github.com/oehrlis/o-db-docker.git o-db-docker</span>
+<span id="cb167-4"><a href="#cb167-4"></a><span class="fu">git</span> clone https://github.com/oracle/docker-images.git docker-images</span></code></pre></div>
+<h3 id="build-software-depot">Build Software Depot</h3>
+<p>Generate download url file from the <code>*.download</code> files which are part of the <a href="https://github.com/oehrlis/docker">oradba/docker</a> repository.</p>
+<ul>
+<li>change to the oci working directory and remove the old download url files.</li>
+</ul>
+<div class="sourceCode" id="cb168"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb168-1"><a href="#cb168-1"></a><span class="bu">cd</span> <span class="va">$cdl</span>/o-db-docker/lab/oci</span>
+<span id="cb168-2"><a href="#cb168-2"></a></span>
+<span id="cb168-3"><a href="#cb168-3"></a><span class="fu">rm</span> download*.url</span></code></pre></div>
+<ul>
+<li>build a new download url file</li>
+</ul>
+<div class="sourceCode" id="cb169"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb169-1"><a href="#cb169-1"></a><span class="fu">find</span> <span class="va">$cdl</span>/docker -name *.download \</span>
+<span id="cb169-2"><a href="#cb169-2"></a>-exec grep -i <span class="st">&quot;Direct Download&quot;</span> {} <span class="dt">\;</span><span class="kw">|</span> <span class="kw">\</span></span>
+<span id="cb169-3"><a href="#cb169-3"></a><span class="fu">sed</span> <span class="st">&quot;s/# Direct Download   : //&quot;</span> <span class="kw">|\</span></span>
+<span id="cb169-4"><a href="#cb169-4"></a><span class="fu">grep</span> -iv <span class="st">&#39;^#&#39;</span><span class="kw">|</span><span class="fu">grep</span> -iv <span class="st">&#39;n/a&#39;</span><span class="kw">|</span><span class="fu">sort</span> -u<span class="op">&gt;&gt;</span> download.url</span></code></pre></div>
+<ul>
+<li>Separate OTN from MOS downloads</li>
+</ul>
+<div class="sourceCode" id="cb170"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb170-1"><a href="#cb170-1"></a><span class="fu">grep</span> -i <span class="st">&quot;download.oracle.com&quot;</span> download.url <span class="op">&gt;</span>download_otn.url</span>
+<span id="cb170-2"><a href="#cb170-2"></a><span class="fu">grep</span> -iv <span class="st">&quot;download.oracle.com&quot;</span> download.url <span class="op">&gt;</span>download_mos.url</span></code></pre></div>
+<p>Start to download the patch from MOS using <code>curl</code>.</p>
+<ul>
+<li>Temporary create a <code>.netrc</code> file with MOS credentials. Replace <em>MOS_USER</em> and <em>MOS_PASSWORD</em> with corresponding values.</li>
+</ul>
+<div class="sourceCode" id="cb171"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb171-1"><a href="#cb171-1"></a><span class="bu">cd</span> <span class="va">$cdl</span>/o-db-docker/lab/oci</span>
+<span id="cb171-2"><a href="#cb171-2"></a><span class="bu">echo</span> <span class="st">&#39;machine login.oracle.com login MOS_USER password MOS_PASSWORD&#39;</span> <span class="op">&gt;</span>.netrc</span></code></pre></div>
+<ul>
+<li>Download the files from MOS using <code>download_mos.url</code>.</li>
+</ul>
+<div class="sourceCode" id="cb172"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb172-1"><a href="#cb172-1"></a><span class="bu">cd</span> <span class="va">$cdl</span>/o-db-docker/lab/oci</span>
+<span id="cb172-2"><a href="#cb172-2"></a><span class="va">sw=</span><span class="st">&quot;/u00/app/oracle/software&quot;</span></span>
+<span id="cb172-3"><a href="#cb172-3"></a><span class="kw">for</span> <span class="ex">url</span> in <span class="va">$(</span><span class="fu">cat</span> download_mos.url<span class="va">)</span><span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb172-4"><a href="#cb172-4"></a>  <span class="va">file=$(</span><span class="bu">echo</span> <span class="va">$url</span><span class="kw">|</span> <span class="fu">cut</span> -d= -f3<span class="va">)</span></span>
+<span id="cb172-5"><a href="#cb172-5"></a>  <span class="va">log=$(</span><span class="fu">basename</span> <span class="va">$file</span> .zip<span class="va">)</span>.log</span>
+<span id="cb172-6"><a href="#cb172-6"></a>  <span class="bu">echo</span> <span class="st">&quot;Initiate download job for file : </span><span class="va">$file</span><span class="st">&quot;</span></span>
+<span id="cb172-7"><a href="#cb172-7"></a>  <span class="fu">nohup</span> curl --netrc-file .netrc --cookie-jar cookie-jar.txt \</span>
+<span id="cb172-8"><a href="#cb172-8"></a>    --location-trusted <span class="st">&quot;</span><span class="va">${url}</span><span class="st">&quot;</span> -o <span class="va">${sw}</span>/<span class="va">${file}</span> <span class="op">&gt;</span> <span class="va">${sw}</span>/<span class="va">$log</span> <span class="op">2&gt;&amp;1</span> <span class="kw">&amp;</span></span>
+<span id="cb172-9"><a href="#cb172-9"></a><span class="kw">done</span></span></code></pre></div>
+<ul>
+<li>Wait until all curl background jobs are done:</li>
+</ul>
+<div class="sourceCode" id="cb173"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb173-1"><a href="#cb173-1"></a><span class="fu">ps</span> -ef<span class="kw">|</span><span class="fu">grep</span> curl</span>
+<span id="cb173-2"><a href="#cb173-2"></a><span class="fu">ps</span> -ef<span class="kw">|</span><span class="fu">grep</span> curl<span class="kw">|</span><span class="fu">wc</span> -l</span></code></pre></div>
+<h3 id="other-task-to-configure-environment">Other Task to Configure Environment</h3>
+<p>Tasks to configure the environment:</p>
+<ul>
+<li>Disk partition</li>
+<li>Docker Volume</li>
+<li>Docker images</li>
+<li>Clone the Git repositories</li>
+<li>Download Oracle Binaries</li>
+</ul>
+<h2 id="create-custom-image">Create Custom Image</h2>
+<p>Stop the compute instance</p>
+<ul>
+<li>define my variables</li>
+</ul>
+<div class="sourceCode" id="cb174"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb174-1"><a href="#cb174-1"></a><span class="bu">export</span> <span class="va">HOST_NAME=</span><span class="st">&quot;ol7docker00&quot;</span></span>
+<span id="cb174-2"><a href="#cb174-2"></a><span class="bu">export</span> <span class="va">COMPARTMENT_NAME=</span><span class="st">&quot;O-DB-DOCKER&quot;</span></span></code></pre></div>
+<ul>
+<li>Get the compartment id as variable <em>COMPARTMENT_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb175"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb175-1"><a href="#cb175-1"></a><span class="va">COMPARTMENT_OCID=$(</span><span class="ex">oci</span> iam compartment list \</span>
+<span id="cb175-2"><a href="#cb175-2"></a>--compartment-id-in-subtree true --all \</span>
+<span id="cb175-3"><a href="#cb175-3"></a>--raw-output --query <span class="st">&quot;data [?name == &#39;</span><span class="va">${COMPARTMENT_NAME}</span><span class="st">&#39;].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>get the compute instance ID as variable <em>INSTANCE_OCID</em>.</li>
+</ul>
+<div class="sourceCode" id="cb176"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb176-1"><a href="#cb176-1"></a><span class="va">INSTANCE_OCID=$(</span><span class="ex">oci</span> compute instance list \</span>
+<span id="cb176-2"><a href="#cb176-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span>  \</span>
+<span id="cb176-3"><a href="#cb176-3"></a>--lifecycle-state <span class="st">&#39;RUNNING&#39;</span> \</span>
+<span id="cb176-4"><a href="#cb176-4"></a>--raw-output --query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;</span><span class="va">${HOST_NAME}</span><span class="st">&#39;)].id|[0]&quot;</span><span class="va">)</span></span></code></pre></div>
+<ul>
+<li>stopping compute instance</li>
+</ul>
+<div class="sourceCode" id="cb177"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb177-1"><a href="#cb177-1"></a><span class="ex">oci</span> compute instance action \</span>
+<span id="cb177-2"><a href="#cb177-2"></a>--action SOFTSTOP \</span>
+<span id="cb177-3"><a href="#cb177-3"></a>--instance-id <span class="va">${INSTANCE_OCID}</span></span></code></pre></div>
+<ul>
+<li>check if stoppend</li>
+</ul>
+<div class="sourceCode" id="cb178"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb178-1"><a href="#cb178-1"></a><span class="ex">oci</span> compute instance list --compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb178-2"><a href="#cb178-2"></a>--output table \</span>
+<span id="cb178-3"><a href="#cb178-3"></a>--query <span class="st">&quot;data [?contains(</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,&#39;</span><span class="va">${HOST_NAME}</span><span class="st">&#39;)].{</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">display-name</span><span class="dt">\&quot;</span><span class="st">,</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">:</span><span class="dt">\&quot;</span><span class="st">lifecycle-state</span><span class="dt">\&quot;</span><span class="st">}&quot;</span></span></code></pre></div>
+<ul>
+<li>Create a custom image</li>
+</ul>
+<div class="sourceCode" id="cb179"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb179-1"><a href="#cb179-1"></a><span class="ex">oci</span> compute image create \</span>
+<span id="cb179-2"><a href="#cb179-2"></a>--compartment-id <span class="va">$COMPARTMENT_OCID</span> \</span>
+<span id="cb179-3"><a href="#cb179-3"></a>--display-name <span class="st">&quot;</span><span class="va">${COMPARTMENT_NAME}</span><span class="st">_master&quot;</span> \</span>
+<span id="cb179-4"><a href="#cb179-4"></a>--instance-id <span class="va">${INSTANCE_OCID}</span></span></code></pre></div>
+<p><strong>Disclaimer</strong>: This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the <em>O-DB-DOCKER</em> workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk. # Appendix B Setup Vagrant Environment</p>
+<h2 id="requirements-and-preparations-1">Requirements and Preparations</h2>
+<p>The following appendix contains a step-by-step guide on how to set up the workshop environment with local Virtualbox installation. The different steps are performed via command line and scripts.</p>
+<p>The following prerequisites must be fulfilled:</p>
+<ul>
+<li>Oracle Virtual Box https://www.virtualbox.org/</li>
+<li>Oracle Vagrant Box https://yum.oracle.com/boxes</li>
+<li>Vagrant https://www.vagrantup.com/</li>
+<li>optional local git client.</li>
+<li>And binaries required to build the Docker images e.g. Oracle database softwar</li>
+</ul>
+<p>The following figure shows the schematic layout of the Docker environment based on Vagrant / Virtualbox. The provided vagrant environment does only have a minimal disk setup. It may be necessary to add an additional hard disk or extend the existing one.</p>
+<figure>
+<img src="../images/Vagrant-Environment.png" alt="" /><figcaption>Vagrant VM Workshop Architecture</figcaption>
+</figure>
+<h2 id="setup-using-vagrant">Setup Using Vagrant</h2>
+<p>The installation and configuration of the VM is fairly straightforward using vagrant.</p>
+<ul>
+<li>Add the latest Oracle Linux 7 vagrant box</li>
+</ul>
+<div class="sourceCode" id="cb180"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb180-1"><a href="#cb180-1"></a><span class="ex">vagrant</span> box add --name ol7-latest https://yum.oracle.com/boxes/oraclelinux/latest/ol7-latest.box</span></code></pre></div>
+<ul>
+<li>Clone the O-DB-DOCKER git Repository to you local working or development directory</li>
+</ul>
+<div class="sourceCode" id="cb181"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb181-1"><a href="#cb181-1"></a><span class="fu">git</span> clone https://github.com/oehrlis/o-db-docker.git o-db-docker</span></code></pre></div>
+<ul>
+<li>Change to the LAB Vagrant folder.</li>
+</ul>
+<div class="sourceCode" id="cb182"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb182-1"><a href="#cb182-1"></a><span class="bu">cd</span> o-db-docker/lab/ol7docker</span></code></pre></div>
+<ul>
+<li>Install Vagrant Plugin’s.</li>
+</ul>
+<div class="sourceCode" id="cb183"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb183-1"><a href="#cb183-1"></a><span class="ex">vagrant</span> plugin install vagrant-reload</span>
+<span id="cb183-2"><a href="#cb183-2"></a><span class="ex">vagrant</span> plugin install vagrant-vbguest</span></code></pre></div>
+<ul>
+<li>Setup virtualbox using vagrant</li>
+</ul>
+<div class="sourceCode" id="cb184"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb184-1"><a href="#cb184-1"></a><span class="ex">vagrant</span> up</span></code></pre></div>
+<ul>
+<li>as soon as the VM provisioning is finished you can login.</li>
+</ul>
+<div class="sourceCode" id="cb185"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb185-1"><a href="#cb185-1"></a><span class="ex">vagrant</span> ssh</span></code></pre></div>
+<ul>
+<li>Within the VM you now can switch to user Oracle and run docker commands.</li>
+</ul>
+<div class="sourceCode" id="cb186"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb186-1"><a href="#cb186-1"></a><span class="fu">sudo</span> su - oracle</span>
+<span id="cb186-2"><a href="#cb186-2"></a><span class="ex">docker</span> images</span></code></pre></div>
+<p>The VM is now basically ready to work with Docker. The Git repositories for <a href="https://github.com/oehrlis/o-db-docker">O-DB-DOCKER</a> as well as <a href="https://github.com/oracle/docker-images">oracle/docker-images</a> and <a href="https://github.com/oehrlis/docker">oehrlis/docker</a> are available under /xx. Nevertheless there are a few things to consider.</p>
+<ul>
+<li>Oracle binaries and patches must be downloaded separately. Ideally, the software is made available via a shared folder in order not to occupy the disk space in the VM.</li>
+<li>Available disk space is at best too small for many Oracle Docker images. Either create bind mount’s on a VM shared folder or increase disk space.</li>
+<li>The O-DB-DOCKER workshop does provide a couple of pre-build docker images, which are not available within a local VM. This is not an issue, since all images, volumes etc can be build. It just takes some time.</li>
+</ul>
+<h2 id="manual-setup">Manual Setup</h2>
+<p>The O-DB-DOCKER environment can also be installed manually on an existing Oracle VM. The following steps have to be performed.</p>
+<ul>
+<li>Update the OEL 7 OS using <code>yum upgrade</code></li>
+<li>Install the latest <code>docker-engine</code> and <code>docker-compose</code> via yum.</li>
+<li>Configure a dedicated docker volume / disk</li>
+<li>Configure a user which is used for Docker Engineering.</li>
+</ul>
+<h3 id="manual-setup-using-the-vagrant-scripts">Manual Setup Using the Vagrant Scripts</h3>
+<p>The scripts used to setup the Vagrant VM can be used to setup / configure an existing VM. So that not all paths have to be adapted, the scripts are simply copied to a directory /vagrant on the VM.</p>
+<ul>
+<li>Copy all vagrant files from VM host to the VM.</li>
+</ul>
+<div class="sourceCode" id="cb187"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb187-1"><a href="#cb187-1"></a><span class="fu">scp</span> -r o-db-docker/lab/ol7docker VMNAME:/vagrant</span></code></pre></div>
+<ul>
+<li>Manual run the vagrant provisioning script to setup the OS (update yum packages, install oracle packages and create an oracle user)</li>
+</ul>
+<div class="sourceCode" id="cb188"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb188-1"><a href="#cb188-1"></a><span class="bu">cd</span> /vagrant</span>
+<span id="cb188-2"><a href="#cb188-2"></a><span class="ex">scripts/01_setup_os_db.sh</span></span></code></pre></div>
+<ul>
+<li>Manual install oudbase environment</li>
+</ul>
+<div class="sourceCode" id="cb189"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb189-1"><a href="#cb189-1"></a><span class="ex">scripts/10_configure_oudbase.sh</span></span></code></pre></div>
+<ul>
+<li>Clone git repositories using the script</li>
+</ul>
+<div class="sourceCode" id="cb190"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb190-1"><a href="#cb190-1"></a><span class="ex">scripts/11_clone_git_repos.sh</span></span></code></pre></div>
+<ul>
+<li>install some base images</li>
+</ul>
+<div class="sourceCode" id="cb191"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb191-1"><a href="#cb191-1"></a><span class="ex">scripts/12_pull_base_images.sh</span></span></code></pre></div>
+<h3 id="manual-setup-using-the-oradba_init-scripts">Manual Setup Using the oradba_init Scripts</h3>
+<p>The vagrant setup scripts are all based on the <a href="https://github.com/oehrlis/oradba_init">oradba_init</a> scripts. VM can therefor also configured using these scripts.</p>
+<ul>
+<li>Install the OraDBA init scripts</li>
+</ul>
+<div class="sourceCode" id="cb192"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb192-1"><a href="#cb192-1"></a><span class="fu">mkdir</span> -p /tmp/download</span>
+<span id="cb192-2"><a href="#cb192-2"></a></span>
+<span id="cb192-3"><a href="#cb192-3"></a><span class="ex">curl</span> -Lsf https://raw.githubusercontent.com/oehrlis/oradba_init/master/bin/00_setup_oradba_init.sh \</span>
+<span id="cb192-4"><a href="#cb192-4"></a>    -o /tmp/download/00_setup_oradba_init.sh</span>
+<span id="cb192-5"><a href="#cb192-5"></a></span>
+<span id="cb192-6"><a href="#cb192-6"></a><span class="fu">chmod</span> 755 /tmp/download/00_setup_oradba_init.sh</span>
+<span id="cb192-7"><a href="#cb192-7"></a><span class="ex">/tmp/download/00_setup_oradba_init.sh</span></span>
+<span id="cb192-8"><a href="#cb192-8"></a><span class="fu">rm</span> -rf /opt/oradba/oradba_init-master</span></code></pre></div>
+<ul>
+<li>Run the OS install script. This script does install oracle preinstall packages and creates an oracle user</li>
+</ul>
+<div class="sourceCode" id="cb193"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb193-1"><a href="#cb193-1"></a><span class="ex">/opt/oradba/01_setup_os_db.sh</span></span></code></pre></div>
+<ul>
+<li>Run the Docker install script. Just install <code>docker-engine</code> and <code>docker-compose</code>.</li>
+</ul>
+<div class="sourceCode" id="cb194"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb194-1"><a href="#cb194-1"></a><span class="ex">/opt/oradba/01_setup_os_docker.sh</span></span></code></pre></div>
+<ul>
+<li>install git client</li>
+</ul>
+<div class="sourceCode" id="cb195"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb195-1"><a href="#cb195-1"></a><span class="ex">yum</span> install git -y</span></code></pre></div>
+<ul>
+<li>Install OUD base a simple Oracle environment similar to Trivadis BasEnv.</li>
+</ul>
+<div class="sourceCode" id="cb196"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb196-1"><a href="#cb196-1"></a><span class="ex">/opt/oradba/20_setup_oudbase.sh</span></span></code></pre></div>
+<ul>
+<li>Clone the git repo either as user root, oracle or any other user you plan to use.</li>
+</ul>
+<div class="sourceCode" id="cb197"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb197-1"><a href="#cb197-1"></a><span class="bu">export</span> <span class="va">ORACLE_BASE=${ORACLE_BASE:-</span>/u00/app/oracle<span class="va">}</span></span>
+<span id="cb197-2"><a href="#cb197-2"></a><span class="fu">su</span> -l oracle -c <span class="st">&quot;cd </span><span class="va">${ORACLE_BASE}</span><span class="st">/local;git clone https://github.com/oehrlis/o-db-docker.git&quot;</span></span>
+<span id="cb197-3"><a href="#cb197-3"></a><span class="fu">su</span> -l oracle -c <span class="st">&quot;cd </span><span class="va">${ORACLE_BASE}</span><span class="st">/local;git clone https://github.com/oehrlis/docker.git&quot;</span></span>
+<span id="cb197-4"><a href="#cb197-4"></a><span class="fu">su</span> -l oracle -c <span class="st">&quot;cd </span><span class="va">${ORACLE_BASE}</span><span class="st">/local;git clone https://github.com/oracle/docker-images.git&quot;</span></span></code></pre></div>
+<ul>
+<li>Pull a couple of docker base images.</li>
+</ul>
+<div class="sourceCode" id="cb198"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb198-1"><a href="#cb198-1"></a><span class="ex">docker</span> pull busybox</span>
+<span id="cb198-2"><a href="#cb198-2"></a><span class="ex">docker</span> pull alpine</span>
+<span id="cb198-3"><a href="#cb198-3"></a><span class="ex">docker</span> pull oraclelinux:7-slim</span></code></pre></div>
+<p><strong>Disclaimer</strong>: This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the <em>O-DB-DOCKER</em> workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk. # Appendix C Setup local Docker Environment</p>
+<h2 id="requirements-and-preparations-2">Requirements and Preparations</h2>
+<p>The following appendix contains a step-by-step guide on how to set up the workshop environment with local Docker installation. The different steps are performed via command line and scripts.</p>
+<p>The following prerequisites must be fulfilled:</p>
+<ul>
+<li>Docker Community Edition https://docs.docker.com/install</li>
+<li>git to check out the different git repository. Either git commandline or git desktop.</li>
+<li>Software required to setup the Docker images eg. the Oracle binaries.</li>
+</ul>
+<figure>
+<img src="../images/Docker-Environment.png" alt="" /><figcaption>Local Docker Workshop Architecture</figcaption>
+</figure>
+<p>A local development folder as well software repository is not part of this picture.</p>
+<h2 id="configure-local-docker-environment">Configure local Docker Environment</h2>
+<p>The configuration of a local Docker environment is rather simple. Depending on your OS you just have to install the Docker Community Edition for MacOS, Windows or Linux according the official Docker documentation. As soon as you have Docker install you have to prepare the software.</p>
+<ul>
+<li>clone git repositories</li>
+</ul>
+<div class="sourceCode" id="cb199"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb199-1"><a href="#cb199-1"></a><span class="bu">cd</span> /u00/app/oracle/local</span>
+<span id="cb199-2"><a href="#cb199-2"></a><span class="fu">git</span> clone https://github.com/oehrlis/docker.git docker</span>
+<span id="cb199-3"><a href="#cb199-3"></a><span class="fu">git</span> clone https://github.com/oehrlis/o-db-docker.git o-db-docker</span>
+<span id="cb199-4"><a href="#cb199-4"></a><span class="fu">git</span> clone https://github.com/oracle/docker-images.git docker-images</span></code></pre></div>
+<ul>
+<li>create folder for you software</li>
+</ul>
+<div class="sourceCode" id="cb200"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb200-1"><a href="#cb200-1"></a><span class="fu">mkdir</span> /u00/app/oracle/software</span></code></pre></div>
+<ul>
+<li>download the different oracle binaries as required</li>
+</ul>
+<p><strong>Disclaimer</strong>: This guide has been created with utmost care, but does not claim to be complete. It was compiled as part of the preparation for the <em>O-DB-DOCKER</em> workshop. The author assumes no responsibility for the accuracy, completeness and timeliness of the content. The use of the available content is at your own risk.</p>
+</body>
+</html>

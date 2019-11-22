@@ -18,14 +18,16 @@
 title: "O-DB-DOCKER"
 subtitle: "Lab and Exercise Guide"
 author: [Stefan Oehrli]
-date: "2019 November 10"
-tvddocversion: 0.8
+date: "2019 November 21"
+tvddocversion: 1.0
 
 # - Page settings -----------------------------------------------------------
 papersize: a4 
 listings-disable-line-numbers: true
 titlepage: true
 toc: true
+lof: true
+lof-own-page: true
 toc-own-page: true
 toc-title: Table of Contents
 toc-depth: 2

@@ -127,7 +127,7 @@ The following figure gives an overview of the OCI compute instance and
 access via SSH. Detailed installation and configuration guide can be
 found in [Appendix A](#appendix-a-setup-oci-environment).
 
-!["OCI Compute Instance Architecture"](images/OCI-Environment.png)
+![OCI Compute Instance Architecture](images/OCI-Environment.png)
 
 Access to the compute nodes is exclusively via SSH and Private Keys.
 Workshop participants must ensure that they meet the following
@@ -1951,7 +1951,8 @@ basic principles:
 The following figure illustrates the an Oracle Database and Oracle
 Unified Directory container with Enterprise User Security (EUS).
 
-![Oracle EUS with OUD standalone in Docker](images/eus_docker.png)
+![Oracle EUS with OUD standalone in
+Docker](images/eus_docker.png)
 
 Oracle Unified Directory does use the following scripts to setup the OUD
 with EUS:
@@ -3112,7 +3113,7 @@ environment based on Vagrant / Virtualbox. The provided vagrant
 environment does only have a minimal disk setup. It may be necessary to
 add an additional hard disk or extend the existing one.
 
-!["Vagrant VM Workshop Architecture"](images/Vagrant-Environment.png)
+![Vagrant VM Workshop Architecture](images/Vagrant-Environment.png)
 
 Setup Using Vagrant
 -------------------
@@ -3318,9 +3319,13 @@ The following prerequisites must be fulfilled:
 -   Software required to setup the Docker images eg. the Oracle
     binaries.
 
-!["Local Docker Workshop Architecture"](images/Docker-Environment.png)
+![Local Docker Workshop Architecture](images/Docker-Environment.png)
 
-\#\# Configure local Docker Environment
+A local development folder as well software repository is not part of
+this picture.
+
+Configure local Docker Environment
+----------------------------------
 
 The configuration of a local Docker environment is rather simple.
 Depending on your OS you just have to install the Docker Community

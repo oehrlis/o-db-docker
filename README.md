@@ -27,6 +27,7 @@ pandoc --template trivadis --listings --pdf-engine=xelatex \
     --metadata-file=doc/metadata.yml \
     --resource-path ./doc/images \
     -o doc/O-DB-DOCKER_Workshop.pdf \
+    --include-in-header doc/templates/titlesec.tex \
     doc/en/0x??-* lab/ex??/1x??en-* doc/en/9x??-*
 ```
 
@@ -58,4 +59,14 @@ pandoc --reference-doc doc/templates/trivadis.pptx --listings \
     --resource-path ./doc/images \
     -o doc/O-DB-DOCKER_Workshop_Exercise.pptx \
     lab/ex??/1x??en-E*.md
+```
+
+- Create HTML file using a local pandoc installation.
+
+```bash
+pandoc -f markdown  --listings \
+    --metadata-file=doc/metadata.yml \
+    --resource-path ./doc/images --standalone \
+    -o doc/O-DB-DOCKER_Workshop.html --css doc/templates/pandoc.css \
+    doc/en/0x??-* lab/ex??/1x??en-* doc/en/9x??-*
 ```

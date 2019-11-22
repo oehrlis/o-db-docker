@@ -10,9 +10,11 @@ The following prerequisites must be fulfilled:
 - git to check out the different git repository. Either git commandline or git desktop.
 - Software required to setup the Docker images eg. the Oracle binaries.
 
-!["Local Docker Workshop Architecture"](../images/Docker-Environment.png)
+![Local Docker Workshop Architecture](../images/Docker-Environment.png)
 
-## Configure local Docker Environment
+A local development folder as well software repository is not part of this picture.
+
+## Configure local Docker Environment
 
 The configuration of a local Docker environment is rather simple. Depending on your OS you just have to install the Docker Community Edition for MacOS, Windows or Linux according the official Docker documentation. As soon as you have Docker install you have to prepare the software.
 

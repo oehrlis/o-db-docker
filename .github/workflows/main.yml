@@ -1,6 +1,8 @@
 name: Document Conversion
 
-#on: push
+on:
+  check_run:
+    types: [rerequested, requested_action]
 
 jobs:
   convert_via_pandoc:

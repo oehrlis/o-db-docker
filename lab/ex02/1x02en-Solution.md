@@ -35,7 +35,7 @@ docker build -t doag:2019 .
 Run the docker image as container.
 
 ```bash
-docker run doag
+docker run doag2020
 ```
 
 Check the containers using `docker ps -a`. You will see that the container still exists

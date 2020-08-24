@@ -312,6 +312,19 @@ sfdisk /dev/sdb <<EOF
 EOF
 ```
 
+```bash
+sfdisk /dev/sdb <<EOF
+0,,8e
+EOF
+```
+
+
+```bash
+sfdisk /dev/sdb <<EOF
+,,8e
+EOF
+```
+
 - List block devices.
 
 ```bash

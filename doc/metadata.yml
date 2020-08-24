@@ -43,10 +43,10 @@ header-includes: \setcounter{page}{0} # set page count to 0 for title page
 # - Font settings -----------------------------------------------------------
 # due to an issue with XeLaTeX with images in docker container the font family
 # has to be set to a sanserif font like Helvetica (helvet)
-#fontfamily: helvet
+fontfamily: helvet
 # For regular pandoc pdf generation with XeLaTeX mainfont is set to Nunito
-mainfont: Nunito Sans SemiBold
-monofont: Courier New
+#mainfont: Nunito Sans SemiBold
+#monofont: Courier New
 
 # - Logo settings -----------------------------------------------------------
 # Local logo

@@ -9,7 +9,7 @@ The following prerequisites must be fulfilled:
 - Oracle Virtual Box https://www.virtualbox.org/
 - Oracle Vagrant Box https://yum.oracle.com/boxes
 - Vagrant https://www.vagrantup.com/
-- optional local git client. 
+- optional local git client.
 - And binaries required to build the Docker images e.g. Oracle database softwar
 
 The following figure shows the schematic layout of the Docker environment based on Vagrant / Virtualbox. The provided vagrant environment does only have a minimal disk setup. It may be necessary to add an additional hard disk or extend the existing one.
